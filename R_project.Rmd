@@ -1,0 +1,299 @@
+---
+title: "R_project"
+author: "Phillip An, Paul Park, Min Jin Kang"
+date: "2023-04-05"
+output: md_document
+---
+
+
+```{r setup, include=FALSE}
+library('TTR')
+library('quantmod')
+library('knitr')
+library('xts')
+library('lubridate')
+library(tidyverse)
+library(rpart)
+library(rpart.plot)
+library(ggplot2)
+library(dplyr)
+library(rsample)  
+library(caret)
+library(modelr)
+library(randomForest)
+library(gbm)
+library(pdp)
+library(scales)
+library(kableExtra)
+```
+
+```{r timeseries_oil,message=FALSE, echo=FALSE, warning=FALSE}
+
+df_oil <- getSymbols('CL=F',src='yahoo',auto.assign=FALSE)
+#class(df_oil)
+#nrow(df_oil) #4103
+#head(df_oil,2) # 2007-01-03
+#tail(df_oil,2) # 2023-04-04
+chartSeries(df_oil,name="Crude Oil",theme = 'white',subset='2014::2023')
+```
+
+```{r timeseries_gold,message=FALSE, echo=FALSE, warning=FALSE }
+df_gold <- getSymbols('GC=F',src='yahoo',auto.assign=FALSE)
+#class(df_gold)
+#nrow(df_gold) #4103
+#head(df_gold,2) # 2007-01-03
+#tail(df_gold,2) # 2023-04-04
+chartSeries(df_gold,name="Gold",theme = 'white',subset='2014::2023')
+```
+
+```{r timeseries_bitcoin,message=FALSE, echo=FALSE, warning=FALSE}
+df_bitcoin <- getSymbols('BTC-USD',src='yahoo',auto.assign=FALSE)
+#class(df_bitcoin)
+#nrow(df_bitcoin) #3123
+#head(df_bitcoin,2) # 2014-09-17
+#tail(df_bitcoin,2) # 2023-04-05
+chartSeries(df_bitcoin,name="Bitcoin",theme = 'white',subset='2014::2023')
+```
+
+```{r timeseries_3bill,message=FALSE, echo=FALSE, warning=FALSE}
+df_irx <- getSymbols('^IRX',src='yahoo',auto.assign=FALSE)
+#class(df_irx)
+#nrow(df_irx) #4950
+#head(df_irx,2) # 2007-01-03
+#tail(df_irx,2) # 2023-04-04
+plot(df_irx, main = '13 Week Treasury Bill')
+```
+
+```{r timeseries_10bond,message=FALSE, echo=FALSE, warning=FALSE}
+df_tnx <- getSymbols('^TNX',src='yahoo',auto.assign=FALSE)
+#class(df_tnx)
+#nrow(df_tnx) #4950
+#head(df_tnx,2) # 2007-01-03
+#tail(df_tnx,2) # 2023-04-04
+plot(df_tnx, main = 'Treasury Yield 10 Years')
+```
+
+```{r timeseries_vix,message=FALSE, echo=FALSE, warning=FALSE}
+
+df_vix <- getSymbols('^VIX',src='yahoo',auto.assign=FALSE)
+#class(df_vix)
+#nrow(df_vix) #4092
+#head(df_vix,2) # 2007-01-03
+#tail(df_vix,2) # 2023-04-04
+plot(df_vix, main="CBOE Volatility Index")
+```
+
+```{r timeseries_ovx,message=FALSE, echo=FALSE, warning=FALSE}
+
+df_ovx <- getSymbols('^OVX',src='yahoo',auto.assign=FALSE)
+#class(df_ovx)
+#nrow(df_ovx) #4004
+#head(df_ovx,2) # 2007-05-01
+#tail(df_ovx,2) # 2023-04-04
+plot(df_ovx,name="CBOE Crude Oil Volatility Index")
+```
+
+
+
+```{r emu_and_epu,message=FALSE, echo=FALSE, warning=FALSE}
+df_emu <- read.csv('Data/EMU.csv') # Equity Market-related Economic Uncertainty Index 
+# https://fred.stlouisfed.org/series/WLEMUINDXD
+#nrow(df_emu) #3381
+#head(df_emu) #2014-01-01
+#tail(df_emu) #2023-04-04
+
+df_epu <- read.csv('Data/EPU.csv') # Economic Policy Uncertainty Index for United States
+#https://fred.stlouisfed.org/series/USEPUINDXD
+#nrow(df_epu) #3381
+#head(df_epu) #2014-01-01
+#tail(df_epu) #2023-04-04
+
+df_5yinf <- read.csv('Data/5YIE.csv') # 5-Year Breakeven Inflation Rate
+#https://fred.stlouisfed.org/series/T5YIE
+#nrow(df_5yinf) #2414
+#head(df_5yinf) #2014-01-01
+#tail(df_5yinf) #2023-04-04
+
+df_disease <- read.csv('Data/DISEASE.csv') # Equity Market Volatility: Infectious Disease Tracker
+# https://fred.stlouisfed.org/series/INFECTDISEMVTRACKD
+#nrow(df_disease) #3381
+#head(df_disease) #2014-01-01
+#tail(df_disease) #2023-04-04
+
+```
+
+```{r merge_fred_data, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+#colnames(df_emu)[1] ="DATE"
+#colnames(df_epu)[1] ="DATE"
+#colnames(df_5yinf)[1] ="DATE"
+#colnames(df_disease)[1] ="DATE"
+
+colnames(df_emu)[2] ="EMU"
+colnames(df_epu)[2] ="EPU"
+colnames(df_5yinf)[2] ="5YINF"
+colnames(df_disease)[2] ="DISEASE"
+
+colnames(df_emu)
+colnames(df_epu)
+colnames(df_5yinf)
+colnames(df_disease)
+
+fred_1 <- merge(x=df_emu, y=df_epu, by="DATE",all=TRUE)
+fred_2 <- merge(x=df_5yinf, y=df_disease, by="DATE",all=TRUE)
+fred_data <- merge(x=fred_1, y=fred_2, by="DATE", all=TRUE)
+
+# here, df_5yinf have some missing data
+nrow(fred_data) #3381
+
+# we can see some columns are character
+sapply(fred_data, class)
+
+# change character to numeric 
+fred_data$'5YINF' = as.numeric(as.character(fred_data$'5YINF')) 
+fred_data$DISEASE = as.numeric(as.character(fred_data$DISEASE)) 
+
+# all numeric
+sapply(fred_data, class)
+
+# change "chracter" date type to "date" date type
+fred_data$DATE <- ymd(fred_data$DATE)
+
+sapply(fred_data, class)
+
+```
+
+
+```{r merge_yahoo_data, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+
+df_oil
+df_gold
+df_bitcoin
+df_irx
+df_tnx
+df_vix
+df_ovx
+
+nrow(df_oil) #4103
+nrow(df_gold) #4103
+nrow(df_bitcoin) #3123
+nrow(df_irx) #4950
+nrow(df_tnx) #4950
+nrow(df_vix) #4092
+nrow(df_ovx) #4004
+
+yahoo <- merge (df_oil,df_gold,df_bitcoin,df_irx,df_tnx,df_vix,df_ovx)
+
+# data has 2007-01-02 to 2023-04-05
+head(yahoo)
+tail(yahoo)
+
+nrow(yahoo) #5468
+
+# select data 2014-01-02 to 2023-04-05
+yahoo_sliced_data = yahoo[2131:5468]
+
+# all column is xts type 
+sapply(yahoo_sliced_data, class)
+
+# convert xts object to data.frame
+data(yahoo_sliced_data)
+x <- as.xts(yahoo_sliced_data, dateFormat="DATE")
+yahoo_data <- fortify.zoo(x)
+head(yahoo_data)
+str(yahoo_data)
+
+# Tada! all numeric
+
+# change "Index" to "DATE"
+colnames(yahoo_data)[1] ="DATE"
+
+str(yahoo_data)
+sapply(yahoo_data, class)
+
+```
+
+```{r merge_two_data, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+
+df <- merge(x=fred_data, y=yahoo_data, by="DATE", all=TRUE)
+
+# check our dataset
+head(df)
+tail(df)
+colnames(df)
+str(df)
+nrow(df)
+
+# for yahoo_data, weekend data is missing, I will drop na rows, also bitcoin data is from 2014-09-17 so our data starts from 2014-09-17
+weekday_df <- na.omit(df) 
+
+nrow(weekday_df) #2133
+
+# reset index
+rownames(weekday_df) <- NULL
+
+head(weekday_df)
+```
+
+```{r RF, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+
+# this solves error : Error in eval(expr, envir, enclos) : object 'example' not found
+names(weekday_df) <- make.names(names(weekday_df))
+
+
+df_split = initial_split(weekday_df, prop = 0.8)
+df_train = training(df_split)
+df_test = testing(df_split)
+
+RF = randomForest(BTC.USD.Adjusted ~ . , data=df_train, important=TRUE)
+
+varImpPlot(RF) # this gives imp factor for BTC.USD.Close/High/Low/Open... so I selected some var
+
+colnames(df_train)
+
+```
+
+
+```{r RF_select, message=FALSE, echo=FALSE, warning=FALSE}
+RF_select = randomForest(BTC.USD.Adjusted ~ DATE + EMU + EPU + X5YINF + DISEASE + CL.F.Adjusted + GC.F.Adjusted + IRX.Adjusted + TNX.Adjusted + VIX.Adjusted + OVX.Adjusted , data=df_train, important=TRUE)
+
+varImpPlot(RF_select)
+```
+
+
+
+```{r RF_rmse, message=FALSE, echo=FALSE, warning=FALSE}
+# check the rmse
+rmse_RF=rmse(RF_select,df_test)
+
+# print the rmse
+rmse_RF
+```
+
+```{r RF_dependence_plot1, message=FALSE, echo=FALSE, warning=FALSE}
+
+df_test$DATE <- as.Date(df_test$DATE, format = "%Y-%m-%d")
+
+#partialPlot(RF_select, pred.data = df_test, x.var ='DATE', from=min(df_test$'DATE'), to=max(df_test$'DATE'))
+#it gives error :( maybe because it's date -> let's make 'month' column
+
+```
+
+
+```{r RF_dependence_plot2, message=FALSE, echo=FALSE, warning=FALSE}
+
+partialPlot(RF_select, df_test, 'X5YINF', las=1)
+
+```
+
+
+```{r RF_dependence_plot3, message=FALSE, echo=FALSE, warning=FALSE}
+
+partialPlot(RF_select, df_test, 'GC.F.Adjusted', las=1)
+
+```
+
+```{r RF_dependence_plot4, message=FALSE, echo=FALSE, warning=FALSE}
+
+partialPlot(RF_select, df_test, 'IRX.Adjusted', las=1)
+
+```
