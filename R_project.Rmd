@@ -289,7 +289,7 @@ nrow(df) #3384
 
 df <- df %>%rename(Bitcoin = BTC.USD.Adjusted, Ethereum = ETH.USD.Adjusted, Oil=CL.F.Adjusted, Gold=GC.F.Adjusted, IRX=IRX.Adjusted, TNX=TNX.Adjusted, VIX=VIX.Adjusted, OVX=OVX.Adjusted, SP500=GSPC.Adjusted, Dow30=DJI.Adjusted, Nasdaq=IXIC.Adjusted)
 
-sumtable(df)
+knitr::include_graphics("SumStat.png")
 
 ```
 
@@ -540,12 +540,13 @@ knitr::kable(df_ether_,col.names = c("Model","RMSE"))
 
 
 # Appendix
+```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE}
 
 chartSeries(df_oil,name="Crude Oil",theme = 'white',subset='2014::2023')
 chartSeries(df_gold,name="Gold",theme = 'white',subset='2014::2023')
 chartSeries(df_bitcoin,name="Bitcoin",theme = 'white',subset='2014::2023')
 chartSeries(df_ether,name="Ethereum",theme = 'white',subset='2017::2023')
-chartSeries(df_ripple,name="Ripple(XRP)",theme = 'white',subset='2017::2023')
+#chartSeries(df_ripple,name="Ripple(XRP)",theme = 'white',subset='2017::2023')
 plot(df_irx, main = '13 Week Treasury Bill')
 plot(df_tnx, main = 'Treasury Yield 10 Years')
 plot(df_vix, main="CBOE Volatility Index")
@@ -554,4 +555,4 @@ chartSeries(df_sp500,name="S&P 500",theme = 'white',subset='2014::2023')
 chartSeries(df_dow30,name="Dow 30",theme = 'white',subset='2014::2023')
 chartSeries(df_nasdaq,name="Nasdaq",theme = 'white',subset='2014::2023')
 
-
+```

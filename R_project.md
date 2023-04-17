@@ -84,13 +84,13 @@ encounters over-fitting problems.
 
 ![](R_project_files/figure-markdown_strict/bitcoin_CART-1.png)
 
-    ## [1] 3207.451
+    ## [1] 2402.217
 
 ### Random Forest
 
 ![](R_project_files/figure-markdown_strict/bitcoin_RF,%20-1.png)
 
-    ## [1] 998.7477
+    ## [1] 915.735
 
 ![](R_project_files/figure-markdown_strict/RF_dependence_plot1-1.png)
 
@@ -104,7 +104,7 @@ encounters over-fitting problems.
 
     ## [1] 500
 
-    ## [1] 1235.879
+    ## [1] 1146.371
 
 <table>
 <thead>
@@ -123,7 +123,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-3207.4511
+2402.217
 </td>
 </tr>
 <tr>
@@ -131,7 +131,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-998.7477
+915.735
 </td>
 </tr>
 <tr>
@@ -139,7 +139,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1235.8795
+1146.371
 </td>
 </tr>
 </tbody>
@@ -152,13 +152,13 @@ Gradient Boosting
 
 ![](R_project_files/figure-markdown_strict/ethereum_CART-1.png)
 
-    ## [1] 196.3289
+    ## [1] 243.3626
 
 ### Random Forest
 
 ![](R_project_files/figure-markdown_strict/ethereum_RF,%20-1.png)
 
-    ## [1] 118.7607
+    ## [1] 91.88629
 
 ![](R_project_files/figure-markdown_strict/ether_RF_dependence_plot1-1.png)
 
@@ -170,9 +170,9 @@ Gradient Boosting
 
 ![](R_project_files/figure-markdown_strict/ethereum_gradient-1.png)![](R_project_files/figure-markdown_strict/ethereum_gradient-2.png)
 
-    ## [1] 498
+    ## [1] 484
 
-    ## [1] 112.9502
+    ## [1] 107.9797
 
 <table>
 <thead>
@@ -191,7 +191,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-196.3289
+243.36258
 </td>
 </tr>
 <tr>
@@ -199,7 +199,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-118.7607
+91.88629
 </td>
 </tr>
 <tr>
@@ -207,7 +207,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-112.9502
+107.97969
 </td>
 </tr>
 </tbody>
@@ -216,17 +216,4 @@ Gradient Boosting
 
 # Appendix
 
-chartSeries(df\_oil,name=“Crude Oil”,theme =
-‘white’,subset=‘2014::2023’) chartSeries(df\_gold,name=“Gold”,theme =
-‘white’,subset=‘2014::2023’)
-chartSeries(df\_bitcoin,name=“Bitcoin”,theme =
-‘white’,subset=‘2014::2023’) chartSeries(df\_ether,name=“Ethereum”,theme
-= ‘white’,subset=‘2017::2023’)
-chartSeries(df\_ripple,name=“Ripple(XRP)”,theme =
-‘white’,subset=‘2017::2023’) plot(df\_irx, main = ‘13 Week Treasury
-Bill’) plot(df\_tnx, main = ‘Treasury Yield 10 Years’) plot(df\_vix,
-main=“CBOE Volatility Index”) plot(df\_ovx,name=“CBOE Crude Oil
-Volatility Index”) chartSeries(df\_sp500,name=“S&P 500”,theme =
-‘white’,subset=‘2014::2023’) chartSeries(df\_dow30,name=“Dow 30”,theme =
-‘white’,subset=‘2014::2023’) chartSeries(df\_nasdaq,name=“Nasdaq”,theme
-= ‘white’,subset=‘2014::2023’)
+![](R_project_files/figure-markdown_strict/timeseries_tables-1.png)![](R_project_files/figure-markdown_strict/timeseries_tables-2.png)![](R_project_files/figure-markdown_strict/timeseries_tables-3.png)![](R_project_files/figure-markdown_strict/timeseries_tables-4.png)![](R_project_files/figure-markdown_strict/timeseries_tables-5.png)![](R_project_files/figure-markdown_strict/timeseries_tables-6.png)![](R_project_files/figure-markdown_strict/timeseries_tables-7.png)![](R_project_files/figure-markdown_strict/timeseries_tables-8.png)![](R_project_files/figure-markdown_strict/timeseries_tables-9.png)![](R_project_files/figure-markdown_strict/timeseries_tables-10.png)![](R_project_files/figure-markdown_strict/timeseries_tables-11.png)
