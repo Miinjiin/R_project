@@ -74,6 +74,8 @@ Gradient boosting can work better than random forests with finely-tuned
 parameters. However, it is more sensitive to noise, thus more easily
 encounters over-fitting problems.
 
+<img src="SumStat.png" width="1170" />
+
 # Results
 
 ## Bitcoin
@@ -84,13 +86,13 @@ encounters over-fitting problems.
 
 ![](R_project_files/figure-markdown_strict/bitcoin_CART-1.png)
 
-    ## [1] 2402.217
+    ## [1] 2089.426
 
 ### Random Forest
 
 ![](R_project_files/figure-markdown_strict/bitcoin_RF,%20-1.png)
 
-    ## [1] 915.735
+    ## [1] 1054.255
 
 ![](R_project_files/figure-markdown_strict/RF_dependence_plot1-1.png)
 
@@ -102,9 +104,9 @@ encounters over-fitting problems.
 
 ![](R_project_files/figure-markdown_strict/bitcoin_gradient-1.png)![](R_project_files/figure-markdown_strict/bitcoin_gradient-2.png)
 
-    ## [1] 500
+    ## [1] 498
 
-    ## [1] 1146.371
+    ## [1] 1391.59
 
 <table>
 <thead>
@@ -123,7 +125,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2402.217
+2089.426
 </td>
 </tr>
 <tr>
@@ -131,7 +133,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-915.735
+1054.255
 </td>
 </tr>
 <tr>
@@ -139,7 +141,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1146.371
+1391.590
 </td>
 </tr>
 </tbody>
@@ -152,13 +154,13 @@ Gradient Boosting
 
 ![](R_project_files/figure-markdown_strict/ethereum_CART-1.png)
 
-    ## [1] 243.3626
+    ## [1] 180.1675
 
 ### Random Forest
 
 ![](R_project_files/figure-markdown_strict/ethereum_RF,%20-1.png)
 
-    ## [1] 91.88629
+    ## [1] 85.85477
 
 ![](R_project_files/figure-markdown_strict/ether_RF_dependence_plot1-1.png)
 
@@ -170,9 +172,9 @@ Gradient Boosting
 
 ![](R_project_files/figure-markdown_strict/ethereum_gradient-1.png)![](R_project_files/figure-markdown_strict/ethereum_gradient-2.png)
 
-    ## [1] 484
+    ## [1] 490
 
-    ## [1] 107.9797
+    ## [1] 86.15086
 
 <table>
 <thead>
@@ -191,7 +193,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-243.36258
+180.16754
 </td>
 </tr>
 <tr>
@@ -199,7 +201,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-91.88629
+85.85477
 </td>
 </tr>
 <tr>
@@ -207,7 +209,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-107.97969
+86.15086
 </td>
 </tr>
 </tbody>

@@ -52,6 +52,16 @@ Random forest is perhaps the most popular generic nonparametric regression techn
  
 Gradient boosting is an ensemble method like random forests. However, here you recursively fit simple trees to its ‘residuals’. That is, while random forests fits trees simultaneously, gradient boosting builds one tree at a time. This model adds the newly crushed tree into the fit in each stage along the way and so the final fit is the sum of many trees. Gradient boosting can work better than random forests with finely-tuned parameters. However, it is more sensitive to noise, thus more easily encounters over-fitting problems.
 
+\newline
+\newline
+
+```{r sumstat,message=FALSE, echo=FALSE, warning=FALSE}
+knitr::include_graphics("SumStat.png")
+
+```
+
+\newline
+\newline
 
 # Results
 
@@ -288,8 +298,6 @@ str(df)
 nrow(df) #3384
 
 df <- df %>%rename(Bitcoin = BTC.USD.Adjusted, Ethereum = ETH.USD.Adjusted, Oil=CL.F.Adjusted, Gold=GC.F.Adjusted, IRX=IRX.Adjusted, TNX=TNX.Adjusted, VIX=VIX.Adjusted, OVX=OVX.Adjusted, SP500=GSPC.Adjusted, Dow30=DJI.Adjusted, Nasdaq=IXIC.Adjusted)
-
-knitr::include_graphics("SumStat.png")
 
 ```
 
