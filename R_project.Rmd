@@ -14,6 +14,7 @@ library('knitr')
 library('xts')
 library('lubridate')
 library('vtable')
+library(foreach)
 library(tidyverse)
 library(rpart)
 library(rpart.plot)
@@ -310,6 +311,7 @@ df <- df %>%rename(Bitcoin = BTC.USD.Adjusted, Ethereum = ETH.USD.Adjusted, Oil=
 bitcoin <- df %>%
   select(DATE, Bitcoin, Oil, Gold, IRX, TNX, VIX, OVX, SP500, Dow30, Nasdaq, DXY, CDS, EMU, EPU, inf5y, DISEASE)
 
+
 # drop na value. Main data set is from 2014-01-01 and bitcoin data is from 2014-09-17. Also weekend data will be dropped
 bitcoin <- na.omit(bitcoin) 
 
@@ -323,6 +325,13 @@ nrow(bitcoin) #1723
 
 bitcoin_without_date <- bitcoin %>%
   select(Bitcoin, Oil, Gold, IRX, TNX, VIX, OVX, SP500, Dow30, Nasdaq, DXY, CDS, EMU, EPU, inf5y, DISEASE)
+
+# making new column in a data frame that contains the difference between consecutive rows of an existing column
+bitcoin_without_date$diff_column <- c(NA, diff(bitcoin_without_date$Bitcoin))
+bitcoin_without_date$direction <- ifelse(bitcoin_without_date$diff_column > 0, 1, 0)
+bitcoin_without_date <- na.omit(bitcoin_without_date)
+
+head(bitcoin_without_date)
 
 # this solves error(Error in eval(expr, envir, enclos) : object '' not found)
 names(bitcoin_without_date) <- make.names(names(bitcoin_without_date))
@@ -352,10 +361,13 @@ rmse_bitcoin_CART
 ### Random Forest
 ```{r bitcoin_RF, , message=FALSE, echo=FALSE, warning=FALSE}
 
-bitcoin_RF=randomForest(Bitcoin ~ ., data=bitcoin_train,  important=TRUE)
+bitcoin_RF=randomForest(Bitcoin ~ . -direction, data=bitcoin_train,  important=TRUE)
 
 varImpPlot(bitcoin_RF)
 
+bitcoin_direction_RF=randomForest(direction ~ .-diff_column-Bitcoin, data=bitcoin_train,  important=TRUE)
+
+varImpPlot(bitcoin_direction_RF)
 ```
 
 
@@ -365,6 +377,57 @@ rmse_RF=rmse(bitcoin_RF,bitcoin_test)
 
 # print the rmse
 rmse_RF
+
+```
+
+```{r  bitcoin_RF.2, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+
+phat=predict(bitcoin_direction_RF, bitcoin_without_date, type = "response")
+
+accuracy= foreach(i=1:90, .combine='c') %do% {
+  yhat_val_best=ifelse(phat_val_best >= (i/100), 1, 0)
+  confusion_val_best=table(y=bitcoin_without_date$direction, yhat=yhat_val_best)
+  TN=confusion_val_best[1,1]
+  FP=confusion_val_best[1,2]
+  FN=confusion_val_best[2,1]
+  TP=confusion_val_best[2,2]
+  accuracy=(TP+TN)/(TP+TN+FP+FN)
+  accuracy
+}
+
+
+# get tpr value to build roc curve
+i=1:90
+yhat=ifelse(phat_val_best >= (i/100), 1, 0)
+confusion = table(y=bitcoin_without_date$direction, yhat=yhat)
+view(confusion)
+TN=confusion[1,1]
+FP=confusion[1,2]
+FN=confusion[2,1]
+TP=confusion[2,2]
+accuracy=(TP+TN)/(TP+TN+FP+FN)
+accuracy
+
+# validate our best model using the fresh val data
+phat = predict(bitcoin_direction_RF, bitcoin_without_date, type = "response")
+
+# plot the roc curve
+t = rep(1:90)/100
+roc_plot = foreach(t = t, .combine='rbind')%do%{
+  yhat = ifelse(phat >= t, 1, 0)
+  confusion_best_val = table(y=bitcoin_without_date$direction, yhat=yhat)
+  TPR = confusion_best_val[2,2]/(confusion_best_val[2,2]+confusion_best_val[2,1])
+  FPR = confusion_best_val[1,2]/(confusion_best_val[1,1]+confusion_best_val[1,2]) 
+  c(t=t, TPR = TPR, FPR = FPR)
+} %>% as.data.frame()
+
+ggplot(roc_plot) +
+  geom_line(aes(x=FPR, y=TPR)) +
+  labs(y="True Positive Rate", x = "False Positive Rate", title = "ROC Curve for the Best Model")+
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+
+
+```
 ```
 
 
