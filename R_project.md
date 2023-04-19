@@ -1,5 +1,14 @@
 # Abstract
 
+This paper is a study of which factors have a large impact on
+cryptocurrencies. Bitcoin and Ethereum were chosen as representative
+cryptocurrencies for our research, as these are two of the most popular
+and widely used with a significant market capitalization and user base.
+This study utilizes a random forest model to analyze the relationship
+between predictor variables and an outcome variable. Variable importance
+plots are used to identify the most significant predictor variables, and
+(meaningful conclusions) are drawn from the analysis.
+
 # Introduction
 
 Bitcoin, a type of digital currency run on blockchain technology, has
@@ -40,9 +49,45 @@ macroeconomic shocks using our model.
 
 # Methods
 
-Data:
+## Data:
 
-Methodology:
+After reading a few existing studies regarding price prediction of an
+investment asset, we have learned that a wide spectrum of macroeconomic
+and market performance factors, such as inflation, interest rates, and
+market volatility are incorporated in building price predicting models.
+In addition to these common factors, we have also added some other
+variables we deemed important in terms of predictive power. Our data set
+consists of relevant daily asset prices, macroeconomic and market
+performance indicators, which are mainly collected from Yahoo Finance
+and Federal Reserve Economic Data (FRED).
+
+First, we have daily prices of Bitcoin (BTC), Ethereum (ETH), oil, and
+gold. Inflation is measured by two proxies, yield on 10-year Treasury
+note (TNX) and 13 Week Treasury Bill (IRX). CBOE volatility index (VIX)
+estimates equity market volatility, while CBOE crude oil volatility
+index (OVX) measures oil market uncertainty. SP500, which tracks the top
+500 U.S. stocks, is used to compute the US stock market performance. All
+of these data were collected from Yahoo Finance.
+
+In addition to aforementioned inflation proxies, 5-Year breakeven
+inflation rate (inf5y), which implies market participants’ inflation
+expectation for the next five years, was also added. Equity Market
+Volatility: Infectious Disease Tracker (DISEASE) was included to account
+for the economic impact of COVID-19. U.S. dollar index (DXY) measures
+the performance of dollar against a basket of other world currencies.
+Policy-related uncertainty is measured by Economic Policy Uncertainty
+Index (EPU), and stock market uncertainty is measured by Equity Market
+Uncertainty Index (EMU). All of these data were collected from FRED.
+
+Lastly, we added Credit Default Swap (CDS), which basically is a
+financial derivative through which a seller can swap his credit risk
+with that of a buyer. As this indicator measures dwindling of
+centralized financial markets, we thought it would be interesting to see
+its relationship with the price action of cryptocurrencies, a
+decentralized asset class. This data was separately collected from
+Investing.com.
+
+## Methodology:
 
 In predicting Bitcoin price direction, we compare three main models:
 Classification and Regression Trees (CART), Random Forest and Gradient
@@ -74,41 +119,478 @@ Gradient boosting can work better than random forests with finely-tuned
 parameters. However, it is more sensitive to noise, thus more easily
 encounters over-fitting problems.
 
-<img src="SumStat.png" width="1170" />
-
 # Results
+
+<img src="price_compare.png" width="1800" />
+
+<img src="vol_compare.png" width="1800" />
+
+<table class=" lightable-classic-2" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Summary Statistics
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:left;">
+N
+</th>
+<th style="text-align:left;">
+Mean
+</th>
+<th style="text-align:left;">
+Std. Dev.
+</th>
+<th style="text-align:left;">
+Min
+</th>
+<th style="text-align:left;">
+Pctl. 25
+</th>
+<th style="text-align:left;">
+Pctl. 75
+</th>
+<th style="text-align:left;">
+Max
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:left;">
+2304
+</td>
+<td style="text-align:left;">
+112
+</td>
+<td style="text-align:left;">
+7.3
+</td>
+<td style="text-align:left;">
+93
+</td>
+<td style="text-align:left;">
+110
+</td>
+<td style="text-align:left;">
+116
+</td>
+<td style="text-align:left;">
+128
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:left;">
+1969
+</td>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+5.5
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+86
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:left;">
+3381
+</td>
+<td style="text-align:left;">
+70
+</td>
+<td style="text-align:left;">
+94
+</td>
+<td style="text-align:left;">
+4.8
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+91
+</td>
+<td style="text-align:left;">
+1230
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:left;">
+3381
+</td>
+<td style="text-align:left;">
+123
+</td>
+<td style="text-align:left;">
+98
+</td>
+<td style="text-align:left;">
+3.3
+</td>
+<td style="text-align:left;">
+64
+</td>
+<td style="text-align:left;">
+144
+</td>
+<td style="text-align:left;">
+861
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inf5y
+</td>
+<td style="text-align:left;">
+2315
+</td>
+<td style="text-align:left;">
+1.8
+</td>
+<td style="text-align:left;">
+0.54
+</td>
+<td style="text-align:left;">
+0.14
+</td>
+<td style="text-align:left;">
+1.5
+</td>
+<td style="text-align:left;">
+2.1
+</td>
+<td style="text-align:left;">
+3.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Disease
+</td>
+<td style="text-align:left;">
+3380
+</td>
+<td style="text-align:left;">
+5.8
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+8.4
+</td>
+<td style="text-align:left;">
+113
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oil
+</td>
+<td style="text-align:left;">
+2332
+</td>
+<td style="text-align:left;">
+63
+</td>
+<td style="text-align:left;">
+21
+</td>
+<td style="text-align:left;">
+-38
+</td>
+<td style="text-align:left;">
+48
+</td>
+<td style="text-align:left;">
+74
+</td>
+<td style="text-align:left;">
+124
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:left;">
+2330
+</td>
+<td style="text-align:left;">
+1454
+</td>
+<td style="text-align:left;">
+273
+</td>
+<td style="text-align:left;">
+1051
+</td>
+<td style="text-align:left;">
+1240
+</td>
+<td style="text-align:left;">
+1753
+</td>
+<td style="text-align:left;">
+2052
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bitcoin
+</td>
+<td style="text-align:left;">
+3123
+</td>
+<td style="text-align:left;">
+13175
+</td>
+<td style="text-align:left;">
+16045
+</td>
+<td style="text-align:left;">
+178
+</td>
+<td style="text-align:left;">
+715
+</td>
+<td style="text-align:left;">
+19048
+</td>
+<td style="text-align:left;">
+67567
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ethereum
+</td>
+<td style="text-align:left;">
+1974
+</td>
+<td style="text-align:left;">
+1153
+</td>
+<td style="text-align:left;">
+1164
+</td>
+<td style="text-align:left;">
+84
+</td>
+<td style="text-align:left;">
+217
+</td>
+<td style="text-align:left;">
+1744
+</td>
+<td style="text-align:left;">
+4812
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IRX
+</td>
+<td style="text-align:left;">
+2329
+</td>
+<td style="text-align:left;">
+0.95
+</td>
+<td style="text-align:left;">
+1.2
+</td>
+<td style="text-align:left;">
+-0.1
+</td>
+<td style="text-align:left;">
+0.043
+</td>
+<td style="text-align:left;">
+1.7
+</td>
+<td style="text-align:left;">
+4.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TNX
+</td>
+<td style="text-align:left;">
+2329
+</td>
+<td style="text-align:left;">
+2.2
+</td>
+<td style="text-align:left;">
+0.75
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+1.7
+</td>
+<td style="text-align:left;">
+2.7
+</td>
+<td style="text-align:left;">
+4.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VIX
+</td>
+<td style="text-align:left;">
+2331
+</td>
+<td style="text-align:left;">
+18
+</td>
+<td style="text-align:left;">
+7.5
+</td>
+<td style="text-align:left;">
+9.1
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+22
+</td>
+<td style="text-align:left;">
+83
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+OVX
+</td>
+<td style="text-align:left;">
+2331
+</td>
+<td style="text-align:left;">
+40
+</td>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+29
+</td>
+<td style="text-align:left;">
+46
+</td>
+<td style="text-align:left;">
+325
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:left;">
+2331
+</td>
+<td style="text-align:left;">
+2897
+</td>
+<td style="text-align:left;">
+844
+</td>
+<td style="text-align:left;">
+1742
+</td>
+<td style="text-align:left;">
+2105
+</td>
+<td style="text-align:left;">
+3644
+</td>
+<td style="text-align:left;">
+4797
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Month
+</td>
+<td style="text-align:left;">
+3384
+</td>
+<td style="text-align:left;">
+6.4
+</td>
+<td style="text-align:left;">
+3.5
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+9
+</td>
+<td style="text-align:left;">
+12
+</td>
+</tr>
+</tbody>
+</table>
 
 ## Bitcoin
 
-### Classification and Regression Trees (CART)
-
     ## [1] 1723
-
-![](R_project_files/figure-markdown_strict/bitcoin_CART-1.png)
-
-    ## [1] 2089.426
 
 ### Random Forest
 
 ![](R_project_files/figure-markdown_strict/bitcoin_RF,%20-1.png)
 
-    ## [1] 1054.255
+![](R_project_files/figure-markdown_strict/RF_dependence_plot-1.png)
 
-![](R_project_files/figure-markdown_strict/RF_dependence_plot1-1.png)
-
-![](R_project_files/figure-markdown_strict/RF_dependence_plot2-1.png)
-
-![](R_project_files/figure-markdown_strict/RF_dependence_plot3-1.png)
-
-### Gradient Boosting
-
-![](R_project_files/figure-markdown_strict/bitcoin_gradient-1.png)![](R_project_files/figure-markdown_strict/bitcoin_gradient-2.png)
-
-    ## [1] 498
-
-    ## [1] 1391.59
-
-<table>
+<table class=" lightable-classic-2" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Model performance with out-of-sample RMSEs (Bitcoin)
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -125,7 +607,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2089.426
+2401.052
 </td>
 </tr>
 <tr>
@@ -133,7 +615,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1054.255
+1042.764
 </td>
 </tr>
 <tr>
@@ -141,42 +623,25 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1391.590
+1241.433
 </td>
 </tr>
 </tbody>
 </table>
 ## Ethereum
 
-### Classification and Regression Trees (CART)
-
     ## [1] 1023
-
-![](R_project_files/figure-markdown_strict/ethereum_CART-1.png)
-
-    ## [1] 180.1675
 
 ### Random Forest
 
 ![](R_project_files/figure-markdown_strict/ethereum_RF,%20-1.png)
 
-    ## [1] 85.85477
+![](R_project_files/figure-markdown_strict/RF_dependence_plot_ether-1.png)
 
-![](R_project_files/figure-markdown_strict/ether_RF_dependence_plot1-1.png)
-
-![](R_project_files/figure-markdown_strict/ether_RF_dependence_plot2-1.png)
-
-![](R_project_files/figure-markdown_strict/ether_RF_dependence_plot3-1.png)
-
-### Gradient Boosting
-
-![](R_project_files/figure-markdown_strict/ethereum_gradient-1.png)![](R_project_files/figure-markdown_strict/ethereum_gradient-2.png)
-
-    ## [1] 490
-
-    ## [1] 86.15086
-
-<table>
+<table class=" lightable-classic-2" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Model performance with out-of-sample RMSEs (Ethereum)
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -193,7 +658,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-180.16754
+2401.052
 </td>
 </tr>
 <tr>
@@ -201,7 +666,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-85.85477
+1042.764
 </td>
 </tr>
 <tr>
@@ -209,7 +674,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-86.15086
+1241.433
 </td>
 </tr>
 </tbody>
@@ -218,4 +683,4 @@ Gradient Boosting
 
 # Appendix
 
-![](R_project_files/figure-markdown_strict/timeseries_tables-1.png)![](R_project_files/figure-markdown_strict/timeseries_tables-2.png)![](R_project_files/figure-markdown_strict/timeseries_tables-3.png)![](R_project_files/figure-markdown_strict/timeseries_tables-4.png)![](R_project_files/figure-markdown_strict/timeseries_tables-5.png)![](R_project_files/figure-markdown_strict/timeseries_tables-6.png)![](R_project_files/figure-markdown_strict/timeseries_tables-7.png)![](R_project_files/figure-markdown_strict/timeseries_tables-8.png)![](R_project_files/figure-markdown_strict/timeseries_tables-9.png)![](R_project_files/figure-markdown_strict/timeseries_tables-10.png)![](R_project_files/figure-markdown_strict/timeseries_tables-11.png)
+![](R_project_files/figure-markdown_strict/timeseries_tables-1.png)![](R_project_files/figure-markdown_strict/timeseries_tables-2.png)![](R_project_files/figure-markdown_strict/timeseries_tables-3.png)![](R_project_files/figure-markdown_strict/timeseries_tables-4.png)![](R_project_files/figure-markdown_strict/timeseries_tables-5.png)![](R_project_files/figure-markdown_strict/timeseries_tables-6.png)![](R_project_files/figure-markdown_strict/timeseries_tables-7.png)![](R_project_files/figure-markdown_strict/timeseries_tables-8.png)![](R_project_files/figure-markdown_strict/timeseries_tables-9.png)

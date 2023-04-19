@@ -4,7 +4,6 @@ author: "Phillip An, Paul Park, Min Jin Kang"
 date: "2023-04-05"
 output: md_document
 always_allow_html: true
-
 ---
 
 ```{r setup, include=FALSE}
@@ -14,11 +13,17 @@ library('knitr')
 library('xts')
 library('lubridate')
 library('vtable')
+library('gridExtra')
+library('grid')
+library('pdp')
+library('lattice')
+library('tidyr')
+library('ggthemes')
+library(ggplot2)
 library(foreach)
 library(tidyverse)
 library(rpart)
 library(rpart.plot)
-library(ggplot2)
 library(dplyr)
 library(rsample)  
 library(caret)
@@ -31,6 +36,8 @@ library(kableExtra)
 ```
 
 # Abstract
+
+This paper is a study of which factors have a large impact on cryptocurrencies. Bitcoin and Ethereum were chosen as representative cryptocurrencies for our research, as these are two of the most popular and widely used with a significant market capitalization and user base. This study utilizes a random forest model to analyze the relationship between predictor variables and an outcome variable. Variable importance plots are used to identify the most significant predictor variables, and (meaningful conclusions) are drawn from the analysis.
 
 # Introduction
 
@@ -64,89 +71,70 @@ Gradient boosting is an ensemble method like random forests. However, here you r
 \newline
 \newline
 
-```{r sumstat,message=FALSE, echo=FALSE, warning=FALSE}
-knitr::include_graphics("SumStat.png")
-
-```
-
 \newline
 \newline
 
 # Results
 
+```{r price,message=FALSE, echo=FALSE, warning=FALSE}
+# made from bitcoin_ether_price chunk with ggplot
+knitr::include_graphics("price_compare.png")
+```
+
+```{r vol,message=FALSE, echo=FALSE, warning=FALSE}
+# made from bitcoin_ether_volume below with ggplot
+knitr::include_graphics("vol_compare.png")
+```
+
+
+
 ```{r get_yahoo_data,message=FALSE, echo=FALSE, warning=FALSE}
 
 df_oil <- getSymbols('CL=F',src='yahoo',auto.assign=FALSE)
-#class(df_oil)
 #nrow(df_oil) #4103
 #head(df_oil,2) # 2007-01-03
 #tail(df_oil,2) # 2023-04-04
 
 df_gold <- getSymbols('GC=F',src='yahoo',auto.assign=FALSE)
-#class(df_gold)
 #nrow(df_gold) #4103
 #head(df_gold,2) # 2007-01-03
 #tail(df_gold,2) # 2023-04-04
 
 df_bitcoin <- getSymbols('BTC-USD',src='yahoo',auto.assign=FALSE)
-#class(df_bitcoin)
 #nrow(df_bitcoin) #3123
 #head(df_bitcoin,2) # 2014-09-17
 #tail(df_bitcoin,2) # 2023-04-05
 
 df_ether <- getSymbols('ETH-USD',src='yahoo',auto.assign=FALSE)
-#class(df_ether)
 #nrow(df_ether) #1980
 #head(df_ether,2) # 2017-11-09
 #tail(df_ether,2) # 2023-04-11
 
-#df_ripple <- getSymbols('XRP-USD',src='yahoo',auto.assign=FALSE)
-#class(df_ripple)
-#nrow(df_ripple) #1980
-#head(df_ripple,2) # 2017-11-09
-#tail(df_ripple,2) # 2023-04-11
-
 df_irx <- getSymbols('^IRX',src='yahoo',auto.assign=FALSE)
-#class(df_irx)
 #nrow(df_irx) #4950
 #head(df_irx,2) # 2007-01-03
 #tail(df_irx,2) # 2023-04-04
 
 df_tnx <- getSymbols('^TNX',src='yahoo',auto.assign=FALSE)
-#class(df_tnx)
 #nrow(df_tnx) #4950
 #head(df_tnx,2) # 2007-01-03
 #tail(df_tnx,2) # 2023-04-04
 
 df_vix <- getSymbols('^VIX',src='yahoo',auto.assign=FALSE)
-#class(df_vix)
 #nrow(df_vix) #4092
 #head(df_vix,2) # 2007-01-03
 #tail(df_vix,2) # 2023-04-04
 
 df_ovx <- getSymbols('^OVX',src='yahoo',auto.assign=FALSE)
-#class(df_ovx)
 #nrow(df_ovx) #4004
 #head(df_ovx,2) # 2007-05-01
 #tail(df_ovx,2) # 2023-04-04
 
 df_sp500 <- getSymbols('^GSPC',src='yahoo',auto.assign=FALSE)
-#class(df_sp500)
 #nrow(df_sp500) #4103
 #head(df_sp500,2) # 2007-01-03
 #tail(df_sp500,2) # 2023-04-04
 
-df_dow30 <- getSymbols('^DJI',src='yahoo',auto.assign=FALSE)
-#class(df_dow30)
-#nrow(df_dow30) #4095
-#head(df_dow30,2) # 2007-01-03
-#tail(df_dow30,2) # 2023-04-04
-
-df_nasdaq <- getSymbols('^IXIC',src='yahoo',auto.assign=FALSE)
-#class(df_nasdaq)
-#nrow(df_nasdaq) #4095
-#head(df_nasdaq,2) # 2007-01-03
-#tail(df_nasdaq,2) # 2023-04-04
 ```
 
 
@@ -154,13 +142,31 @@ df_nasdaq <- getSymbols('^IXIC',src='yahoo',auto.assign=FALSE)
 ```{r get_fred_data,message=FALSE, echo=FALSE, warning=FALSE}
 
 df_dxy <- read.csv('Data/DXY.csv') # Nominal Broad U.S. Dollar Index
-# https://fred.stlouisfed.org/series/DTWEXBGS
 #nrow(df_dxy) #2417
 #head(df_dxy) #2014-01-01
 #tail(df_dxy) #2023-04-04
 
+df_emu <- read.csv('Data/EMU.csv') # Equity Market-related Economic Uncertainty Index 
+#nrow(df_emu) #3381
+#head(df_emu) #2014-01-01
+#tail(df_emu) #2023-04-04
+
+df_epu <- read.csv('Data/EPU.csv') # Economic Policy Uncertainty Index for United States
+#nrow(df_epu) #3381
+#head(df_epu) #2014-01-01
+#tail(df_epu) #2023-04-04
+
+df_inf5y <- read.csv('Data/5YIE.csv') # 5-Year Breakeven Inflation Rate
+#nrow(df_inf5y) #2414
+#head(df_inf5y) #2014-01-01
+#tail(df_inf5y) #2023-04-04
+
+df_disease <- read.csv('Data/DISEASE.csv') # Equity Market Volatility: Infectious Disease Tracker
+#nrow(df_disease) #3381
+#head(df_disease) #2014-01-01
+#tail(df_disease) #2023-04-04
+
 df_cds <- read.csv('Data/1YCDS.csv') # United States CDS 1 Year USD
-#https://www.investing.com/rates-bonds/united-states-cds-1-year-usd-historical-data
 #nrow(df_cds) #1969
 #head(df_cds) #2014-01-01
 #tail(df_cds) #2023-04-04
@@ -168,30 +174,6 @@ df_cds=df_cds[1:2]
 colnames(df_cds)[1] ="DATE"
 df_cds$DATE <- as.Date(df_cds$DATE, "%m/%d/%Y")
 df_cds$DATE <- format(df_cds$DATE, "%Y-%m-%d")
-
-df_emu <- read.csv('Data/EMU.csv') # Equity Market-related Economic Uncertainty Index 
-# https://fred.stlouisfed.org/series/WLEMUINDXD
-#nrow(df_emu) #3381
-#head(df_emu) #2014-01-01
-#tail(df_emu) #2023-04-04
-
-df_epu <- read.csv('Data/EPU.csv') # Economic Policy Uncertainty Index for United States
-#https://fred.stlouisfed.org/series/USEPUINDXD
-#nrow(df_epu) #3381
-#head(df_epu) #2014-01-01
-#tail(df_epu) #2023-04-04
-
-df_inf5y <- read.csv('Data/5YIE.csv') # 5-Year Breakeven Inflation Rate
-#https://fred.stlouisfed.org/series/T5YIE
-#nrow(df_inf5y) #2414
-#head(df_inf5y) #2014-01-01
-#tail(df_inf5y) #2023-04-04
-
-df_disease <- read.csv('Data/DISEASE.csv') # Equity Market Volatility: Infectious Disease Tracker
-# https://fred.stlouisfed.org/series/INFECTDISEMVTRACKD
-#nrow(df_disease) #3381
-#head(df_disease) #2014-01-01
-#tail(df_disease) #2023-04-04
 
 ```
 
@@ -216,8 +198,8 @@ colnames(df_dxy)[2] ="DXY"
 colnames(df_cds)[2] ="CDS"
 colnames(df_emu)[2] ="EMU"
 colnames(df_epu)[2] ="EPU"
-colnames(df_inf5y)[2] ="inf5y"
-colnames(df_disease)[2] ="DISEASE"
+colnames(df_inf5y)[2] ="Inf5y"
+colnames(df_disease)[2] ="Disease"
 
 fred_0 <- merge(x=df_dxy, y=df_cds, by="DATE",all=TRUE)
 fred_1 <- merge(x=df_emu, y=df_epu, by="DATE",all=TRUE)
@@ -233,8 +215,8 @@ sapply(fred_data, class)
 
 # change character to numeric 
 fred_data$DXY = as.numeric(as.character(fred_data$DXY)) 
-fred_data$'inf5y' = as.numeric(as.character(fred_data$'inf5y')) 
-fred_data$DISEASE = as.numeric(as.character(fred_data$DISEASE)) 
+fred_data$Inf5y = as.numeric(as.character(fred_data$Inf5y)) 
+fred_data$Disease = as.numeric(as.character(fred_data$Disease)) 
 
 # all numeric
 sapply(fred_data, class)
@@ -245,26 +227,14 @@ sapply(fred_data, class)
 
 ```{r merge_yahoo_data, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
-nrow(df_oil) #4103
-nrow(df_gold) #4103
-nrow(df_bitcoin) #3123
-nrow(df_ether) #1980
-#nrow(df_ripple) #1980
-nrow(df_irx) #4950
-nrow(df_tnx) #4950
-nrow(df_vix) #4092
-nrow(df_ovx) #4004
-nrow(df_sp500) #4095
-nrow(df_dow30) #4095
-nrow(df_nasdaq) #4095
-
-yahoo <- merge (df_oil,df_gold,df_bitcoin,df_ether,df_irx,df_tnx,df_vix,df_ovx,df_sp500,df_dow30,df_nasdaq)
+# merge data
+yahoo <- merge (df_oil,df_gold,df_bitcoin,df_ether,df_irx,df_tnx,df_vix,df_ovx,df_sp500)
 
 # data has 2007-01-02 to 2023-04-05
 head(yahoo)
 tail(yahoo)
 
-nrow(yahoo) #5480
+nrow(yahoo) #5481
 
 # select data 2014-01-02 to 2023-04-05
 yahoo_sliced_data = yahoo[2131:5468]
@@ -289,10 +259,10 @@ sapply(yahoo_data, class)
 
 # select only 'adjusted' data, dropping open/high/low/close/volume
 cleaned_yahoo <- yahoo_data %>%
-  select(DATE, CL.F.Adjusted, GC.F.Adjusted, BTC.USD.Adjusted, ETH.USD.Adjusted, IRX.Adjusted, TNX.Adjusted, VIX.Adjusted, OVX.Adjusted, GSPC.Adjusted, DJI.Adjusted, IXIC.Adjusted, )
+  select(DATE, CL.F.Adjusted, GC.F.Adjusted, BTC.USD.Adjusted, ETH.USD.Adjusted, IRX.Adjusted, TNX.Adjusted, VIX.Adjusted, OVX.Adjusted, GSPC.Adjusted)
 
 colnames(cleaned_yahoo)
-
+class(cleaned_yahoo$DATE)
 ```
 
 ```{r merge_two_data, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
@@ -306,18 +276,30 @@ colnames(df)
 str(df)
 nrow(df) #3384
 
-df <- df %>%rename(Bitcoin = BTC.USD.Adjusted, Ethereum = ETH.USD.Adjusted, Oil=CL.F.Adjusted, Gold=GC.F.Adjusted, IRX=IRX.Adjusted, TNX=TNX.Adjusted, VIX=VIX.Adjusted, OVX=OVX.Adjusted, SP500=GSPC.Adjusted, Dow30=DJI.Adjusted, Nasdaq=IXIC.Adjusted)
+df <- df %>%rename(Bitcoin = BTC.USD.Adjusted, Ethereum = ETH.USD.Adjusted, Oil=CL.F.Adjusted, Gold=GC.F.Adjusted, IRX=IRX.Adjusted, TNX=TNX.Adjusted, VIX=VIX.Adjusted, OVX=OVX.Adjusted, SP500=GSPC.Adjusted)
+
+# adding 'Month' column from 'DATE' column
+df$Month <- format(df$DATE, "%m")
+
+# this month column is character class
+# change character to numeric 
+df$Month = as.numeric(as.character(df$Month)) 
+```
+
+```{r sumstat,message=FALSE, echo=FALSE, warning=FALSE}
+# making sumtable with sumtable() and output=kable
+
+sumtable(df, out='kable')%>%
+  kable_classic_2(full_width=F)
 
 ```
 
-
 ## Bitcoin 
 
-### Classification and Regression Trees (CART)
 ```{r bitcoin_CART, message=FALSE, echo=FALSE, warning=FALSE}
 
 bitcoin <- df %>%
-  select(DATE, Bitcoin, Oil, Gold, IRX, TNX, VIX, OVX, SP500, Dow30, Nasdaq, DXY, CDS, EMU, EPU, inf5y, DISEASE)
+  select(DATE, Month, Bitcoin, Oil, Gold, IRX, TNX, VIX, OVX, SP500, DXY, CDS, EMU, EPU, Inf5y, Disease)
 
 
 # drop na value. Main data set is from 2014-01-01 and bitcoin data is from 2014-09-17. Also weekend data will be dropped
@@ -331,161 +313,59 @@ names(bitcoin) <- make.names(names(bitcoin))
 
 nrow(bitcoin) #1723
 
-bitcoin_without_date <- bitcoin %>%
-  select(Bitcoin, Oil, Gold, IRX, TNX, VIX, OVX, SP500, Dow30, Nasdaq, DXY, CDS, EMU, EPU, inf5y, DISEASE)
-
-# making new column in a data frame that contains the difference between consecutive rows of an existing column
-bitcoin_without_date$diff_column <- c(NA, diff(bitcoin_without_date$Bitcoin))
-bitcoin_without_date$direction <- ifelse(bitcoin_without_date$diff_column > 0, 1, 0)
-bitcoin_without_date <- na.omit(bitcoin_without_date)
-
-head(bitcoin_without_date)
-
-# this solves error(Error in eval(expr, envir, enclos) : object '' not found)
-names(bitcoin_without_date) <- make.names(names(bitcoin_without_date))
-
 # split training and testing set
-bitcoin_split = initial_split(bitcoin_without_date, prop = 0.8)
+bitcoin_split = initial_split(bitcoin, prop = 0.8)
 bitcoin_train = training(bitcoin_split)
 bitcoin_test = testing(bitcoin_split)
 
-bitcoin_CART=rpart(Bitcoin ~ ., data=bitcoin_train, control=rpart.control(cp=0.002,minsplit=30))
+bitcoin_CART=rpart(Bitcoin ~ .-DATE, data=bitcoin_train, control=rpart.control(cp=0.002,minsplit=30))
 
-rpart.plot(bitcoin_CART, digits=-5, type=4, extra=1)
-
-
-```
-
-
-```{r bitcoin_CART.1, message=FALSE, echo=FALSE, warning=FALSE}
 # check the rmse
 rmse_bitcoin_CART=rmse(bitcoin_CART,bitcoin_test)
-
-# print the rmse
-rmse_bitcoin_CART
 ```
+
 
 
 ### Random Forest
 ```{r bitcoin_RF, , message=FALSE, echo=FALSE, warning=FALSE}
 
-bitcoin_RF=randomForest(Bitcoin ~ . -direction, data=bitcoin_train,  important=TRUE)
+bitcoin_RF=randomForest(Bitcoin ~ . -DATE, data=bitcoin_train,  important=TRUE)
 
-varImpPlot(bitcoin_RF)
-
-bitcoin_direction_RF=randomForest(direction ~ .-diff_column-Bitcoin, data=bitcoin_train,  important=TRUE)
-
-varImpPlot(bitcoin_direction_RF)
-```
-
-
-```{r  bitcoin_RF.1, message=FALSE, echo=FALSE, warning=FALSE}
 # check the rmse
 rmse_RF=rmse(bitcoin_RF,bitcoin_test)
 
-# print the rmse
-rmse_RF
+varImpPlot(bitcoin_RF, bg = "skyblue", cex=1, pch=22)
 
 ```
 
-```{r  bitcoin_RF.2, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
-phat=predict(bitcoin_direction_RF, bitcoin_without_date, type = "response")
-
-accuracy= foreach(i=1:90, .combine='c') %do% {
-  yhat_val_best=ifelse(phat_val_best >= (i/100), 1, 0)
-  confusion_val_best=table(y=bitcoin_without_date$direction, yhat=yhat_val_best)
-  TN=confusion_val_best[1,1]
-  FP=confusion_val_best[1,2]
-  FN=confusion_val_best[2,1]
-  TP=confusion_val_best[2,2]
-  accuracy=(TP+TN)/(TP+TN+FP+FN)
-  accuracy
-}
-
-
-# get tpr value to build roc curve
-i=1:90
-yhat=ifelse(phat_val_best >= (i/100), 1, 0)
-confusion = table(y=bitcoin_without_date$direction, yhat=yhat)
-view(confusion)
-TN=confusion[1,1]
-FP=confusion[1,2]
-FN=confusion[2,1]
-TP=confusion[2,2]
-accuracy=(TP+TN)/(TP+TN+FP+FN)
-accuracy
-
-# validate our best model using the fresh val data
-phat = predict(bitcoin_direction_RF, bitcoin_without_date, type = "response")
-
-# plot the roc curve
-t = rep(1:90)/100
-roc_plot = foreach(t = t, .combine='rbind')%do%{
-  yhat = ifelse(phat >= t, 1, 0)
-  confusion_best_val = table(y=bitcoin_without_date$direction, yhat=yhat)
-  TPR = confusion_best_val[2,2]/(confusion_best_val[2,2]+confusion_best_val[2,1])
-  FPR = confusion_best_val[1,2]/(confusion_best_val[1,1]+confusion_best_val[1,2]) 
-  c(t=t, TPR = TPR, FPR = FPR)
-} %>% as.data.frame()
-
-ggplot(roc_plot) +
-  geom_line(aes(x=FPR, y=TPR)) +
-  labs(y="True Positive Rate", x = "False Positive Rate", title = "ROC Curve for the Best Model")+
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
-
-
-```
-```
-
-
-```{r RF_dependence_plot1, message=FALSE, echo=FALSE, warning=FALSE}
-
+```{r RF_dependence_plot, message=FALSE, echo=FALSE, warning=FALSE}
+op <- par(mfrow=c(1, 5))
 partialPlot(bitcoin_RF, bitcoin_test, 'SP500', las=1)
-
+partialPlot(bitcoin_RF, bitcoin_test, 'Inf5y', las=1)
+partialPlot(bitcoin_RF, bitcoin_test, 'Gold', las=1)
+partialPlot(bitcoin_RF, bitcoin_test, 'IRX', las=1)
+partialPlot(bitcoin_RF, bitcoin_test, 'Disease', las=1)
+par(op)
 ```
 
 
-```{r RF_dependence_plot2, message=FALSE, echo=FALSE, warning=FALSE}
-
-partialPlot(bitcoin_RF, bitcoin_test, 'Nasdaq', las=1)
-
-```
-
-
-```{r RF_dependence_plot3, message=FALSE, echo=FALSE, warning=FALSE}
-
-partialPlot(bitcoin_RF, bitcoin_test, 'inf5y', las=1)
-
-```
-
-### Gradient Boosting
 
 ``` {r bitcoin_gradient, message=FALSE, echo=FALSE, warning=FALSE}
 # fit a tree for gradient boosted trees
-bitcoin_boost= gbm(Bitcoin ~ . ,distribution='gaussian', data=bitcoin_train,interaction.depth=4, n.trees=500, shrinkage=.05, cv.folds = 8)
-  
-# plot for gradient boosting 
-plot(bitcoin_boost)
-# Look at error curve -- stops decreasing much after ~300
-gbm.perf(bitcoin_boost)
-
-```
-
-``` {r bitcoin_gradient.1, message=FALSE, echo=FALSE, warning=FALSE}
-
+bitcoin_boost= gbm(Bitcoin ~ .-DATE ,distribution='gaussian', data=bitcoin_train,interaction.depth=4, n.trees=500, shrinkage=.05, cv.folds = 8)
 # check the rmse
 rmse_Boost=rmse(bitcoin_boost,bitcoin_test)
-# print the rmse
-rmse_Boost
 
 ```
+
 
 ```{r RMSE_table, message=FALSE, echo=FALSE, warning=FALSE}
 first_col= c("CART","Random Forest","Gradient Boosting")
 second_col= c(rmse_bitcoin_CART,rmse_RF, rmse_Boost)
 df_rmse_ = data.frame(first_col, second_col)
-knitr::kable(df_rmse_,col.names = c("Model","RMSE"))
+knitr::kable(df_rmse_,col.names = c("Model","RMSE"), caption="Model performance with out-of-sample RMSEs (Bitcoin)")%>% 
+    kable_classic_2(full_width=F)
 ```
 
 \newline
@@ -494,15 +374,15 @@ knitr::kable(df_rmse_,col.names = c("Model","RMSE"))
 \newline
 
 
-## Ethereum
+## Ethereum 
 
-### Classification and Regression Trees (CART)
 ```{r ethereum_CART, message=FALSE, echo=FALSE, warning=FALSE}
 
 ethereum <- df %>%
-  select(DATE, Ethereum, Oil, Gold, IRX, TNX, VIX, OVX, SP500, Dow30, Nasdaq, DXY, CDS, EMU, EPU, inf5y, DISEASE)
+  select(DATE, Month, Ethereum, Oil, Gold, IRX, TNX, VIX, OVX, SP500, DXY, CDS, EMU, EPU, Inf5y, Disease)
 
-# drop na value. Main data set is from 2014-01-01 and ethereum data is from 2017-11-09. Also weekend data will be dropped
+
+# drop na value.
 ethereum <- na.omit(ethereum) 
 
 # reset index
@@ -513,106 +393,113 @@ names(ethereum) <- make.names(names(ethereum))
 
 nrow(ethereum) #1023
 
-ethereum_without_date <- ethereum %>%
-  select(Ethereum, Oil, Gold, IRX, TNX, VIX, OVX, SP500, Dow30, Nasdaq, DXY, CDS, EMU, EPU, inf5y, DISEASE)
-
-# this solves error(Error in eval(expr, envir, enclos) : object '' not found)
-names(ethereum_without_date) <- make.names(names(ethereum_without_date))
-
 # split training and testing set
-ethereum_split = initial_split(ethereum_without_date, prop = 0.8)
+ethereum_split = initial_split(ethereum, prop = 0.8)
 ethereum_train = training(ethereum_split)
 ethereum_test = testing(ethereum_split)
 
-ethereum_CART=rpart(Ethereum ~ ., data=ethereum_train, control=rpart.control(cp=0.002,minsplit=30))
+ethereum_CART=rpart(Ethereum ~ .-DATE, data=ethereum_train, control=rpart.control(cp=0.002,minsplit=30))
 
-rpart.plot(ethereum_CART, digits=-5, type=4, extra=1)
-
-
-```
-
-
-```{r ethereum_CART.1, message=FALSE, echo=FALSE, warning=FALSE}
 # check the rmse
 rmse_ethereum_CART=rmse(ethereum_CART,ethereum_test)
-
-# print the rmse
-rmse_ethereum_CART
 ```
+
 
 
 ### Random Forest
 ```{r ethereum_RF, , message=FALSE, echo=FALSE, warning=FALSE}
 
-ethereum_RF=randomForest(Ethereum ~ ., data=ethereum_train,  important=TRUE)
+ethereum_RF=randomForest(Ethereum ~ . -DATE, data=ethereum_train,  important=TRUE)
 
-varImpPlot(ethereum_RF)
-
-```
-
-
-```{r  ethereum_RF.1, message=FALSE, echo=FALSE, warning=FALSE}
 # check the rmse
-rmse_ether_RF=rmse(ethereum_RF,ethereum_test)
+rmse_RF=rmse(ethereum_RF,ethereum_test)
 
-# print the rmse
-rmse_ether_RF
+varImpPlot(ethereum_RF, bg = "skyblue", cex=1, pch=22)
+
 ```
 
 
-```{r ether_RF_dependence_plot1, message=FALSE, echo=FALSE, warning=FALSE}
-
+```{r RF_dependence_plot_ether, message=FALSE, echo=FALSE, warning=FALSE}
+op_ether <- par(mfrow=c(1, 5))
 partialPlot(ethereum_RF, ethereum_test, 'SP500', las=1)
-
+partialPlot(ethereum_RF, ethereum_test, 'Inf5y', las=1)
+partialPlot(ethereum_RF, ethereum_test, 'Oil', las=1)
+partialPlot(ethereum_RF, ethereum_test, 'IRX', las=1)
+partialPlot(ethereum_RF, ethereum_test, 'CDS', las=1)
+par(op_ether)
 ```
 
 
-```{r ether_RF_dependence_plot2, message=FALSE, echo=FALSE, warning=FALSE}
-
-partialPlot(ethereum_RF, ethereum_test, 'Dow30', las=1)
-
-```
-
-
-```{r ether_RF_dependence_plot3, message=FALSE, echo=FALSE, warning=FALSE}
-
-partialPlot(ethereum_RF, ethereum_test, 'inf5y', las=1)
-
-```
-
-### Gradient Boosting
 
 ``` {r ethereum_gradient, message=FALSE, echo=FALSE, warning=FALSE}
 # fit a tree for gradient boosted trees
-ethereum_boost= gbm(Ethereum ~ . ,distribution='gaussian', data=ethereum_train,interaction.depth=4, n.trees=500, shrinkage=.05, cv.folds = 8)
-  
-# plot for gradient boosting 
-plot(ethereum_boost)
-# Look at error curve -- stops decreasing much after ~300
-gbm.perf(ethereum_boost)
-
-```
-
-``` {r ethereum_gradient.1, message=FALSE, echo=FALSE, warning=FALSE}
-
+ethereum_boost= gbm(Ethereum ~ .-DATE ,distribution='gaussian', data=ethereum_train,interaction.depth=4, n.trees=500, shrinkage=.05, cv.folds = 8)
 # check the rmse
-rmse_ether_Boost=rmse(ethereum_boost,ethereum_test)
-# print the rmse
-rmse_ether_Boost
+rmse_Boost=rmse(ethereum_boost,ethereum_test)
 
 ```
 
-```{r ether_RMSE_table, message=FALSE, echo=FALSE, warning=FALSE}
-first_col= c("CART","Random Forest","Gradient Boosting")
-second_col= c(rmse_ethereum_CART, rmse_ether_RF, rmse_ether_Boost)
-df_ether_ = data.frame(first_col, second_col)
-knitr::kable(df_ether_,col.names = c("Model","RMSE"))
+
+```{r RMSE_table_ether, message=FALSE, echo=FALSE, warning=FALSE}
+first_col_= c("CART","Random Forest","Gradient Boosting")
+second_col_= c(rmse_ethereum_CART,rmse_RF, rmse_Boost)
+df_rmse__ = data.frame(first_col, second_col)
+knitr::kable(df_rmse__,col.names = c("Model","RMSE"), caption="Model performance with out-of-sample RMSEs (Ethereum)")%>% 
+    kable_classic_2(full_width=F)
 ```
+
+
+```{r bitcoin_ether, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+# select outcomes
+compare <- df %>% select(DATE,Bitcoin,Ethereum)
+# Bitcoin made first, drop na value for Bitcoin
+compare <- compare %>% drop_na(Bitcoin)
+# Fill na values existing in Ethereum
+compare[is.na(compare)]<-0
+view(compare)
+```
+
+```{r bitcoin_ether_price, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+
+ggplot(compare, aes(x = DATE)) + 
+  geom_line(aes(y = Bitcoin, color = "Bitcoin")) +
+  geom_line(aes(y = Ethereum, color = "Ethereum")) +
+  ylim(1,70000) +
+  labs(title = "Bitcoin (BTC) and Ethereum (ETH) Price Comparison", x = "Date", y = "Price") +
+  theme_economist_white(horizontal=FALSE, gray_bg=FALSE) + scale_colour_economist()
+
+ggsave("price_compare.png", width = 6, height = 4, dpi = 300)
+
+
+```
+
+```{r bitcoin_ether_volume, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+# select outcomes
+compare_vol <- yahoo_data %>% select(DATE,BTC.USD.Volume,ETH.USD.Volume)
+compare_vol <- compare_vol %>%rename(BTC_vol=BTC.USD.Volume,ETH_vol=ETH.USD.Volume)
+
+# Bitcoin made first, drop na value for Bitcoin
+compare_vol <- compare_vol %>% drop_na(BTC_vol)
+# Fill na values existing in Ethereum
+compare_vol[is.na(compare_vol)]<-0
+
+ggplot(compare_vol, aes(x = DATE)) + 
+  geom_line(aes(y = BTC_vol, color = "BTC_vol")) +
+  geom_line(aes(y = ETH_vol, color = "ETH_vol")) +
+  scale_y_continuous(limits = c(5, max(compare_vol$BTC_vol, compare_vol$ETH_vol, na.rm = TRUE) * 1.1)) +
+  labs(title = "Bitcoin (BTC) and Ethereum (ETH) Volume Comparison", x = "Date", y = "Volume") +
+  theme_economist_white(horizontal=FALSE, gray_bg=FALSE) + scale_colour_economist()
+
+ggsave("vol_compare.png", width = 6, height = 4, dpi = 300)
+
+```
+
 
 \newline
 \newline
 \newline
 \newline
+
 
 
 # Conclusion
@@ -625,13 +512,10 @@ chartSeries(df_oil,name="Crude Oil",theme = 'white',subset='2014::2023')
 chartSeries(df_gold,name="Gold",theme = 'white',subset='2014::2023')
 chartSeries(df_bitcoin,name="Bitcoin",theme = 'white',subset='2014::2023')
 chartSeries(df_ether,name="Ethereum",theme = 'white',subset='2017::2023')
-#chartSeries(df_ripple,name="Ripple(XRP)",theme = 'white',subset='2017::2023')
 plot(df_irx, main = '13 Week Treasury Bill')
 plot(df_tnx, main = 'Treasury Yield 10 Years')
 plot(df_vix, main="CBOE Volatility Index")
 plot(df_ovx,name="CBOE Crude Oil Volatility Index")
 chartSeries(df_sp500,name="S&P 500",theme = 'white',subset='2014::2023')
-chartSeries(df_dow30,name="Dow 30",theme = 'white',subset='2014::2023')
-chartSeries(df_nasdaq,name="Nasdaq",theme = 'white',subset='2014::2023')
 
 ```
