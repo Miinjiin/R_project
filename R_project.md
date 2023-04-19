@@ -155,7 +155,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2217.966
+2756.606
 </td>
 </tr>
 <tr>
@@ -163,7 +163,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1018.569
+1102.377
 </td>
 </tr>
 <tr>
@@ -171,7 +171,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1116.528
+1270.050
 </td>
 </tr>
 </tbody>
@@ -205,7 +205,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2217.966
+2756.606
 </td>
 </tr>
 <tr>
@@ -213,7 +213,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1018.569
+1102.377
 </td>
 </tr>
 <tr>
@@ -221,7 +221,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1116.528
+1270.050
 </td>
 </tr>
 </tbody>
