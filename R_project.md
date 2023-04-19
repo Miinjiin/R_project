@@ -125,7 +125,7 @@ encounters over-fitting problems.
 
 <img src="Plots/vol_compare.png" width="3000" />
 
-<img src="Plots/Sumstat.png" width="50%" height="50%" />
+<img src="Plots/Sumstat.png" width="80%" height="70%" />
 
 ## Bitcoin
 
@@ -155,7 +155,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2355.229
+2217.966
 </td>
 </tr>
 <tr>
@@ -163,7 +163,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1118.015
+1018.569
 </td>
 </tr>
 <tr>
@@ -171,7 +171,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1255.492
+1116.528
 </td>
 </tr>
 </tbody>
@@ -205,7 +205,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2355.229
+2217.966
 </td>
 </tr>
 <tr>
@@ -213,7 +213,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1118.015
+1018.569
 </td>
 </tr>
 <tr>
@@ -221,7 +221,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1255.492
+1116.528
 </td>
 </tr>
 </tbody>

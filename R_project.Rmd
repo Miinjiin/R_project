@@ -86,7 +86,7 @@ knitr::include_graphics("Plots/price_compare.png")
 knitr::include_graphics("Plots/vol_compare.png")
 ```
 
-```{r sum_stat,message=FALSE, echo=FALSE, out.width="50%",out.height="50%",warning=FALSE}
+```{r sum_stat,message=FALSE, echo=FALSE, out.width="80%",out.height="70%",warning=FALSE}
 # made from bitcoin_ether_volume below with ggplot
 knitr::include_graphics("Plots/Sumstat.png")
 ```
