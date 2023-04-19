@@ -121,461 +121,11 @@ encounters over-fitting problems.
 
 # Results
 
-<img src="price_compare.png" width="3000" />
+<img src="Plots/price_compare.png" width="3000" />
 
-<img src="vol_compare.png" width="3000" />
+<img src="Plots/vol_compare.png" width="3000" />
 
-<table>
-<caption>
-Summary Statistics
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-Variable
-</th>
-<th style="text-align:left;">
-N
-</th>
-<th style="text-align:left;">
-Mean
-</th>
-<th style="text-align:left;">
-Std. Dev.
-</th>
-<th style="text-align:left;">
-Min
-</th>
-<th style="text-align:left;">
-Pctl. 25
-</th>
-<th style="text-align:left;">
-Pctl. 75
-</th>
-<th style="text-align:left;">
-Max
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-DXY
-</td>
-<td style="text-align:left;">
-2304
-</td>
-<td style="text-align:left;">
-112
-</td>
-<td style="text-align:left;">
-7.3
-</td>
-<td style="text-align:left;">
-93
-</td>
-<td style="text-align:left;">
-110
-</td>
-<td style="text-align:left;">
-116
-</td>
-<td style="text-align:left;">
-128
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CDS
-</td>
-<td style="text-align:left;">
-1969
-</td>
-<td style="text-align:left;">
-11
-</td>
-<td style="text-align:left;">
-12
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:left;">
-5.5
-</td>
-<td style="text-align:left;">
-12
-</td>
-<td style="text-align:left;">
-86
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EMU
-</td>
-<td style="text-align:left;">
-3381
-</td>
-<td style="text-align:left;">
-70
-</td>
-<td style="text-align:left;">
-94
-</td>
-<td style="text-align:left;">
-4.8
-</td>
-<td style="text-align:left;">
-13
-</td>
-<td style="text-align:left;">
-91
-</td>
-<td style="text-align:left;">
-1230
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EPU
-</td>
-<td style="text-align:left;">
-3381
-</td>
-<td style="text-align:left;">
-123
-</td>
-<td style="text-align:left;">
-98
-</td>
-<td style="text-align:left;">
-3.3
-</td>
-<td style="text-align:left;">
-64
-</td>
-<td style="text-align:left;">
-144
-</td>
-<td style="text-align:left;">
-861
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Inf5y
-</td>
-<td style="text-align:left;">
-2315
-</td>
-<td style="text-align:left;">
-1.8
-</td>
-<td style="text-align:left;">
-0.54
-</td>
-<td style="text-align:left;">
-0.14
-</td>
-<td style="text-align:left;">
-1.5
-</td>
-<td style="text-align:left;">
-2.1
-</td>
-<td style="text-align:left;">
-3.6
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Disease
-</td>
-<td style="text-align:left;">
-3380
-</td>
-<td style="text-align:left;">
-5.8
-</td>
-<td style="text-align:left;">
-10
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:left;">
-8.4
-</td>
-<td style="text-align:left;">
-113
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Oil
-</td>
-<td style="text-align:left;">
-2332
-</td>
-<td style="text-align:left;">
-63
-</td>
-<td style="text-align:left;">
-21
-</td>
-<td style="text-align:left;">
--38
-</td>
-<td style="text-align:left;">
-48
-</td>
-<td style="text-align:left;">
-74
-</td>
-<td style="text-align:left;">
-124
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Gold
-</td>
-<td style="text-align:left;">
-2330
-</td>
-<td style="text-align:left;">
-1454
-</td>
-<td style="text-align:left;">
-273
-</td>
-<td style="text-align:left;">
-1051
-</td>
-<td style="text-align:left;">
-1240
-</td>
-<td style="text-align:left;">
-1753
-</td>
-<td style="text-align:left;">
-2052
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Bitcoin
-</td>
-<td style="text-align:left;">
-3123
-</td>
-<td style="text-align:left;">
-13175
-</td>
-<td style="text-align:left;">
-16045
-</td>
-<td style="text-align:left;">
-178
-</td>
-<td style="text-align:left;">
-715
-</td>
-<td style="text-align:left;">
-19048
-</td>
-<td style="text-align:left;">
-67567
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Ethereum
-</td>
-<td style="text-align:left;">
-1974
-</td>
-<td style="text-align:left;">
-1153
-</td>
-<td style="text-align:left;">
-1164
-</td>
-<td style="text-align:left;">
-84
-</td>
-<td style="text-align:left;">
-217
-</td>
-<td style="text-align:left;">
-1744
-</td>
-<td style="text-align:left;">
-4812
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-IRX
-</td>
-<td style="text-align:left;">
-2329
-</td>
-<td style="text-align:left;">
-0.95
-</td>
-<td style="text-align:left;">
-1.2
-</td>
-<td style="text-align:left;">
--0.1
-</td>
-<td style="text-align:left;">
-0.043
-</td>
-<td style="text-align:left;">
-1.7
-</td>
-<td style="text-align:left;">
-4.9
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TNX
-</td>
-<td style="text-align:left;">
-2329
-</td>
-<td style="text-align:left;">
-2.2
-</td>
-<td style="text-align:left;">
-0.75
-</td>
-<td style="text-align:left;">
-0.5
-</td>
-<td style="text-align:left;">
-1.7
-</td>
-<td style="text-align:left;">
-2.7
-</td>
-<td style="text-align:left;">
-4.2
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-VIX
-</td>
-<td style="text-align:left;">
-2331
-</td>
-<td style="text-align:left;">
-18
-</td>
-<td style="text-align:left;">
-7.5
-</td>
-<td style="text-align:left;">
-9.1
-</td>
-<td style="text-align:left;">
-13
-</td>
-<td style="text-align:left;">
-22
-</td>
-<td style="text-align:left;">
-83
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-OVX
-</td>
-<td style="text-align:left;">
-2331
-</td>
-<td style="text-align:left;">
-40
-</td>
-<td style="text-align:left;">
-20
-</td>
-<td style="text-align:left;">
-14
-</td>
-<td style="text-align:left;">
-29
-</td>
-<td style="text-align:left;">
-46
-</td>
-<td style="text-align:left;">
-325
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-SP500
-</td>
-<td style="text-align:left;">
-2331
-</td>
-<td style="text-align:left;">
-2897
-</td>
-<td style="text-align:left;">
-844
-</td>
-<td style="text-align:left;">
-1742
-</td>
-<td style="text-align:left;">
-2105
-</td>
-<td style="text-align:left;">
-3644
-</td>
-<td style="text-align:left;">
-4797
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Month
-</td>
-<td style="text-align:left;">
-3384
-</td>
-<td style="text-align:left;">
-6.4
-</td>
-<td style="text-align:left;">
-3.5
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:left;">
-9
-</td>
-<td style="text-align:left;">
-12
-</td>
-</tr>
-</tbody>
-</table>
+<img src="Plots/Sumstat.png" width="50%" height="50%" />
 
 ## Bitcoin
 
@@ -605,7 +155,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2129.979
+2355.229
 </td>
 </tr>
 <tr>
@@ -613,7 +163,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-914.620
+1118.015
 </td>
 </tr>
 <tr>
@@ -621,7 +171,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1146.466
+1255.492
 </td>
 </tr>
 </tbody>
@@ -655,7 +205,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2129.979
+2355.229
 </td>
 </tr>
 <tr>
@@ -663,7 +213,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-914.620
+1118.015
 </td>
 </tr>
 <tr>
@@ -671,7 +221,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1146.466
+1255.492
 </td>
 </tr>
 </tbody>

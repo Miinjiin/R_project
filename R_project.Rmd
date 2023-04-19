@@ -78,15 +78,18 @@ Gradient boosting is an ensemble method like random forests. However, here you r
 
 ```{r price,message=FALSE, echo=FALSE, warning=FALSE}
 # made from bitcoin_ether_price chunk with ggplot
-knitr::include_graphics("price_compare.png")
+knitr::include_graphics("Plots/price_compare.png")
 ```
 
 ```{r vol,message=FALSE, echo=FALSE, warning=FALSE}
 # made from bitcoin_ether_volume below with ggplot
-knitr::include_graphics("vol_compare.png")
+knitr::include_graphics("Plots/vol_compare.png")
 ```
 
-
+```{r sum_stat,message=FALSE, echo=FALSE, out.width="50%",out.height="50%",warning=FALSE}
+# made from bitcoin_ether_volume below with ggplot
+knitr::include_graphics("Plots/Sumstat.png")
+```
 
 ```{r get_yahoo_data,message=FALSE, echo=FALSE, warning=FALSE}
 
@@ -286,10 +289,9 @@ df$Month <- format(df$DATE, "%m")
 df$Month = as.numeric(as.character(df$Month)) 
 ```
 
-```{r sumstat,message=FALSE, echo=FALSE, warning=FALSE}
-# making sumtable with sumtable() and output=kable
-
-sumtable(df, out='kable')
+```{r sumstat,message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+# making sumtable with sumtable()
+sumtable(df)
 
 ```
 
@@ -465,7 +467,7 @@ ggplot(compare, aes(x = DATE)) +
   labs(title = "Bitcoin (BTC) and Ethereum (ETH) Price Comparison", x = "Date", y = "Price") +
   theme_economist_white(horizontal=FALSE, gray_bg=FALSE) + scale_colour_economist()
 
-ggsave("price_compare.png", width = 10, height = 5, dpi = 300)
+ggsave("Plots/price_compare.png", width = 10, height = 5, dpi = 300)
 
 
 ```
@@ -487,7 +489,7 @@ ggplot(compare_vol, aes(x = DATE)) +
   labs(title = "Bitcoin (BTC) and Ethereum (ETH) Volume Comparison", x = "Date", y = "Volume") +
   theme_economist_white(horizontal=FALSE, gray_bg=FALSE) + scale_colour_economist()
 
-ggsave("vol_compare.png", width = 10, height = 5, dpi = 300)
+ggsave("Plots/vol_compare.png", width = 10, height = 5, dpi = 300)
 
 ```
 
