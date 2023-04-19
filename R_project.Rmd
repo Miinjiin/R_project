@@ -289,9 +289,7 @@ df$Month = as.numeric(as.character(df$Month))
 ```{r sumstat,message=FALSE, echo=FALSE, warning=FALSE}
 # making sumtable with sumtable() and output=kable
 
-sumstat_df=sumtable(df, out='return')
-
-knitr::kable(sumstat_df)%>% kable_minimal() %>% kable_styling(full_width = FALSE, position="left", latex_options="scale_down")
+sumtable(df, out='kable')
 
 ```
 
@@ -499,7 +497,7 @@ ggsave("vol_compare.png", width = 10, height = 5, dpi = 300)
 
 
 # Appendix
-```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE, including=FALSE}
+```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
 chartSeries(df_oil,name="Crude Oil",theme = 'white',subset='2014::2023')
 chartSeries(df_gold,name="Gold",theme = 'white',subset='2014::2023')

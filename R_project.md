@@ -125,7 +125,10 @@ encounters over-fitting problems.
 
 <img src="vol_compare.png" width="3000" />
 
-<table class=" lightable-minimal table" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; ">
+<table>
+<caption>
+Summary Statistics
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -602,7 +605,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2715.845
+2129.979
 </td>
 </tr>
 <tr>
@@ -610,7 +613,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-881.991
+914.620
 </td>
 </tr>
 <tr>
@@ -618,7 +621,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1333.934
+1146.466
 </td>
 </tr>
 </tbody>
@@ -652,7 +655,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2715.845
+2129.979
 </td>
 </tr>
 <tr>
@@ -660,7 +663,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-881.991
+914.620
 </td>
 </tr>
 <tr>
@@ -668,7 +671,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1333.934
+1146.466
 </td>
 </tr>
 </tbody>
@@ -677,5 +680,3 @@ Gradient Boosting
 # Conclusion
 
 # Appendix
-
-![](R_project_files/figure-markdown_strict/timeseries_tables-1.png)![](R_project_files/figure-markdown_strict/timeseries_tables-2.png)![](R_project_files/figure-markdown_strict/timeseries_tables-3.png)![](R_project_files/figure-markdown_strict/timeseries_tables-4.png)![](R_project_files/figure-markdown_strict/timeseries_tables-5.png)![](R_project_files/figure-markdown_strict/timeseries_tables-6.png)![](R_project_files/figure-markdown_strict/timeseries_tables-7.png)![](R_project_files/figure-markdown_strict/timeseries_tables-8.png)![](R_project_files/figure-markdown_strict/timeseries_tables-9.png)
