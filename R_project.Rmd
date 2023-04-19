@@ -19,6 +19,7 @@ library('pdp')
 library('lattice')
 library('tidyr')
 library('ggthemes')
+library('kableExtra')
 library(ggplot2)
 library(foreach)
 library(tidyverse)
@@ -32,7 +33,6 @@ library(randomForest)
 library(gbm)
 library(pdp)
 library(scales)
-library(kableExtra)
 ```
 
 # Abstract
@@ -289,14 +289,17 @@ df$Month = as.numeric(as.character(df$Month))
 ```{r sumstat,message=FALSE, echo=FALSE, warning=FALSE}
 # making sumtable with sumtable() and output=kable
 
-sumtable(df, out='kable')%>%
-  kable_classic_2(full_width=F)
+sumstat_df=sumtable(df, out='return')
+
+knitr::kable(sumstat_df)%>% kable_minimal() %>% kable_styling(full_width = FALSE, position="left", latex_options="scale_down")
+
+
 
 ```
 
 ## Bitcoin 
 
-```{r bitcoin_CART, message=FALSE, echo=FALSE, warning=FALSE}
+```{r bitcoin_CART, message=FALSE, echo=FALSE, warning=FALSE, including=FALSE}
 
 bitcoin <- df %>%
   select(DATE, Month, Bitcoin, Oil, Gold, IRX, TNX, VIX, OVX, SP500, DXY, CDS, EMU, EPU, Inf5y, Disease)
@@ -340,13 +343,13 @@ varImpPlot(bitcoin_RF, bg = "skyblue", cex=1, pch=22)
 
 
 ```{r RF_dependence_plot, message=FALSE, echo=FALSE, warning=FALSE}
-op <- par(mfrow=c(1, 5))
+op <- par(mfrow=c(2, 3))
 partialPlot(bitcoin_RF, bitcoin_test, 'SP500', las=1)
 partialPlot(bitcoin_RF, bitcoin_test, 'Inf5y', las=1)
 partialPlot(bitcoin_RF, bitcoin_test, 'Gold', las=1)
 partialPlot(bitcoin_RF, bitcoin_test, 'IRX', las=1)
 partialPlot(bitcoin_RF, bitcoin_test, 'Disease', las=1)
-par(op)
+par(op, pin = c(10, 20))
 ```
 
 
@@ -364,19 +367,16 @@ rmse_Boost=rmse(bitcoin_boost,bitcoin_test)
 first_col= c("CART","Random Forest","Gradient Boosting")
 second_col= c(rmse_bitcoin_CART,rmse_RF, rmse_Boost)
 df_rmse_ = data.frame(first_col, second_col)
-knitr::kable(df_rmse_,col.names = c("Model","RMSE"), caption="Model performance with out-of-sample RMSEs (Bitcoin)")%>% 
-    kable_classic_2(full_width=F)
+knitr::kable(df_rmse_,col.names = c("Model","RMSE"), caption="Model performance with out-of-sample RMSEs (Bitcoin)")%>% kable_minimal() %>% kable_styling(full_width = FALSE, position="left", latex_options="scale_down")
+
+  
+
 ```
 
-\newline
-\newline
-\newline
-\newline
 
+## Ethereum
 
-## Ethereum 
-
-```{r ethereum_CART, message=FALSE, echo=FALSE, warning=FALSE}
+```{r ethereum_CART, message=FALSE, echo=FALSE, warning=FALSE, including=FALSE}
 
 ethereum <- df %>%
   select(DATE, Month, Ethereum, Oil, Gold, IRX, TNX, VIX, OVX, SP500, DXY, CDS, EMU, EPU, Inf5y, Disease)
@@ -420,13 +420,13 @@ varImpPlot(ethereum_RF, bg = "skyblue", cex=1, pch=22)
 
 
 ```{r RF_dependence_plot_ether, message=FALSE, echo=FALSE, warning=FALSE}
-op_ether <- par(mfrow=c(1, 5))
+op_ether <- par(mfrow=c(2, 3))
 partialPlot(ethereum_RF, ethereum_test, 'SP500', las=1)
 partialPlot(ethereum_RF, ethereum_test, 'Inf5y', las=1)
 partialPlot(ethereum_RF, ethereum_test, 'Oil', las=1)
 partialPlot(ethereum_RF, ethereum_test, 'IRX', las=1)
 partialPlot(ethereum_RF, ethereum_test, 'CDS', las=1)
-par(op_ether)
+par(op_ether,pin = c(10, 20))
 ```
 
 
@@ -444,8 +444,9 @@ rmse_Boost=rmse(ethereum_boost,ethereum_test)
 first_col_= c("CART","Random Forest","Gradient Boosting")
 second_col_= c(rmse_ethereum_CART,rmse_RF, rmse_Boost)
 df_rmse__ = data.frame(first_col, second_col)
-knitr::kable(df_rmse__,col.names = c("Model","RMSE"), caption="Model performance with out-of-sample RMSEs (Ethereum)")%>% 
-    kable_classic_2(full_width=F)
+knitr::kable(df_rmse__,col.names = c("Model","RMSE"), caption="Model performance with out-of-sample RMSEs (Ethereum)")%>% kable_minimal() %>% kable_styling(full_width = FALSE, position="left", latex_options="scale_down")
+  
+  
 ```
 
 
@@ -468,7 +469,7 @@ ggplot(compare, aes(x = DATE)) +
   labs(title = "Bitcoin (BTC) and Ethereum (ETH) Price Comparison", x = "Date", y = "Price") +
   theme_economist_white(horizontal=FALSE, gray_bg=FALSE) + scale_colour_economist()
 
-ggsave("price_compare.png", width = 6, height = 4, dpi = 300)
+ggsave("price_compare.png", width = 10, height = 5, dpi = 300)
 
 
 ```
@@ -490,15 +491,9 @@ ggplot(compare_vol, aes(x = DATE)) +
   labs(title = "Bitcoin (BTC) and Ethereum (ETH) Volume Comparison", x = "Date", y = "Volume") +
   theme_economist_white(horizontal=FALSE, gray_bg=FALSE) + scale_colour_economist()
 
-ggsave("vol_compare.png", width = 6, height = 4, dpi = 300)
+ggsave("vol_compare.png", width = 10, height = 5, dpi = 300)
 
 ```
-
-
-\newline
-\newline
-\newline
-\newline
 
 
 
@@ -506,7 +501,7 @@ ggsave("vol_compare.png", width = 6, height = 4, dpi = 300)
 
 
 # Appendix
-```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE}
+```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE, including=FALSE}
 
 chartSeries(df_oil,name="Crude Oil",theme = 'white',subset='2014::2023')
 chartSeries(df_gold,name="Gold",theme = 'white',subset='2014::2023')

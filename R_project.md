@@ -121,14 +121,11 @@ encounters over-fitting problems.
 
 # Results
 
-<img src="price_compare.png" width="1800" />
+<img src="price_compare.png" width="3000" />
 
-<img src="vol_compare.png" width="1800" />
+<img src="vol_compare.png" width="3000" />
 
-<table class=" lightable-classic-2" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
-<caption>
-Summary Statistics
-</caption>
+<table class=" lightable-minimal table" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; ">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -587,7 +584,7 @@ Month
 
 ![](R_project_files/figure-markdown_strict/RF_dependence_plot-1.png)
 
-<table class=" lightable-classic-2" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<table class=" lightable-minimal table" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; ">
 <caption>
 Model performance with out-of-sample RMSEs (Bitcoin)
 </caption>
@@ -607,7 +604,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2401.052
+2293.737
 </td>
 </tr>
 <tr>
@@ -615,7 +612,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1042.764
+1039.195
 </td>
 </tr>
 <tr>
@@ -623,11 +620,12 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1241.433
+1282.207
 </td>
 </tr>
 </tbody>
 </table>
+
 ## Ethereum
 
     ## [1] 1023
@@ -638,7 +636,7 @@ Gradient Boosting
 
 ![](R_project_files/figure-markdown_strict/RF_dependence_plot_ether-1.png)
 
-<table class=" lightable-classic-2" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<table class=" lightable-minimal table" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; ">
 <caption>
 Model performance with out-of-sample RMSEs (Ethereum)
 </caption>
@@ -658,7 +656,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2401.052
+2293.737
 </td>
 </tr>
 <tr>
@@ -666,7 +664,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1042.764
+1039.195
 </td>
 </tr>
 <tr>
@@ -674,11 +672,12 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1241.433
+1282.207
 </td>
 </tr>
 </tbody>
 </table>
+
 # Conclusion
 
 # Appendix
