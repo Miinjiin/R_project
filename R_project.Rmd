@@ -20,6 +20,8 @@ library('lattice')
 library('tidyr')
 library('ggthemes')
 library('kableExtra')
+library('scales')
+library(corrplot)
 library(ggplot2)
 library(foreach)
 library(tidyverse)
@@ -86,7 +88,7 @@ knitr::include_graphics("Plots/price_compare.png")
 knitr::include_graphics("Plots/vol_compare.png")
 ```
 
-```{r sum_stat,message=FALSE, echo=FALSE, out.width="80%",out.height="70%",warning=FALSE}
+```{r sum_stat,message=FALSE, echo=FALSE, out.width="50%",out.height="50%",warning=FALSE}
 # made from bitcoin_ether_volume below with ggplot
 knitr::include_graphics("Plots/Sumstat.png")
 ```
@@ -459,13 +461,31 @@ view(compare)
 ```
 
 ```{r bitcoin_ether_price, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+# Function factory for secondary axis transforms
+train_sec <- function(primary, secondary, na.rm = TRUE) {
+  from <- range(secondary, na.rm = na.rm)
+  to   <- range(primary, na.rm = na.rm)
+  # Forward transform for the data
+  forward <- function(x) {
+    rescale(x, from = from, to = to)
+  }
+  # Reverse transform for the secondary axis
+  reverse <- function(x) {
+    rescale(x, from = to, to = from)
+  }
+  list(fwd = forward, rev = reverse)
+}
+
+sec <- with(compare, train_sec(Bitcoin,Ethereum))
+
 
 ggplot(compare, aes(x = DATE)) + 
   geom_line(aes(y = Bitcoin, color = "Bitcoin")) +
-  geom_line(aes(y = Ethereum, color = "Ethereum")) +
-  ylim(1,70000) +
+  geom_line(aes(y = sec$fwd(Ethereum), color = "Ethereum")) +
+  scale_y_continuous(sec.axis = sec_axis(~sec$rev(.), name = "Ethereum"))+
   labs(title = "Bitcoin (BTC) and Ethereum (ETH) Price Comparison", x = "Date", y = "Price") +
-  theme_economist_white(horizontal=FALSE, gray_bg=FALSE) + scale_colour_economist()
+  theme_economist_white(horizontal=FALSE, gray_bg=FALSE)
+
 
 ggsave("Plots/price_compare.png", width = 10, height = 5, dpi = 300)
 
@@ -492,6 +512,83 @@ ggplot(compare_vol, aes(x = DATE)) +
 ggsave("Plots/vol_compare.png", width = 10, height = 5, dpi = 300)
 
 ```
+
+
+
+
+
+# K-means clustering
+```{r corr,message=FALSE, echo=FALSE, warning=FALSE}
+
+cluster_df <- df%>%select(Month, Oil, Gold, IRX, TNX, VIX, OVX, SP500, DXY, CDS, EMU, EPU, Inf5y, Disease)
+cluster_df <- na.omit(cluster_df)
+rownames(cluster_df) <- NULL
+
+# center and scale
+X=scale(cluster_df, center=TRUE, scale=TRUE)
+# Extract the centers and scales from the rescaled data (which are named attributes)
+mu = attr(X,"scaled:center")
+sigma = attr(X,"scaled:scale")
+
+corrplot::corrplot(cor(X), method='color', addCoef.col=0.4, number.cex = 0.4, tl.cex=0.7)
+
+```
+
+```{r corr_imp,message=FALSE, echo=FALSE, warning=FALSE}
+
+corr_highest <- function(){
+  corr = cor(X)
+  # drop duplicates, and correlation 1
+  corr[lower.tri(corr,diag=TRUE)] <- NA 
+  corr[corr == 1] <- NA 
+  # removing na values and making dataframe
+  corr = as.data.frame(as.table(corr))
+  corr = na.omit(corr) 
+  # select significant values (more than 0.6)
+  corr = subset(corr, abs(Freq) > 0.6) 
+  # sort highest corr
+  corr = corr[order(-abs(corr$Freq)),] 
+  mtx_corr = reshape2::acast(corr, Var1~Var2, value.var="Freq")
+  corrplot(mtx_corr, is.corr=FALSE, na.label=" ", tl.cex=0.7, col = colorRampPalette(c("#FFFFCC","#C7E9B4","#7FCDBB","#40B6C4","#2C7FB8" ,"#253494"))(100))
+  knitr::kable(corr,row.names = FALSE, caption="Highest correlation among categories") %>% kable_minimal()
+}
+corr_highest()
+
+```
+
+```{r cluster, message=FALSE, echo=FALSE, warning=FALSE}
+
+# use the code we learned during the class
+k_grid = seq(2, 30, by=1)
+SSE_grid = foreach(k = k_grid, .combine='c') %do% {
+  cluster_k = kmeans(X, k, nstart=25)
+  cluster_k$tot.withinss
+}
+# plotting elbow plot to see 
+plot(k_grid, SSE_grid, main="Elbow Plot") 
+
+```
+
+Will use 6 for k, the number of clusters. 
+
+```{r kcluster, message=FALSE, echo=FALSE, warning=FALSE, including=FALSE}
+# Run k-means with 6 clusters and 25 starts
+clu= kmeans(X, centers=6, nstart=25)
+# make an empty list to store kable output
+kable_output <- list()
+# loop through each plot and sort by the first column in ascending order, then print the top 5 rows
+for (i in 0:5) {
+  plot_name <- paste0("cluster", i+1)
+  plot <- data.frame(clu$center[i+1,]*sigma + mu)
+  plot_sorted_top5 <- plot %>% arrange(desc(plot[1])) %>% head(5)
+  names(plot_sorted_top5)[1] <- plot_name
+  kable_output[[i+1]] <- plot_sorted_top5
+}
+# print the kable output for all 10 plots
+knitr::kable(kable_output)%>% kable_minimal() %>% kable_styling(full_width = FALSE, position="left", latex_options="scale_down")
+```
+
+
 
 
 

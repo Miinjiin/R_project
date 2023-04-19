@@ -125,7 +125,7 @@ encounters over-fitting problems.
 
 <img src="Plots/vol_compare.png" width="3000" />
 
-<img src="Plots/Sumstat.png" width="80%" height="70%" />
+<img src="Plots/Sumstat.png" width="50%" height="50%" />
 
 ## Bitcoin
 
@@ -155,7 +155,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2756.606
+2352.9356
 </td>
 </tr>
 <tr>
@@ -163,7 +163,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1102.377
+990.5875
 </td>
 </tr>
 <tr>
@@ -171,7 +171,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1270.050
+1170.1042
 </td>
 </tr>
 </tbody>
@@ -205,7 +205,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2756.606
+2352.9356
 </td>
 </tr>
 <tr>
@@ -213,7 +213,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1102.377
+990.5875
 </td>
 </tr>
 <tr>
@@ -221,7 +221,517 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1270.050
+1170.1042
+</td>
+</tr>
+</tbody>
+</table>
+
+# K-means clustering
+
+![](R_project_files/figure-markdown_strict/corr-1.png)
+
+![](R_project_files/figure-markdown_strict/corr_imp-1.png)
+<table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>
+Highest correlation among categories
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Var1
+</th>
+<th style="text-align:left;">
+Var2
+</th>
+<th style="text-align:right;">
+Freq
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:right;">
+0.8705935
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VIX
+</td>
+<td style="text-align:left;">
+Disease
+</td>
+<td style="text-align:right;">
+0.7636956
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oil
+</td>
+<td style="text-align:left;">
+Inf5y
+</td>
+<td style="text-align:right;">
+0.7431183
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:left;">
+Inf5y
+</td>
+<td style="text-align:right;">
+0.7262370
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:left;">
+Disease
+</td>
+<td style="text-align:right;">
+0.7172680
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VIX
+</td>
+<td style="text-align:left;">
+OVX
+</td>
+<td style="text-align:right;">
+0.7117934
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IRX
+</td>
+<td style="text-align:left;">
+TNX
+</td>
+<td style="text-align:right;">
+0.6896120
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:left;">
+Disease
+</td>
+<td style="text-align:right;">
+0.6705888
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:left;">
+Disease
+</td>
+<td style="text-align:right;">
+0.6457534
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VIX
+</td>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:right;">
+0.6273703
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+0.6270346
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+0.6234803
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VIX
+</td>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+0.6056454
+</td>
+</tr>
+</tbody>
+</table>
+
+![](R_project_files/figure-markdown_strict/cluster-1.png)
+
+Will use 6 for k, the number of clusters.
+
+<table class="kable_wrapper lightable-minimal table" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; ">
+<tbody>
+<tr>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+cluster1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:right;">
+1926.08094
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:right;">
+1268.64375
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+95.39114
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oil
+</td>
+<td style="text-align:right;">
+94.16828
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+66.23844
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+cluster2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:right;">
+4016.2158
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:right;">
+1897.4271
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:right;">
+158.2080
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+153.9675
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+120.2058
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+cluster3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:right;">
+2454.34404
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:right;">
+1263.72872
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+112.45689
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+84.70150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oil
+</td>
+<td style="text-align:right;">
+52.93657
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+cluster4
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:right;">
+3425.7795
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:right;">
+1830.5749
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+253.4530
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:right;">
+135.4127
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+115.6980
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+cluster5
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:right;">
+4165.98043
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:right;">
+1790.95124
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+126.51989
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+120.01837
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:right;">
+97.30648
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+cluster6
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:right;">
+2716.0546
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:right;">
+1658.1686
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+489.8274
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:right;">
+364.0126
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+OVX
+</td>
+<td style="text-align:right;">
+148.6829
+</td>
+</tr>
+</tbody>
+</table>
 </td>
 </tr>
 </tbody>
