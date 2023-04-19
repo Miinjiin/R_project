@@ -293,13 +293,11 @@ sumstat_df=sumtable(df, out='return')
 
 knitr::kable(sumstat_df)%>% kable_minimal() %>% kable_styling(full_width = FALSE, position="left", latex_options="scale_down")
 
-
-
 ```
 
 ## Bitcoin 
 
-```{r bitcoin_CART, message=FALSE, echo=FALSE, warning=FALSE, including=FALSE}
+```{r bitcoin_CART, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
 bitcoin <- df %>%
   select(DATE, Month, Bitcoin, Oil, Gold, IRX, TNX, VIX, OVX, SP500, DXY, CDS, EMU, EPU, Inf5y, Disease)
@@ -376,7 +374,7 @@ knitr::kable(df_rmse_,col.names = c("Model","RMSE"), caption="Model performance 
 
 ## Ethereum
 
-```{r ethereum_CART, message=FALSE, echo=FALSE, warning=FALSE, including=FALSE}
+```{r ethereum_CART, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
 ethereum <- df %>%
   select(DATE, Month, Ethereum, Oil, Gold, IRX, TNX, VIX, OVX, SP500, DXY, CDS, EMU, EPU, Inf5y, Disease)

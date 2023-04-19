@@ -576,8 +576,6 @@ Month
 
 ## Bitcoin
 
-    ## [1] 1723
-
 ### Random Forest
 
 ![](R_project_files/figure-markdown_strict/bitcoin_RF,%20-1.png)
@@ -604,7 +602,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2293.737
+2715.845
 </td>
 </tr>
 <tr>
@@ -612,7 +610,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1039.195
+881.991
 </td>
 </tr>
 <tr>
@@ -620,15 +618,13 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1282.207
+1333.934
 </td>
 </tr>
 </tbody>
 </table>
 
 ## Ethereum
-
-    ## [1] 1023
 
 ### Random Forest
 
@@ -656,7 +652,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2293.737
+2715.845
 </td>
 </tr>
 <tr>
@@ -664,7 +660,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1039.195
+881.991
 </td>
 </tr>
 <tr>
@@ -672,7 +668,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1282.207
+1333.934
 </td>
 </tr>
 </tbody>
