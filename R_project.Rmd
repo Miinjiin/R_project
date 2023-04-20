@@ -608,4 +608,12 @@ plot(df_vix, main="CBOE Volatility Index")
 plot(df_ovx,name="CBOE Crude Oil Volatility Index")
 chartSeries(df_sp500,name="S&P 500",theme = 'white',subset='2014::2023')
 
+asset_comp <- read.csv('Data/asset_market_cap.csv') # comparison of market cap of diff asset classes
+
+ggplot(asset_comparison, aes(x = Name, y = Market_Cap)) +
+  geom_col() +
+  coord_flip()
+
+
+
 ```
