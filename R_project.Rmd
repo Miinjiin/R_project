@@ -78,12 +78,12 @@ Gradient boosting is an ensemble method like random forests. However, here you r
 
 # Results
 
-```{r price,message=FALSE, echo=FALSE, warning=FALSE}
+```{r price,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE}
 # made from bitcoin_ether_price chunk with ggplot
 knitr::include_graphics("Plots/price_compare.png")
 ```
 
-```{r vol,message=FALSE, echo=FALSE, warning=FALSE}
+```{r vol,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE}
 # made from bitcoin_ether_volume below with ggplot
 knitr::include_graphics("Plots/vol_compare.png")
 ```
@@ -299,6 +299,12 @@ sumtable(df)
 
 ## Bitcoin 
 
+We used CART, Random Forest, and Gradient Boosted trees model and compared out-of-sample RMSEs, and we could check that the Random Forest is the best performance on the testing data.
+\newline
+`Bitcoin` is the target variable, and the rest of the variables, excluding the `DATE` variable, are used as predictors.
+\newline
+We used the randomForest function to fit a model and used the VarImpPlot function to display the variables which highly contribute to the model. 
+
 ```{r bitcoin_CART, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
 bitcoin <- df %>%
@@ -328,8 +334,8 @@ rmse_bitcoin_CART=rmse(bitcoin_CART,bitcoin_test)
 ```
 
 
-
 ### Random Forest
+
 ```{r bitcoin_RF, , message=FALSE, echo=FALSE, warning=FALSE}
 
 bitcoin_RF=randomForest(Bitcoin ~ . -DATE, data=bitcoin_train,  important=TRUE)
@@ -341,6 +347,9 @@ varImpPlot(bitcoin_RF, bg = "skyblue", cex=1, pch=22)
 
 ```
 
+We could check `SP500`,`Inf5y`,`Gold`,`IRX`,`Disease` are top 5 important variables for bitcoin. 
+
+Below is the partial dependence plots to isolate the partial effect of specific features on the outcome. Partial dependence plot is a method used to analyze the relationship between the target variable (dependent variable) and a specific predictor variable while holding all other predictors constant.
 
 ```{r RF_dependence_plot, message=FALSE, echo=FALSE, warning=FALSE}
 op <- par(mfrow=c(2, 3))
@@ -352,7 +361,7 @@ partialPlot(bitcoin_RF, bitcoin_test, 'Disease', las=1)
 par(op, pin = c(10, 20))
 ```
 
-
+All variables, except for `IRX`, shows an increasing dependence plot. We can interpret `SP500`, `Inf5y`,`Gold`,`Disease` features have a positive effect on predicted outcome, and `IRX` has a negative effect on predicted outcome. 
 
 ``` {r bitcoin_gradient, message=FALSE, echo=FALSE, warning=FALSE}
 # fit a tree for gradient boosted trees
@@ -375,6 +384,12 @@ knitr::kable(df_rmse_,col.names = c("Model","RMSE"), caption="Model performance 
 
 
 ## Ethereum
+
+Same as Bitcoin, to predict Ethereum, we used CART, Random Forest, and Gradient Boosted trees model and compared out-of-sample RMSEs, and we could check that the Random Forest is the best performance on the testing data.
+\newline
+`Ethereum` is the target variable, and the rest of the variables, excluding the `DATE` variable, are used as predictors.
+\newline
+We used the randomForest function to fit a model and used the VarImpPlot function to display the variables which highly contribute to the model.
 
 ```{r ethereum_CART, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
@@ -418,6 +433,9 @@ varImpPlot(ethereum_RF, bg = "skyblue", cex=1, pch=22)
 
 ```
 
+We could check `SP500`,`Inf5y`,`Oil`,`IRX`,`CDS` are top 5 important variables for ethereum. `SP500` and `Inf5y` seem to have the highest importance in both bitcoin and ethereum, but it is an interesting result that there is a difference that gold has a great influence on bitcoin and oil has a great influence on ethereum.
+\newline
+Below is the partial dependence plots to isolate the partial effect of specific features on the outcome.
 
 ```{r RF_dependence_plot_ether, message=FALSE, echo=FALSE, warning=FALSE}
 op_ether <- par(mfrow=c(2, 3))
@@ -429,7 +447,7 @@ partialPlot(ethereum_RF, ethereum_test, 'CDS', las=1)
 par(op_ether,pin = c(10, 20))
 ```
 
-
+All variables, except for `IRX`, shows an increasing dependence plot. We can interpret `SP500`, `Inf5y`,`Gold`,`Disease` features have a positive effect on predicted outcome, and `IRX` has a negative effect on predicted outcome. 
 
 ``` {r ethereum_gradient, message=FALSE, echo=FALSE, warning=FALSE}
 # fit a tree for gradient boosted trees
@@ -507,7 +525,7 @@ ggplot(compare_vol, aes(x = DATE)) +
   geom_line(aes(y = ETH_vol, color = "ETH_vol")) +
   scale_y_continuous(limits = c(5, max(compare_vol$BTC_vol, compare_vol$ETH_vol, na.rm = TRUE) * 1.1)) +
   labs(title = "Bitcoin (BTC) and Ethereum (ETH) Volume Comparison", x = "Date", y = "Volume") +
-  theme_economist_white(horizontal=FALSE, gray_bg=FALSE) + scale_colour_economist()
+  theme_economist_white(horizontal=FALSE, gray_bg=FALSE) 
 
 ggsave("Plots/vol_compare.png", width = 10, height = 5, dpi = 300)
 
@@ -515,9 +533,13 @@ ggsave("Plots/vol_compare.png", width = 10, height = 5, dpi = 300)
 
 
 
+### Correlation Plots
 
+For a deeper understanding of our paper, we will analyze the relationship with a correlation plot between predictors, which are macroeconomic and market performance factors. We know that correlation plot only measures the strength and direction of linear relationships between variables, but see correlation between predictors may provide some insights. 
+\newline
 
-# K-means clustering
+Below is the correlation plot for every factors we added, you can check there's some stronger correlations, represented with darker colors. 
+
 ```{r corr,message=FALSE, echo=FALSE, warning=FALSE}
 
 cluster_df <- df%>%select(Month, Oil, Gold, IRX, TNX, VIX, OVX, SP500, DXY, CDS, EMU, EPU, Inf5y, Disease)
@@ -534,6 +556,7 @@ corrplot::corrplot(cor(X), method='color', addCoef.col=0.4, number.cex = 0.4, tl
 
 ```
 
+We decided to investigate the strong correlations with coefficients above 0.60. 
 ```{r corr_imp,message=FALSE, echo=FALSE, warning=FALSE}
 
 corr_highest <- function(){
@@ -550,11 +573,20 @@ corr_highest <- function(){
   corr = corr[order(-abs(corr$Freq)),] 
   mtx_corr = reshape2::acast(corr, Var1~Var2, value.var="Freq")
   corrplot(mtx_corr, is.corr=FALSE, na.label=" ", tl.cex=0.7, col = colorRampPalette(c("#FFFFCC","#C7E9B4","#7FCDBB","#40B6C4","#2C7FB8" ,"#253494"))(100))
-  knitr::kable(corr,row.names = FALSE, caption="Highest correlation among categories") %>% kable_minimal()
+  knitr::kable(corr,row.names = FALSE, caption="Highest correlation among factors") %>% kable_minimal()
 }
 corr_highest()
 
 ```
+
+Result shows `Gold` and `SP500` shows pretty strong correlation, 0.87. The next highest correlation is `VIX` and `Disease`.
+
+(I think we should find some meaningful correlation here for our analysis)
+
+
+## K-means clustering
+
+We did supervised learning method, Random Forest. Now we will try an unsupervised learning, K-means clustering method, which can be used to identify clusters of similar factors. First, will start from choosing optimal K, the amount of clusters. Below is Elbow plot. Elbow plot used to determine the optimal number of clustering. The plot displays within-cluster sum of squares(WSS) as a function of the number of clusters.
 
 ```{r cluster, message=FALSE, echo=FALSE, warning=FALSE}
 
@@ -610,7 +642,7 @@ chartSeries(df_sp500,name="S&P 500",theme = 'white',subset='2014::2023')
 
 asset_comp <- read.csv('Data/asset_market_cap.csv') # comparison of market cap of diff asset classes
 
-ggplot(asset_comparison, aes(x = Name, y = Market_Cap)) +
+ggplot(asset_comp, aes(x = Name, y = Market_Cap)) +
   geom_col() +
   coord_flip()
 

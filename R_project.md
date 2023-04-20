@@ -121,19 +121,41 @@ encounters over-fitting problems.
 
 # Results
 
-<img src="Plots/price_compare.png" width="3000" />
+<img src="Plots/price_compare.png" width="75%" height="50%" />
 
-<img src="Plots/vol_compare.png" width="3000" />
+<img src="Plots/vol_compare.png" width="75%" height="50%" />
 
 <img src="Plots/Sumstat.png" width="50%" height="50%" />
 
 ## Bitcoin
 
+We used CART, Random Forest, and Gradient Boosted trees model and
+compared out-of-sample RMSEs, and we could check that the Random Forest
+is the best performance on the testing data. `Bitcoin` is the target
+variable, and the rest of the variables, excluding the `DATE` variable,
+are used as predictors. We used the randomForest function to fit a model
+and used the VarImpPlot function to display the variables which highly
+contribute to the model.
+
 ### Random Forest
 
 ![](R_project_files/figure-markdown_strict/bitcoin_RF,%20-1.png)
 
+We could check `SP500`,`Inf5y`,`Gold`,`IRX`,`Disease` are top 5
+important variables for bitcoin.
+
+Below is the partial dependence plots to isolate the partial effect of
+specific features on the outcome. Partial dependence plot is a method
+used to analyze the relationship between the target variable (dependent
+variable) and a specific predictor variable while holding all other
+predictors constant.
+
 ![](R_project_files/figure-markdown_strict/RF_dependence_plot-1.png)
+
+All variables, except for `IRX`, shows an increasing dependence plot. We
+can interpret `SP500`, `Inf5y`,`Gold`,`Disease` features have a positive
+effect on predicted outcome, and `IRX` has a negative effect on
+predicted outcome.
 
 <table class=" lightable-minimal table" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; ">
 <caption>
@@ -155,7 +177,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2352.9356
+2427.7366
 </td>
 </tr>
 <tr>
@@ -163,7 +185,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-990.5875
+901.2485
 </td>
 </tr>
 <tr>
@@ -171,7 +193,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1170.1042
+1312.2507
 </td>
 </tr>
 </tbody>
@@ -179,11 +201,32 @@ Gradient Boosting
 
 ## Ethereum
 
+Same as Bitcoin, to predict Ethereum, we used CART, Random Forest, and
+Gradient Boosted trees model and compared out-of-sample RMSEs, and we
+could check that the Random Forest is the best performance on the
+testing data. `Ethereum` is the target variable, and the rest of the
+variables, excluding the `DATE` variable, are used as predictors. We
+used the randomForest function to fit a model and used the VarImpPlot
+function to display the variables which highly contribute to the model.
+
 ### Random Forest
 
 ![](R_project_files/figure-markdown_strict/ethereum_RF,%20-1.png)
 
+We could check `SP500`,`Inf5y`,`Oil`,`IRX`,`CDS` are top 5 important
+variables for ethereum. `SP500` and `Inf5y` seem to have the highest
+importance in both bitcoin and ethereum, but it is an interesting result
+that there is a difference that gold has a great influence on bitcoin
+and oil has a great influence on ethereum. Below is the partial
+dependence plots to isolate the partial effect of specific features on
+the outcome.
+
 ![](R_project_files/figure-markdown_strict/RF_dependence_plot_ether-1.png)
+
+All variables, except for `IRX`, shows an increasing dependence plot. We
+can interpret `SP500`, `Inf5y`,`Gold`,`Disease` features have a positive
+effect on predicted outcome, and `IRX` has a negative effect on
+predicted outcome.
 
 <table class=" lightable-minimal table" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto; width: auto !important; ">
 <caption>
@@ -205,7 +248,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2352.9356
+2427.7366
 </td>
 </tr>
 <tr>
@@ -213,7 +256,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-990.5875
+901.2485
 </td>
 </tr>
 <tr>
@@ -221,20 +264,31 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1170.1042
+1312.2507
 </td>
 </tr>
 </tbody>
 </table>
 
-# K-means clustering
+### Correlation Plots
+
+For a deeper understanding of our paper, we will analyze the
+relationship with a correlation plot between predictors, which are
+macroeconomic and market performance factors. We know that correlation
+plot only measures the strength and direction of linear relationships
+between variables, but see correlation between predictors may provide
+some insights.
+
+Below is the correlation plot for every factors we added, you can check
+there’s some stronger correlations, represented with darker colors.
 
 ![](R_project_files/figure-markdown_strict/corr-1.png)
 
-![](R_project_files/figure-markdown_strict/corr_imp-1.png)
+We decided to investigate the strong correlations with coefficients
+above 0.60. ![](R_project_files/figure-markdown_strict/corr_imp-1.png)
 <table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
 <caption>
-Highest correlation among categories
+Highest correlation among factors
 </caption>
 <thead>
 <tr>
@@ -396,6 +450,22 @@ EPU
 </tbody>
 </table>
 
+Result shows `Gold` and `SP500` shows pretty strong correlation, 0.87.
+The next highest correlation is `VIX` and `Disease`.
+
+(I think we should find some meaningful correlation here for our
+analysis)
+
+## K-means clustering
+
+We did supervised learning method, Random Forest. Now we will try an
+unsupervised learning, K-means clustering method, which can be used to
+identify clusters of similar factors. First, will start from choosing
+optimal K, the amount of clusters. Below is Elbow plot. Elbow plot used
+to determine the optimal number of clustering. The plot displays
+within-cluster sum of squares(WSS) as a function of the number of
+clusters.
+
 ![](R_project_files/figure-markdown_strict/cluster-1.png)
 
 Will use 6 for k, the number of clusters.
@@ -475,7 +545,7 @@ cluster2
 SP500
 </td>
 <td style="text-align:right;">
-4016.2158
+3425.7795
 </td>
 </tr>
 <tr>
@@ -483,15 +553,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1897.4271
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EMU
-</td>
-<td style="text-align:right;">
-158.2080
+1830.5749
 </td>
 </tr>
 <tr>
@@ -499,7 +561,15 @@ EMU
 EPU
 </td>
 <td style="text-align:right;">
-153.9675
+253.4530
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:right;">
+135.4127
 </td>
 </tr>
 <tr>
@@ -507,7 +577,7 @@ EPU
 DXY
 </td>
 <td style="text-align:right;">
-120.2058
+115.6980
 </td>
 </tr>
 </tbody>
@@ -521,6 +591,61 @@ DXY
 </th>
 <th style="text-align:right;">
 cluster3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:right;">
+4165.98043
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:right;">
+1790.95124
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+126.51989
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+120.01837
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:right;">
+97.30648
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+cluster4
 </th>
 </tr>
 </thead>
@@ -575,61 +700,6 @@ Oil
 <th style="text-align:left;">
 </th>
 <th style="text-align:right;">
-cluster4
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-SP500
-</td>
-<td style="text-align:right;">
-3425.7795
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Gold
-</td>
-<td style="text-align:right;">
-1830.5749
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EPU
-</td>
-<td style="text-align:right;">
-253.4530
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EMU
-</td>
-<td style="text-align:right;">
-135.4127
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DXY
-</td>
-<td style="text-align:right;">
-115.6980
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-<td>
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:right;">
 cluster5
 </th>
 </tr>
@@ -640,7 +710,7 @@ cluster5
 SP500
 </td>
 <td style="text-align:right;">
-4165.98043
+4016.2158
 </td>
 </tr>
 <tr>
@@ -648,23 +718,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1790.95124
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EPU
-</td>
-<td style="text-align:right;">
-126.51989
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DXY
-</td>
-<td style="text-align:right;">
-120.01837
+1897.4271
 </td>
 </tr>
 <tr>
@@ -672,7 +726,23 @@ DXY
 EMU
 </td>
 <td style="text-align:right;">
-97.30648
+158.2080
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+153.9675
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+120.2058
 </td>
 </tr>
 </tbody>
