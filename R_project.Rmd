@@ -4,6 +4,9 @@ author: "Phillip An, Paul Park, Min Jin Kang"
 date: "2023-04-05"
 output: md_document
 always_allow_html: true
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r setup, include=FALSE}
@@ -39,43 +42,86 @@ library(scales)
 
 # Abstract
 
-This paper is a study of which factors have a large impact on cryptocurrencies. Bitcoin and Ethereum were chosen as representative cryptocurrencies for our research, as these are two of the most popular and widely used with a significant market capitalization and user base. This study utilizes a random forest model to analyze the relationship between predictor variables and an outcome variable. Variable importance plots are used to identify the most significant predictor variables, and (meaningful conclusions) are drawn from the analysis.
+This paper is a study of which factors have a large impact on cryptocurrencies.
+Bitcoin and Ethereum were chosen as representative cryptocurrencies for our research, as these are two of the most popular and widely used with a significant market capitalization and user base.
+This study utilizes a random forest model to analyze the relationship between predictor variables and an outcome variable.
+Variable importance plots are used to identify the most significant predictor variables, and (meaningful conclusions) are drawn from the analysis.
 
 # Introduction
 
-Bitcoin, a type of digital currency run on blockchain technology, has recently gained traction as a potential currency to substitute for fiat money such as the U.S. dollar. A massive ‘money-printing’ by the Federal Reserve in response to the 2008 financial crisis and the Covid crisis has raised concerns about the strength and sustainability of the dollar value. Since then, market participants have been increasingly treating Bitcoin as a hedging asset. Devoid of the intrinsic value, however, Bitcoin has experienced a massive fluctuation in terms of asset prices. Specifically, at the onset of the Covid crisis in March 2020, the Bitcoin price dipped as low as `$5,165`. It grew more than tenfold to `$61,283` per Bitcoin in exactly one year, and hit as high as `$64,400` before crashing back down to hovering around `$25,000` in the beginning of the year 2023. Therefore, investors have taken interest in predicting the short-term Bitcoin price. → (too many have pp’s)
+Bitcoin, a type of digital currency run on blockchain technology, has recently gained traction as a potential currency to substitute for fiat money such as the U.S. dollar.
+A massive 'money-printing' by the Federal Reserve in response to the 2008 financial crisis and the Covid crisis has raised concerns about the strength and sustainability of the dollar value.
+Since then, market participants have been increasingly treating Bitcoin as a hedging asset.
+Devoid of the intrinsic value, however, Bitcoin has experienced a massive fluctuation in terms of asset prices.
+Specifically, at the onset of the Covid crisis in March 2020, the Bitcoin price dipped as low as `$5,165`.
+It grew more than tenfold to `$61,283` per Bitcoin in exactly one year, and hit as high as `$64,400` before crashing back down to hovering around `$25,000` in the beginning of the year 2023.
+Therefore, investors have taken interest in predicting the short-term Bitcoin price.
+→ (too many have pp's)
 
-This report answers 3 questions. First, we attempt to test a variety of models and find a model that best predicts the Bitcoin price direction. We intend to look at the time horizons of 5-day, 10-day, and 20-day, representing 1 week, 2 weeks, and 4 weeks excluding weekends, respectively. Note that our report focuses on predicting the Bitcoin price direction, rather than the magnitude of the price. Predicting the size of the prices requires an exorbitant amount of computing power, and models often perform poorly. In other words, it is not cost-effective, nor efficient. We will show how accurate our model performs by comparing our model prediction and the realized price direction. 
-
-Second, after identifying the best-predicting model, we attempt to find a variable that contributes the most to the price direction prediction. Next, we plan to run the model not only on Bitcoin but also on two other popular coins in terms of trading volumes, Ethereum, and Ripple, using common features. In doing so, we are able to find if these coins are ‘substitutes’ or ‘complements’ to one another. This finding can help investors make well-informed investment decisions; they may be able to diversify their digital asset portfolios in response to technical or macroeconomic shocks using our model. 
+This report answers 3 questions.
+First, we attempt to test a variety of models and find a model that best predicts the Bitcoin price.
+We test the prediction power between CART, Random Forest, and Gradient Boosted trees model.
+We will pick the model that gives the lowest value of RMSE.
+Second, after identifying the best-predicting model, we attempt to find a variable that contributes the most to the price prediction.
+Next, we will run the model not only on Bitcoin but also on Ethereum, the next popular cryptocurrency, using common features.
+In doing so, we are able to identify which features matter more to each cryptocurrency.
+This finding can help investors make well-informed investment decisions; they may be able to diversify their digital asset portfolios in response to technical or macroeconomic shocks using our model.
+Specifically, S&P 500, the market performance index which include the top 500 companies in terms of market capitalization sizes, contribute to the price changes of both cryptos the most.
+However, we find that gold price change affects Bitcoin price change more, and oil price change affects Ethereum price change more.
 
 # Methods
 
 ## Data:
 
-After reading a few existing studies regarding price prediction of an investment asset, we have learned that a wide spectrum of macroeconomic and market performance factors, such as inflation, interest rates, and market volatility are incorporated in building price predicting models. In addition to these common factors, we have also added some other variables we deemed important in terms of predictive power. Our data set consists of relevant daily asset prices, macroeconomic and market performance indicators, which are mainly collected from Yahoo Finance and Federal Reserve Economic Data (FRED).
+After reading a few existing studies regarding price prediction of an investment asset, we have learned that a wide spectrum of macroeconomic and market performance factors, such as inflation, interest rates, and market volatility are incorporated in building price predicting models.
+In addition to these common factors, we have also added some other variables we deemed important in terms of predictive power.
+Our data set consists of relevant daily asset prices, macroeconomic and market performance indicators, which are mainly collected from Yahoo Finance and Federal Reserve Economic Data (FRED).
 
-First, we have daily prices of Bitcoin (BTC), Ethereum (ETH), oil, and gold. Inflation is measured by two proxies, yield on 10-year Treasury note (TNX) and 13 Week Treasury Bill (IRX). CBOE volatility index (VIX) estimates equity market volatility, while CBOE crude oil volatility index (OVX) measures oil market uncertainty. SP500, which tracks the top 500 U.S. stocks, is used to compute the US stock market performance. All of these data were collected from Yahoo Finance.
+First, we have daily prices of Bitcoin (BTC), Ethereum (ETH), oil, and gold.
+Inflation is measured by two proxies, yield on 10-year Treasury note (TNX) and 13 Week Treasury Bill (IRX).
+CBOE volatility index (VIX) estimates equity market volatility, while CBOE crude oil volatility index (OVX) measures oil market uncertainty.
+SP500, which tracks the top 500 U.S. stocks, is used to compute the US stock market performance.
+All of these data were collected from Yahoo Finance.
 
-In addition to aforementioned inflation proxies, 5-Year breakeven inflation rate (inf5y), which implies market participants’ inflation expectation for the next five years, was also added. Equity Market Volatility: Infectious Disease Tracker (DISEASE) was included to account for the economic impact of COVID-19. U.S. dollar index (DXY) measures the performance of dollar against a basket of other world currencies. Policy-related uncertainty is measured by Economic Policy Uncertainty Index (EPU), and stock market uncertainty is measured by Equity Market Uncertainty Index (EMU). All of these data were collected from FRED. 
+In addition to aforementioned inflation proxies, 5-Year breakeven inflation rate (inf5y), which implies market participants' inflation expectation for the next five years, was also added.
+Equity Market Volatility: Infectious Disease Tracker (DISEASE) was included to account for the economic impact of COVID-19.
+U.S. dollar index (DXY) measures the performance of dollar against a basket of other world currencies.
+Policy-related uncertainty is measured by Economic Policy Uncertainty Index (EPU), and stock market uncertainty is measured by Equity Market Uncertainty Index (EMU).
+All of these data were collected from FRED.
 
-Lastly, we added Credit Default Swap (CDS), which basically is a financial derivative through which a seller can swap his credit risk with that of a buyer. As this indicator measures dwindling of centralized financial markets, we thought it would be interesting to see its relationship with the price action of cryptocurrencies, a decentralized asset class. This data was separately collected from Investing.com.
-
+Lastly, we added Credit Default Swap (CDS), which basically is a financial derivative through which a seller can swap his credit risk with that of a buyer.
+As this indicator measures dwindling of centralized financial markets, we thought it would be interesting to see its relationship with the price action of cryptocurrencies, a decentralized asset class.
+This data was separately collected from Investing.com.
 
 ## Methodology:
 
-In predicting Bitcoin price direction, we compare three main models: Classification and Regression Trees (CART), Random Forest and Gradient Boosting. To briefly recap what we learned in class, tree is a simple predictive model that is widely used in machine learning. CART, also called “recursive partitioning”, is a basic tree-fitting algorithm. Basically, we grow the tree recursively as to make deviance as small as possible. When we reach our minimum size or complexity stopping points, we will stop growing and prune back to make candidate trees. Lastly, we will choose via cross validation (min or 1SE).
- 
-Random forest is perhaps the most popular generic nonparametric regression technique as the model not only requires little to no cross validation and is also fast and effective. Here, we will fit trees to number of bootstrapped samples of the original data. This process, also called bagging, usually produces a better fit with lower variance than a single tree. It adds more randomness as we ‘randomly’ choose features subsets in building a tree, hence the name ‘random forest.’ After fitting a tree to each bootstrapped sample, we will average the predictions of all the different trees, producing an aggregated result, which should be more accurate.
- 
-Gradient boosting is an ensemble method like random forests. However, here you recursively fit simple trees to its ‘residuals’. That is, while random forests fits trees simultaneously, gradient boosting builds one tree at a time. This model adds the newly crushed tree into the fit in each stage along the way and so the final fit is the sum of many trees. Gradient boosting can work better than random forests with finely-tuned parameters. However, it is more sensitive to noise, thus more easily encounters over-fitting problems.
+In predicting Bitcoin price direction, we compare three main models: Classification and Regression Trees (CART), Random Forest and Gradient Boosting.
+To briefly recap what we learned in class, tree is a simple predictive model that is widely used in machine learning.
+CART, also called "recursive partitioning", is a basic tree-fitting algorithm.
+Basically, we grow the tree recursively as to make deviance as small as possible.
+When we reach our minimum size or complexity stopping points, we will stop growing and prune back to make candidate trees.
+Lastly, we will choose via cross validation (min or 1SE).
 
-\newline
-\newline
+Random forest is perhaps the most popular generic nonparametric regression technique as the model not only requires little to no cross validation and is also fast and effective.
+Here, we will fit trees to number of bootstrapped samples of the original data.
+This process, also called bagging, usually produces a better fit with lower variance than a single tree.
+It adds more randomness as we 'randomly' choose features subsets in building a tree, hence the name 'random forest.' After fitting a tree to each bootstrapped sample, we will average the predictions of all the different trees, producing an aggregated result, which should be more accurate.
 
-\newline
-\newline
+Gradient boosting is an ensemble method like random forests.
+However, here you recursively fit simple trees to its 'residuals'.
+That is, while random forests fits trees simultaneously, gradient boosting builds one tree at a time.
+This model adds the newly crushed tree into the fit in each stage along the way and so the final fit is the sum of many trees.
+Gradient boosting can work better than random forests with finely-tuned parameters.
+However, it is more sensitive to noise, thus more easily encounters over-fitting problems.
 
+```{=tex}
+\newline
+\newline
+```
+```{=tex}
+\newline
+\newline
+```
 # Results
 
 ```{r price,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE}
@@ -142,8 +188,6 @@ df_sp500 <- getSymbols('^GSPC',src='yahoo',auto.assign=FALSE)
 
 ```
 
-
-
 ```{r get_fred_data,message=FALSE, echo=FALSE, warning=FALSE}
 
 df_dxy <- read.csv('Data/DXY.csv') # Nominal Broad U.S. Dollar Index
@@ -181,8 +225,6 @@ df_cds$DATE <- as.Date(df_cds$DATE, "%m/%d/%Y")
 df_cds$DATE <- format(df_cds$DATE, "%Y-%m-%d")
 
 ```
-
-
 
 ```{r merge_fred_data, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 # change "chracter" date type to "date" date type
@@ -228,7 +270,6 @@ sapply(fred_data, class)
 
 
 ```
-
 
 ```{r merge_yahoo_data, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
@@ -297,13 +338,11 @@ sumtable(df)
 
 ```
 
-## Bitcoin 
+## Bitcoin
 
 We used CART, Random Forest, and Gradient Boosted trees model and compared out-of-sample RMSEs, and we could check that the Random Forest is the best performance on the testing data.
-\newline
-`Bitcoin` is the target variable, and the rest of the variables, excluding the `DATE` variable, are used as predictors.
-\newline
-We used the randomForest function to fit a model and used the VarImpPlot function to display the variables which highly contribute to the model. 
+\newline `Bitcoin` is the target variable, and the rest of the variables, excluding the `DATE` variable, are used as predictors.
+\newline We used the randomForest function to fit a model and used the VarImpPlot function to display the variables which highly contribute to the model.
 
 ```{r bitcoin_CART, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
@@ -333,7 +372,6 @@ bitcoin_CART=rpart(Bitcoin ~ .-DATE, data=bitcoin_train, control=rpart.control(c
 rmse_bitcoin_CART=rmse(bitcoin_CART,bitcoin_test)
 ```
 
-
 ### Random Forest
 
 ```{r bitcoin_RF, , message=FALSE, echo=FALSE, warning=FALSE}
@@ -347,9 +385,10 @@ varImpPlot(bitcoin_RF, bg = "skyblue", cex=1, pch=22)
 
 ```
 
-We could check `SP500`,`Inf5y`,`Gold`,`IRX`,`Disease` are top 5 important variables for bitcoin. 
+We could check `SP500`,`Inf5y`,`Gold`,`IRX`,`Disease` are top 5 important variables for bitcoin.
 
-Below is the partial dependence plots to isolate the partial effect of specific features on the outcome. Partial dependence plot is a method used to analyze the relationship between the target variable (dependent variable) and a specific predictor variable while holding all other predictors constant.
+Below is the partial dependence plots to isolate the partial effect of specific features on the outcome.
+Partial dependence plot is a method used to analyze the relationship between the target variable (dependent variable) and a specific predictor variable while holding all other predictors constant.
 
 ```{r RF_dependence_plot, message=FALSE, echo=FALSE, warning=FALSE}
 op <- par(mfrow=c(2, 3))
@@ -361,16 +400,16 @@ partialPlot(bitcoin_RF, bitcoin_test, 'Disease', las=1)
 par(op, pin = c(10, 20))
 ```
 
-All variables, except for `IRX`, shows an increasing dependence plot. We can interpret `SP500`, `Inf5y`,`Gold`,`Disease` features have a positive effect on predicted outcome, and `IRX` has a negative effect on predicted outcome. 
+All variables, except for `IRX`, shows an increasing dependence plot.
+We can interpret `SP500`, `Inf5y`,`Gold`,`Disease` features have a positive effect on predicted outcome, and `IRX` has a negative effect on predicted outcome.
 
-``` {r bitcoin_gradient, message=FALSE, echo=FALSE, warning=FALSE}
+```{r bitcoin_gradient, message=FALSE, echo=FALSE, warning=FALSE}
 # fit a tree for gradient boosted trees
 bitcoin_boost= gbm(Bitcoin ~ .-DATE ,distribution='gaussian', data=bitcoin_train,interaction.depth=4, n.trees=500, shrinkage=.05, cv.folds = 8)
 # check the rmse
 rmse_Boost=rmse(bitcoin_boost,bitcoin_test)
 
 ```
-
 
 ```{r RMSE_table, message=FALSE, echo=FALSE, warning=FALSE}
 first_col= c("CART","Random Forest","Gradient Boosting")
@@ -382,14 +421,11 @@ knitr::kable(df_rmse_,col.names = c("Model","RMSE"), caption="Model performance 
 
 ```
 
-
 ## Ethereum
 
 Same as Bitcoin, to predict Ethereum, we used CART, Random Forest, and Gradient Boosted trees model and compared out-of-sample RMSEs, and we could check that the Random Forest is the best performance on the testing data.
-\newline
-`Ethereum` is the target variable, and the rest of the variables, excluding the `DATE` variable, are used as predictors.
-\newline
-We used the randomForest function to fit a model and used the VarImpPlot function to display the variables which highly contribute to the model.
+\newline `Ethereum` is the target variable, and the rest of the variables, excluding the `DATE` variable, are used as predictors.
+\newline We used the randomForest function to fit a model and used the VarImpPlot function to display the variables which highly contribute to the model.
 
 ```{r ethereum_CART, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
@@ -419,9 +455,8 @@ ethereum_CART=rpart(Ethereum ~ .-DATE, data=ethereum_train, control=rpart.contro
 rmse_ethereum_CART=rmse(ethereum_CART,ethereum_test)
 ```
 
-
-
 ### Random Forest
+
 ```{r ethereum_RF, , message=FALSE, echo=FALSE, warning=FALSE}
 
 ethereum_RF=randomForest(Ethereum ~ . -DATE, data=ethereum_train,  important=TRUE)
@@ -433,9 +468,9 @@ varImpPlot(ethereum_RF, bg = "skyblue", cex=1, pch=22)
 
 ```
 
-We could check `SP500`,`Inf5y`,`Oil`,`IRX`,`CDS` are top 5 important variables for ethereum. `SP500` and `Inf5y` seem to have the highest importance in both bitcoin and ethereum, but it is an interesting result that there is a difference that gold has a great influence on bitcoin and oil has a great influence on ethereum.
-\newline
-Below is the partial dependence plots to isolate the partial effect of specific features on the outcome.
+We could check `SP500`,`Inf5y`,`Oil`,`IRX`,`CDS` are top 5 important variables for ethereum.
+`SP500` and `Inf5y` seem to have the highest importance in both bitcoin and ethereum, but it is an interesting result that there is a difference that gold has a great influence on bitcoin and oil has a great influence on ethereum.
+\newline Below is the partial dependence plots to isolate the partial effect of specific features on the outcome.
 
 ```{r RF_dependence_plot_ether, message=FALSE, echo=FALSE, warning=FALSE}
 op_ether <- par(mfrow=c(2, 3))
@@ -447,16 +482,16 @@ partialPlot(ethereum_RF, ethereum_test, 'CDS', las=1)
 par(op_ether,pin = c(10, 20))
 ```
 
-All variables, except for `IRX`, shows an increasing dependence plot. We can interpret `SP500`, `Inf5y`,`Gold`,`Disease` features have a positive effect on predicted outcome, and `IRX` has a negative effect on predicted outcome. 
+All variables, except for `IRX`, shows an increasing dependence plot.
+We can interpret `SP500`, `Inf5y`,`Gold`,`Disease` features have a positive effect on predicted outcome, and `IRX` has a negative effect on predicted outcome.
 
-``` {r ethereum_gradient, message=FALSE, echo=FALSE, warning=FALSE}
+```{r ethereum_gradient, message=FALSE, echo=FALSE, warning=FALSE}
 # fit a tree for gradient boosted trees
 ethereum_boost= gbm(Ethereum ~ .-DATE ,distribution='gaussian', data=ethereum_train,interaction.depth=4, n.trees=500, shrinkage=.05, cv.folds = 8)
 # check the rmse
 rmse_Boost=rmse(ethereum_boost,ethereum_test)
 
 ```
-
 
 ```{r RMSE_table_ether, message=FALSE, echo=FALSE, warning=FALSE}
 first_col_= c("CART","Random Forest","Gradient Boosting")
@@ -466,7 +501,6 @@ knitr::kable(df_rmse__,col.names = c("Model","RMSE"), caption="Model performance
   
   
 ```
-
 
 ```{r bitcoin_ether, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 # select outcomes
@@ -531,14 +565,13 @@ ggsave("Plots/vol_compare.png", width = 10, height = 5, dpi = 300)
 
 ```
 
-
-
 ### Correlation Plots
 
-For a deeper understanding of our paper, we will analyze the relationship with a correlation plot between predictors, which are macroeconomic and market performance factors. We know that correlation plot only measures the strength and direction of linear relationships between variables, but see correlation between predictors may provide some insights. 
+For a deeper understanding of our paper, we will analyze the relationship with a correlation plot between predictors, which are macroeconomic and market performance factors.
+We know that correlation plot only measures the strength and direction of linear relationships between variables, but see correlation between predictors may provide some insights.
 \newline
 
-Below is the correlation plot for every factors we added, you can check there's some stronger correlations, represented with darker colors. 
+Below is the correlation plot for every factors we added, you can check there's some stronger correlations, represented with darker colors.
 
 ```{r corr,message=FALSE, echo=FALSE, warning=FALSE}
 
@@ -556,7 +589,8 @@ corrplot::corrplot(cor(X), method='color', addCoef.col=0.4, number.cex = 0.4, tl
 
 ```
 
-We decided to investigate the strong correlations with coefficients above 0.60. 
+We decided to investigate the strong correlations with coefficients above 0.60.
+
 ```{r corr_imp,message=FALSE, echo=FALSE, warning=FALSE}
 
 corr_highest <- function(){
@@ -579,14 +613,19 @@ corr_highest()
 
 ```
 
-Result shows `Gold` and `SP500` shows pretty strong correlation, 0.87. The next highest correlation is `VIX` and `Disease`.
+Result shows `Gold` and `SP500` shows pretty strong correlation, 0.87.
+The next highest correlation is `VIX` and `Disease`.
 
 (I think we should find some meaningful correlation here for our analysis)
 
-
 ## K-means clustering
 
-We did supervised learning method, Random Forest. Now we will try an unsupervised learning, K-means clustering method, which can be used to identify clusters of similar factors. First, will start from choosing optimal K, the amount of clusters. Below is Elbow plot. Elbow plot used to determine the optimal number of clustering. The plot displays within-cluster sum of squares(WSS) as a function of the number of clusters.
+We did supervised learning method, Random Forest.
+Now we will try an unsupervised learning, K-means clustering method, which can be used to identify clusters of similar factors.
+First, will start from choosing optimal K, the amount of clusters.
+Below is Elbow plot.
+Elbow plot used to determine the optimal number of clustering.
+The plot displays within-cluster sum of squares(WSS) as a function of the number of clusters.
 
 ```{r cluster, message=FALSE, echo=FALSE, warning=FALSE}
 
@@ -601,7 +640,7 @@ plot(k_grid, SSE_grid, main="Elbow Plot")
 
 ```
 
-Will use 6 for k, the number of clusters. 
+Will use 6 for k, the number of clusters.
 
 ```{r kcluster, message=FALSE, echo=FALSE, warning=FALSE, including=FALSE}
 # Run k-means with 6 clusters and 25 starts
@@ -620,14 +659,10 @@ for (i in 0:5) {
 knitr::kable(kable_output)%>% kable_minimal() %>% kable_styling(full_width = FALSE, position="left", latex_options="scale_down")
 ```
 
-
-
-
-
 # Conclusion
 
-
 # Appendix
+
 ```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
 chartSeries(df_oil,name="Crude Oil",theme = 'white',subset='2014::2023')
