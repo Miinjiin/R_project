@@ -27,25 +27,22 @@ of the year 2023. Therefore, investors have taken interest in predicting
 the short-term Bitcoin price. → (too many have pp’s)
 
 This report answers 3 questions. First, we attempt to test a variety of
-models and find a model that best predicts the Bitcoin price direction.
-We intend to look at the time horizons of 5-day, 10-day, and 20-day,
-representing 1 week, 2 weeks, and 4 weeks excluding weekends,
-respectively. Note that our report focuses on predicting the Bitcoin
-price direction, rather than the magnitude of the price. Predicting the
-size of the prices requires an exorbitant amount of computing power, and
-models often perform poorly. In other words, it is not cost-effective,
-nor efficient. We will show how accurate our model performs by comparing
-our model prediction and the realized price direction.
-
+models and find a model that best predicts the Bitcoin price. We test
+the prediction power between CART, Random Forest, and Gradient Boosted
+trees model. We will pick the model that gives the lowest value of RMSE.
 Second, after identifying the best-predicting model, we attempt to find
-a variable that contributes the most to the price direction prediction.
-Next, we plan to run the model not only on Bitcoin but also on two other
-popular coins in terms of trading volumes, Ethereum, and Ripple, using
-common features. In doing so, we are able to find if these coins are
-‘substitutes’ or ‘complements’ to one another. This finding can help
-investors make well-informed investment decisions; they may be able to
-diversify their digital asset portfolios in response to technical or
-macroeconomic shocks using our model.
+a variable that contributes the most to the price prediction. Next, we
+will run the model not only on Bitcoin but also on Ethereum, the next
+popular cryptocurrency, using common features. In doing so, we are able
+to identify which features matter more to each cryptocurrency. This
+finding can help investors make well-informed investment decisions; they
+may be able to diversify their digital asset portfolios in response to
+technical or macroeconomic shocks using our model. Specifically, S&P
+500, the market performance index which include the top 500 companies in
+terms of market capitalization sizes, contribute to the price changes of
+both cryptos the most. However, we find that gold price change affects
+Bitcoin price change more, and oil price change affects Ethereum price
+change more.
 
 # Methods
 
@@ -177,7 +174,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2427.7366
+2167.4277
 </td>
 </tr>
 <tr>
@@ -185,7 +182,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-901.2485
+971.4998
 </td>
 </tr>
 <tr>
@@ -193,7 +190,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1312.2507
+1320.0263
 </td>
 </tr>
 </tbody>
@@ -248,7 +245,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2427.7366
+2167.4277
 </td>
 </tr>
 <tr>
@@ -256,7 +253,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-901.2485
+971.4998
 </td>
 </tr>
 <tr>
@@ -264,7 +261,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1312.2507
+1320.0263
 </td>
 </tr>
 </tbody>
@@ -285,7 +282,9 @@ there’s some stronger correlations, represented with darker colors.
 ![](R_project_files/figure-markdown_strict/corr-1.png)
 
 We decided to investigate the strong correlations with coefficients
-above 0.60. ![](R_project_files/figure-markdown_strict/corr_imp-1.png)
+above 0.60.
+
+![](R_project_files/figure-markdown_strict/corr_imp-1.png)
 <table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
 <caption>
 Highest correlation among factors
@@ -490,7 +489,7 @@ cluster1
 SP500
 </td>
 <td style="text-align:right;">
-1926.08094
+4016.2158
 </td>
 </tr>
 <tr>
@@ -498,23 +497,15 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1268.64375
+1897.4271
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-DXY
+EMU
 </td>
 <td style="text-align:right;">
-95.39114
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Oil
-</td>
-<td style="text-align:right;">
-94.16828
+158.2080
 </td>
 </tr>
 <tr>
@@ -522,7 +513,15 @@ Oil
 EPU
 </td>
 <td style="text-align:right;">
-66.23844
+153.9675
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+120.2058
 </td>
 </tr>
 </tbody>
@@ -600,7 +599,7 @@ cluster3
 SP500
 </td>
 <td style="text-align:right;">
-4165.98043
+2716.0546
 </td>
 </tr>
 <tr>
@@ -608,7 +607,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1790.95124
+1658.1686
 </td>
 </tr>
 <tr>
@@ -616,15 +615,7 @@ Gold
 EPU
 </td>
 <td style="text-align:right;">
-126.51989
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DXY
-</td>
-<td style="text-align:right;">
-120.01837
+489.8274
 </td>
 </tr>
 <tr>
@@ -632,7 +623,15 @@ DXY
 EMU
 </td>
 <td style="text-align:right;">
-97.30648
+364.0126
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+OVX
+</td>
+<td style="text-align:right;">
+148.6829
 </td>
 </tr>
 </tbody>
@@ -646,6 +645,61 @@ EMU
 </th>
 <th style="text-align:right;">
 cluster4
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:right;">
+1926.08094
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:right;">
+1268.64375
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+95.39114
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oil
+</td>
+<td style="text-align:right;">
+94.16828
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+66.23844
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+cluster5
 </th>
 </tr>
 </thead>
@@ -700,61 +754,6 @@ Oil
 <th style="text-align:left;">
 </th>
 <th style="text-align:right;">
-cluster5
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-SP500
-</td>
-<td style="text-align:right;">
-4016.2158
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Gold
-</td>
-<td style="text-align:right;">
-1897.4271
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EMU
-</td>
-<td style="text-align:right;">
-158.2080
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EPU
-</td>
-<td style="text-align:right;">
-153.9675
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DXY
-</td>
-<td style="text-align:right;">
-120.2058
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-<td>
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:right;">
 cluster6
 </th>
 </tr>
@@ -765,7 +764,7 @@ cluster6
 SP500
 </td>
 <td style="text-align:right;">
-2716.0546
+4165.98043
 </td>
 </tr>
 <tr>
@@ -773,7 +772,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1658.1686
+1790.95124
 </td>
 </tr>
 <tr>
@@ -781,7 +780,15 @@ Gold
 EPU
 </td>
 <td style="text-align:right;">
-489.8274
+126.51989
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+120.01837
 </td>
 </tr>
 <tr>
@@ -789,15 +796,7 @@ EPU
 EMU
 </td>
 <td style="text-align:right;">
-364.0126
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-OVX
-</td>
-<td style="text-align:right;">
-148.6829
+97.30648
 </td>
 </tr>
 </tbody>
