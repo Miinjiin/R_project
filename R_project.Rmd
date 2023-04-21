@@ -59,6 +59,16 @@ It grew more than tenfold to `$61,283` per Bitcoin in exactly one year, and hit 
 Therefore, investors have taken interest in predicting the short-term Bitcoin price.
 → (too many have pp's)
 
+```{r price,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE}
+# made from bitcoin_ether_price chunk with ggplot
+knitr::include_graphics("Plots/price_compare.png")
+```
+
+```{r vol,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE}
+# made from bitcoin_ether_volume below with ggplot
+knitr::include_graphics("Plots/vol_compare.png")
+```
+
 This report answers 3 questions.
 First, we attempt to test a variety of models and find a model that best predicts the Bitcoin price.
 We test the prediction power between CART, Random Forest, and Gradient Boosted trees model.
@@ -94,6 +104,11 @@ Lastly, we added Credit Default Swap (CDS), which basically is a financial deriv
 As this indicator measures dwindling of centralized financial markets, we thought it would be interesting to see its relationship with the price action of cryptocurrencies, a decentralized asset class.
 This data was separately collected from Investing.com.
 
+```{r sum_stat,message=FALSE, echo=FALSE, out.width="50%",out.height="50%",warning=FALSE}
+# made from bitcoin_ether_volume below with ggplot
+knitr::include_graphics("Plots/Sumstat.png")
+```
+
 ## Methodology:
 
 In predicting Bitcoin and Ethereum price, we compare three main models: Classification and Regression Trees (CART), Random Forest and Gradient Boosting.
@@ -122,20 +137,6 @@ After our model has been fit, we calculate **partial dependence plots**. These p
 
 # Results
 
-```{r price,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE}
-# made from bitcoin_ether_price chunk with ggplot
-knitr::include_graphics("Plots/price_compare.png")
-```
-
-```{r vol,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE}
-# made from bitcoin_ether_volume below with ggplot
-knitr::include_graphics("Plots/vol_compare.png")
-```
-
-```{r sum_stat,message=FALSE, echo=FALSE, out.width="50%",out.height="50%",warning=FALSE}
-# made from bitcoin_ether_volume below with ggplot
-knitr::include_graphics("Plots/Sumstat.png")
-```
 
 ```{r get_yahoo_data,message=FALSE, echo=FALSE, warning=FALSE}
 
@@ -571,6 +572,52 @@ ggsave("Plots/vol_compare.png", width = 10, height = 5, dpi = 300)
 
 ```
 
+
+## Comparison for Pre-2019 and Post-2019
+```{r dividing_2019, message=FALSE, echo=FALSE, warning=FALSE, including=TRUE}
+div_coin_pre <- subset (bitcoin, DATE <= '2019-01-01')
+div_coin_post <- subset(bitcoin, DATE >= '2019-01-01')
+
+div_coin_pre_split = initial_split(div_coin_pre, prop = 0.8)
+div_coin_pre_train = training(div_coin_pre_split)
+div_coin_pre_test = testing(div_coin_pre_split)
+
+div_coin_post_split = initial_split(div_coin_post, prop = 0.8)
+div_coin_post_train = training(div_coin_post_split)
+div_coin_post_test = testing(div_coin_post_split)
+
+bit_RF_pre=randomForest(Bitcoin ~ . -DATE, data=div_coin_post_train,  important=TRUE)
+bit_RF_post=randomForest(Bitcoin ~ . -DATE, data=div_coin_post_train,  important=TRUE)
+
+varImpPlot(bit_RF_pre, bg = "skyblue", cex=1, pch=22)
+varImpPlot(bit_RF_post, bg = "skyblue", cex=1, pch=22)
+
+
+div_ether_pre <- subset (ethereum, DATE <= '2019-01-01')
+div_ether_post <- subset(ethereum, DATE >= '2019-01-01')
+
+div_ether_pre_split = initial_split(div_ether_pre, prop = 0.8)
+div_ether_pre_train = training(div_ether_pre_split)
+div_ether_pre_test = testing(div_ether_pre_split)
+
+div_ether_post_split = initial_split(div_ether_post, prop = 0.8)
+div_ether_post_train = training(div_ether_post_split)
+div_ether_post_test = testing(div_ether_post_split)
+
+ether_RF_pre=randomForest(Ethereum ~ . -DATE, data=div_ether_post_train,  important=TRUE)
+ether_RF_post=randomForest(Ethereum ~ . -DATE, data=div_ether_post_train,  important=TRUE)
+
+varImpPlot(ether_RF_pre, bg = "skyblue", cex=1, pch=22)
+varImpPlot(ether_RF_post, bg = "skyblue", cex=1, pch=22)
+
+
+```
+
+
+# Conclusion
+
+# Appendix
+
 ### Correlation Plots
 
 For a deeper understanding of our paper, we will analyze the relationship with a correlation plot between predictors, which are macroeconomic and market performance factors.
@@ -667,65 +714,7 @@ knitr::kable(kable_output) %>% kable_minimal()
 
 ```
 
-## Comparison for Pre-2019 and Post-2019
-```{r dividing_2019, message=FALSE, echo=FALSE, warning=FALSE, including=TRUE}
-div_coin_pre <- subset (bitcoin, DATE <= '2019-01-01')
-div_coin_post <- subset(bitcoin, DATE >= '2019-01-01')
-
-div_coin_pre_split = initial_split(div_coin_pre, prop = 0.8)
-div_coin_pre_train = training(div_coin_pre_split)
-div_coin_pre_test = testing(div_coin_pre_split)
-
-div_coin_post_split = initial_split(div_coin_post, prop = 0.8)
-div_coin_post_train = training(div_coin_post_split)
-div_coin_post_test = testing(div_coin_post_split)
-
-bit_RF_pre=randomForest(Bitcoin ~ . -DATE, data=div_coin_post_train,  important=TRUE)
-bit_RF_post=randomForest(Bitcoin ~ . -DATE, data=div_coin_post_train,  important=TRUE)
-
-varImpPlot(bit_RF_pre, bg = "skyblue", cex=1, pch=22)
-varImpPlot(bit_RF_post, bg = "skyblue", cex=1, pch=22)
-
-
-div_ether_pre <- subset (ethereum, DATE <= '2019-01-01')
-div_ether_post <- subset(ethereum, DATE >= '2019-01-01')
-
-div_ether_pre_split = initial_split(div_ether_pre, prop = 0.8)
-div_ether_pre_train = training(div_ether_pre_split)
-div_ether_pre_test = testing(div_ether_pre_split)
-
-div_ether_post_split = initial_split(div_ether_post, prop = 0.8)
-div_ether_post_train = training(div_ether_post_split)
-div_ether_post_test = testing(div_ether_post_split)
-
-ether_RF_pre=randomForest(Ethereum ~ . -DATE, data=div_ether_post_train,  important=TRUE)
-ether_RF_post=randomForest(Ethereum ~ . -DATE, data=div_ether_post_train,  important=TRUE)
-
-varImpPlot(ether_RF_pre, bg = "skyblue", cex=1, pch=22)
-varImpPlot(ether_RF_post, bg = "skyblue", cex=1, pch=22)
-
-
-```
-
-
-
-
-# Conclusion
-
-# Appendix
-
-```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE}
-
-chartSeries(df_oil,name="Crude Oil",theme = 'white',subset='2014::2023')
-chartSeries(df_gold,name="Gold",theme = 'white',subset='2014::2023')
-chartSeries(df_bitcoin,name="Bitcoin",theme = 'white',subset='2014::2023')
-chartSeries(df_ether,name="Ethereum",theme = 'white',subset='2017::2023')
-plot(df_irx, main = '13 Week Treasury Bill')
-plot(df_tnx, main = 'Treasury Yield 10 Years')
-plot(df_vix, main="CBOE Volatility Index")
-plot(df_ovx,name="CBOE Crude Oil Volatility Index")
-chartSeries(df_sp500,name="S&P 500",theme = 'white',subset='2014::2023')
-
+```{r asset comparison, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE}
 asset_comp = read.csv('Data/asset_market_cap.csv') # comparison of market cap of diff asset classes
 
 df_asset = asset_comp %>%
@@ -740,5 +729,18 @@ df_asset %>%
     subtitle = "as of 4/19/2023",
     x = "Asset Name",
     y = "Market Capitalization ($)")
-
 ```
+
+```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+
+chartSeries(df_oil,name="Crude Oil",theme = 'white',subset='2014::2023')
+chartSeries(df_gold,name="Gold",theme = 'white',subset='2014::2023')
+chartSeries(df_bitcoin,name="Bitcoin",theme = 'white',subset='2014::2023')
+chartSeries(df_ether,name="Ethereum",theme = 'white',subset='2017::2023')
+plot(df_irx, main = '13 Week Treasury Bill')
+plot(df_tnx, main = 'Treasury Yield 10 Years')
+plot(df_vix, main="CBOE Volatility Index")
+plot(df_ovx,name="CBOE Crude Oil Volatility Index")
+chartSeries(df_sp500,name="S&P 500",theme = 'white',subset='2014::2023')
+```
+
