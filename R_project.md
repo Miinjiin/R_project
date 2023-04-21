@@ -174,7 +174,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2192.368
+2016.0733
 </td>
 </tr>
 <tr>
@@ -182,7 +182,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1013.533
+847.2747
 </td>
 </tr>
 <tr>
@@ -190,7 +190,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1126.844
+1211.8137
 </td>
 </tr>
 </tbody>
@@ -245,7 +245,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2192.368
+2016.0733
 </td>
 </tr>
 <tr>
@@ -253,7 +253,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-1013.533
+847.2747
 </td>
 </tr>
 <tr>
@@ -261,7 +261,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1126.844
+1211.8137
 </td>
 </tr>
 </tbody>
@@ -489,7 +489,7 @@ cluster1
 SP500
 </td>
 <td style="text-align:right;">
-2454.34404
+4270.32589
 </td>
 </tr>
 <tr>
@@ -497,15 +497,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1263.72872
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DXY
-</td>
-<td style="text-align:right;">
-112.45689
+1815.68972
 </td>
 </tr>
 <tr>
@@ -513,7 +505,15 @@ DXY
 EPU
 </td>
 <td style="text-align:right;">
-84.70150
+127.35813
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+117.55469
 </td>
 </tr>
 <tr>
@@ -521,7 +521,7 @@ EPU
 Oil
 </td>
 <td style="text-align:right;">
-52.93657
+91.19402
 </td>
 </tr>
 </tbody>
@@ -544,7 +544,7 @@ cluster2
 SP500
 </td>
 <td style="text-align:right;">
-4165.98043
+3920.2064
 </td>
 </tr>
 <tr>
@@ -552,7 +552,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1790.95124
+1796.5014
 </td>
 </tr>
 <tr>
@@ -560,15 +560,7 @@ Gold
 EPU
 </td>
 <td style="text-align:right;">
-126.51989
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DXY
-</td>
-<td style="text-align:right;">
-120.01837
+138.2618
 </td>
 </tr>
 <tr>
@@ -576,7 +568,15 @@ DXY
 EMU
 </td>
 <td style="text-align:right;">
-97.30648
+128.3905
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+122.8686
 </td>
 </tr>
 </tbody>
@@ -599,7 +599,7 @@ cluster3
 SP500
 </td>
 <td style="text-align:right;">
-3425.7795
+3366.7918
 </td>
 </tr>
 <tr>
@@ -607,7 +607,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1830.5749
+1828.9561
 </td>
 </tr>
 <tr>
@@ -615,7 +615,7 @@ Gold
 EPU
 </td>
 <td style="text-align:right;">
-253.4530
+262.7343
 </td>
 </tr>
 <tr>
@@ -623,7 +623,7 @@ EPU
 EMU
 </td>
 <td style="text-align:right;">
-135.4127
+143.4939
 </td>
 </tr>
 <tr>
@@ -631,7 +631,7 @@ EMU
 DXY
 </td>
 <td style="text-align:right;">
-115.6980
+115.9476
 </td>
 </tr>
 </tbody>
@@ -654,7 +654,7 @@ cluster4
 SP500
 </td>
 <td style="text-align:right;">
-1926.08094
+2673.45920
 </td>
 </tr>
 <tr>
@@ -662,7 +662,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1268.64375
+1297.69682
 </td>
 </tr>
 <tr>
@@ -670,15 +670,7 @@ Gold
 DXY
 </td>
 <td style="text-align:right;">
-95.39114
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Oil
-</td>
-<td style="text-align:right;">
-94.16828
+114.01794
 </td>
 </tr>
 <tr>
@@ -686,7 +678,15 @@ Oil
 EPU
 </td>
 <td style="text-align:right;">
-66.23844
+95.31944
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oil
+</td>
+<td style="text-align:right;">
+56.62474
 </td>
 </tr>
 </tbody>
@@ -764,7 +764,7 @@ cluster6
 SP500
 </td>
 <td style="text-align:right;">
-4016.2158
+2020.54151
 </td>
 </tr>
 <tr>
@@ -772,23 +772,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1897.4271
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EMU
-</td>
-<td style="text-align:right;">
-158.2080
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EPU
-</td>
-<td style="text-align:right;">
-153.9675
+1224.98399
 </td>
 </tr>
 <tr>
@@ -796,7 +780,23 @@ EPU
 DXY
 </td>
 <td style="text-align:right;">
-120.2058
+104.96116
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+65.54422
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oil
+</td>
+<td style="text-align:right;">
+62.20606
 </td>
 </tr>
 </tbody>
@@ -805,6 +805,10 @@ DXY
 </tr>
 </tbody>
 </table>
+
+## Comparison for Pre-2019 and Post-2019
+
+![](R_project_files/figure-markdown_strict/dividing_2019-1.png)![](R_project_files/figure-markdown_strict/dividing_2019-2.png)![](R_project_files/figure-markdown_strict/dividing_2019-3.png)![](R_project_files/figure-markdown_strict/dividing_2019-4.png)
 
 # Conclusion
 
