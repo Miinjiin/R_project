@@ -86,17 +86,17 @@ Investing.com.
 
 ## Methodology:
 
-In predicting Bitcoin price direction, we compare three main models:
+In predicting Bitcoin and Ethereum price, we compare three main models:
 Classification and Regression Trees (CART), Random Forest and Gradient
 Boosting. To briefly recap what we learned in class, tree is a simple
-predictive model that is widely used in machine learning. CART, also
+predictive model that is widely used in machine learning. **CART**, also
 called “recursive partitioning”, is a basic tree-fitting algorithm.
 Basically, we grow the tree recursively as to make deviance as small as
 possible. When we reach our minimum size or complexity stopping points,
 we will stop growing and prune back to make candidate trees. Lastly, we
 will choose via cross validation (min or 1SE).
 
-Random forest is perhaps the most popular generic nonparametric
+**Random forest** is perhaps the most popular generic nonparametric
 regression technique as the model not only requires little to no cross
 validation and is also fast and effective. Here, we will fit trees to
 number of bootstrapped samples of the original data. This process, also
@@ -107,14 +107,25 @@ fitting a tree to each bootstrapped sample, we will average the
 predictions of all the different trees, producing an aggregated result,
 which should be more accurate.
 
-Gradient boosting is an ensemble method like random forests. However,
-here you recursively fit simple trees to its ‘residuals’. That is, while
-random forests fits trees simultaneously, gradient boosting builds one
-tree at a time. This model adds the newly crushed tree into the fit in
-each stage along the way and so the final fit is the sum of many trees.
-Gradient boosting can work better than random forests with finely-tuned
-parameters. However, it is more sensitive to noise, thus more easily
-encounters over-fitting problems.
+**Gradient boosting** is an ensemble method like random forests.
+However, here you recursively fit simple trees to its ‘residuals’. That
+is, while random forests fits trees simultaneously, gradient boosting
+builds one tree at a time. This model adds the newly crushed tree into
+the fit in each stage along the way and so the final fit is the sum of
+many trees. Gradient boosting can work better than random forests with
+finely-tuned parameters. However, it is more sensitive to noise, thus
+more easily encounters over-fitting problems.
+
+Our random forests give us **variable importance plots**, which provide
+a list of the most significant variables in descending order. Using
+these plots, we can gain some useful insight into which variables
+contribute the most to our model. We compare the results for Bitcoin and
+Ethereum.
+
+After our model has been fit, we calculate **partial dependence plots**.
+These plots visualize the relationship between price and the five most
+significant variables from the variable importance plots, taking account
+of the joint effect of other features.
 
 # Results
 
@@ -174,7 +185,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2016.0733
+1963.7602
 </td>
 </tr>
 <tr>
@@ -182,7 +193,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-847.2747
+904.0348
 </td>
 </tr>
 <tr>
@@ -190,7 +201,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1211.8137
+1183.6454
 </td>
 </tr>
 </tbody>
@@ -245,7 +256,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2016.0733
+1963.7602
 </td>
 </tr>
 <tr>
@@ -253,7 +264,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-847.2747
+904.0348
 </td>
 </tr>
 <tr>
@@ -261,7 +272,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1211.8137
+1183.6454
 </td>
 </tr>
 </tbody>
@@ -489,7 +500,7 @@ cluster1
 SP500
 </td>
 <td style="text-align:right;">
-4270.32589
+1926.08094
 </td>
 </tr>
 <tr>
@@ -497,15 +508,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1815.68972
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EPU
-</td>
-<td style="text-align:right;">
-127.35813
+1268.64375
 </td>
 </tr>
 <tr>
@@ -513,7 +516,7 @@ EPU
 DXY
 </td>
 <td style="text-align:right;">
-117.55469
+95.39114
 </td>
 </tr>
 <tr>
@@ -521,7 +524,15 @@ DXY
 Oil
 </td>
 <td style="text-align:right;">
-91.19402
+94.16828
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+66.23844
 </td>
 </tr>
 </tbody>
@@ -544,7 +555,7 @@ cluster2
 SP500
 </td>
 <td style="text-align:right;">
-3920.2064
+2454.34404
 </td>
 </tr>
 <tr>
@@ -552,23 +563,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1796.5014
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EPU
-</td>
-<td style="text-align:right;">
-138.2618
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EMU
-</td>
-<td style="text-align:right;">
-128.3905
+1263.72872
 </td>
 </tr>
 <tr>
@@ -576,7 +571,23 @@ EMU
 DXY
 </td>
 <td style="text-align:right;">
-122.8686
+112.45689
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+84.70150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oil
+</td>
+<td style="text-align:right;">
+52.93657
 </td>
 </tr>
 </tbody>
@@ -599,7 +610,7 @@ cluster3
 SP500
 </td>
 <td style="text-align:right;">
-3366.7918
+3425.7795
 </td>
 </tr>
 <tr>
@@ -607,7 +618,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1828.9561
+1830.5749
 </td>
 </tr>
 <tr>
@@ -615,7 +626,7 @@ Gold
 EPU
 </td>
 <td style="text-align:right;">
-262.7343
+253.4530
 </td>
 </tr>
 <tr>
@@ -623,7 +634,7 @@ EPU
 EMU
 </td>
 <td style="text-align:right;">
-143.4939
+135.4127
 </td>
 </tr>
 <tr>
@@ -631,7 +642,7 @@ EMU
 DXY
 </td>
 <td style="text-align:right;">
-115.9476
+115.6980
 </td>
 </tr>
 </tbody>
@@ -654,7 +665,7 @@ cluster4
 SP500
 </td>
 <td style="text-align:right;">
-2673.45920
+4016.2158
 </td>
 </tr>
 <tr>
@@ -662,15 +673,15 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1297.69682
+1897.4271
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-DXY
+EMU
 </td>
 <td style="text-align:right;">
-114.01794
+158.2080
 </td>
 </tr>
 <tr>
@@ -678,15 +689,15 @@ DXY
 EPU
 </td>
 <td style="text-align:right;">
-95.31944
+153.9675
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Oil
+DXY
 </td>
 <td style="text-align:right;">
-56.62474
+120.2058
 </td>
 </tr>
 </tbody>
@@ -764,7 +775,7 @@ cluster6
 SP500
 </td>
 <td style="text-align:right;">
-2020.54151
+4165.98043
 </td>
 </tr>
 <tr>
@@ -772,15 +783,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1224.98399
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DXY
-</td>
-<td style="text-align:right;">
-104.96116
+1790.95124
 </td>
 </tr>
 <tr>
@@ -788,15 +791,23 @@ DXY
 EPU
 </td>
 <td style="text-align:right;">
-65.54422
+126.51989
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Oil
+DXY
 </td>
 <td style="text-align:right;">
-62.20606
+120.01837
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:right;">
+97.30648
 </td>
 </tr>
 </tbody>

@@ -95,24 +95,29 @@ This data was separately collected from Investing.com.
 
 ## Methodology:
 
-In predicting Bitcoin price direction, we compare three main models: Classification and Regression Trees (CART), Random Forest and Gradient Boosting.
+In predicting Bitcoin and Ethereum price, we compare three main models: Classification and Regression Trees (CART), Random Forest and Gradient Boosting.
 To briefly recap what we learned in class, tree is a simple predictive model that is widely used in machine learning.
-CART, also called "recursive partitioning", is a basic tree-fitting algorithm.
+**CART**, also called "recursive partitioning", is a basic tree-fitting algorithm.
 Basically, we grow the tree recursively as to make deviance as small as possible.
 When we reach our minimum size or complexity stopping points, we will stop growing and prune back to make candidate trees.
 Lastly, we will choose via cross validation (min or 1SE).
 
-Random forest is perhaps the most popular generic nonparametric regression technique as the model not only requires little to no cross validation and is also fast and effective.
+**Random forest** is perhaps the most popular generic nonparametric regression technique as the model not only requires little to no cross validation and is also fast and effective.
 Here, we will fit trees to number of bootstrapped samples of the original data.
 This process, also called bagging, usually produces a better fit with lower variance than a single tree.
 It adds more randomness as we 'randomly' choose features subsets in building a tree, hence the name 'random forest.' After fitting a tree to each bootstrapped sample, we will average the predictions of all the different trees, producing an aggregated result, which should be more accurate.
 
-Gradient boosting is an ensemble method like random forests.
+**Gradient boosting** is an ensemble method like random forests.
 However, here you recursively fit simple trees to its 'residuals'.
 That is, while random forests fits trees simultaneously, gradient boosting builds one tree at a time.
 This model adds the newly crushed tree into the fit in each stage along the way and so the final fit is the sum of many trees.
 Gradient boosting can work better than random forests with finely-tuned parameters.
 However, it is more sensitive to noise, thus more easily encounters over-fitting problems.
+
+Our random forests give us **variable importance plots**, which provide a list of the most significant variables in descending order. Using these plots, we can gain some useful insight into which variables contribute the most to our model. We compare the results for Bitcoin and Ethereum.
+
+After our model has been fit, we calculate **partial dependence plots**. These plots visualize the relationship between price and the five most significant variables from the variable importance plots, taking account of the joint effect of other features.
+
 
 ```{=tex}
 \newline
