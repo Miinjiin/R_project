@@ -642,7 +642,7 @@ plot(k_grid, SSE_grid, main="Elbow Plot")
 
 Will use 6 for k, the number of clusters.
 
-```{r kcluster, message=FALSE, echo=FALSE, warning=FALSE, including=FALSE}
+```{r kcluster, message=FALSE, echo=FALSE, warning=FALSE, including=TRUE}
 # Run k-means with 6 clusters and 25 starts
 clu= kmeans(X, centers=6, nstart=25)
 # make an empty list to store kable output
@@ -663,7 +663,7 @@ knitr::kable(kable_output)%>% kable_minimal() %>% kable_styling(full_width = FAL
 
 # Appendix
 
-```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
+```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE}
 
 chartSeries(df_oil,name="Crude Oil",theme = 'white',subset='2014::2023')
 chartSeries(df_gold,name="Gold",theme = 'white',subset='2014::2023')
@@ -675,11 +675,22 @@ plot(df_vix, main="CBOE Volatility Index")
 plot(df_ovx,name="CBOE Crude Oil Volatility Index")
 chartSeries(df_sp500,name="S&P 500",theme = 'white',subset='2014::2023')
 
-asset_comp <- read.csv('Data/asset_market_cap.csv') # comparison of market cap of diff asset classes
+asset_comp = read.csv('Data/asset_market_cap.csv') # comparison of market cap of diff asset classes
 
-ggplot(asset_comp, aes(x = Name, y = Market_Cap)) +
+df_asset = asset_comp %>%
+  as.data.frame()
+
+df_asset %>%
+  ggplot(aes(x=reorder(Name, Market_Cap), y=Market_Cap, fill=Name)) +
   geom_col() +
-  coord_flip()
+  coord_flip() +
+  labs(
+    title = "Market Cap Comparison",
+    subtitle = "as of 4/19/2023",
+    x = "Asset Name",
+    y = "Market Capitalization ($)")
+
+
 
 
 

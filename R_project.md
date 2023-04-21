@@ -174,7 +174,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2167.4277
+2192.368
 </td>
 </tr>
 <tr>
@@ -182,7 +182,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-971.4998
+1013.533
 </td>
 </tr>
 <tr>
@@ -190,7 +190,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1320.0263
+1126.844
 </td>
 </tr>
 </tbody>
@@ -245,7 +245,7 @@ RMSE
 CART
 </td>
 <td style="text-align:right;">
-2167.4277
+2192.368
 </td>
 </tr>
 <tr>
@@ -253,7 +253,7 @@ CART
 Random Forest
 </td>
 <td style="text-align:right;">
-971.4998
+1013.533
 </td>
 </tr>
 <tr>
@@ -261,7 +261,7 @@ Random Forest
 Gradient Boosting
 </td>
 <td style="text-align:right;">
-1320.0263
+1126.844
 </td>
 </tr>
 </tbody>
@@ -489,7 +489,7 @@ cluster1
 SP500
 </td>
 <td style="text-align:right;">
-4016.2158
+2454.34404
 </td>
 </tr>
 <tr>
@@ -497,23 +497,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1897.4271
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EMU
-</td>
-<td style="text-align:right;">
-158.2080
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EPU
-</td>
-<td style="text-align:right;">
-153.9675
+1263.72872
 </td>
 </tr>
 <tr>
@@ -521,7 +505,23 @@ EPU
 DXY
 </td>
 <td style="text-align:right;">
-120.2058
+112.45689
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+84.70150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oil
+</td>
+<td style="text-align:right;">
+52.93657
 </td>
 </tr>
 </tbody>
@@ -535,6 +535,61 @@ DXY
 </th>
 <th style="text-align:right;">
 cluster2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+SP500
+</td>
+<td style="text-align:right;">
+4165.98043
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gold
+</td>
+<td style="text-align:right;">
+1790.95124
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+126.51989
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+120.01837
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EMU
+</td>
+<td style="text-align:right;">
+97.30648
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+cluster3
 </th>
 </tr>
 </thead>
@@ -577,61 +632,6 @@ DXY
 </td>
 <td style="text-align:right;">
 115.6980
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-<td>
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:right;">
-cluster3
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-SP500
-</td>
-<td style="text-align:right;">
-2716.0546
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Gold
-</td>
-<td style="text-align:right;">
-1658.1686
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EPU
-</td>
-<td style="text-align:right;">
-489.8274
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EMU
-</td>
-<td style="text-align:right;">
-364.0126
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-OVX
-</td>
-<td style="text-align:right;">
-148.6829
 </td>
 </tr>
 </tbody>
@@ -709,7 +709,7 @@ cluster5
 SP500
 </td>
 <td style="text-align:right;">
-2454.34404
+2716.0546
 </td>
 </tr>
 <tr>
@@ -717,15 +717,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1263.72872
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DXY
-</td>
-<td style="text-align:right;">
-112.45689
+1658.1686
 </td>
 </tr>
 <tr>
@@ -733,15 +725,23 @@ DXY
 EPU
 </td>
 <td style="text-align:right;">
-84.70150
+489.8274
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Oil
+EMU
 </td>
 <td style="text-align:right;">
-52.93657
+364.0126
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+OVX
+</td>
+<td style="text-align:right;">
+148.6829
 </td>
 </tr>
 </tbody>
@@ -764,7 +764,7 @@ cluster6
 SP500
 </td>
 <td style="text-align:right;">
-4165.98043
+4016.2158
 </td>
 </tr>
 <tr>
@@ -772,23 +772,7 @@ SP500
 Gold
 </td>
 <td style="text-align:right;">
-1790.95124
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EPU
-</td>
-<td style="text-align:right;">
-126.51989
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DXY
-</td>
-<td style="text-align:right;">
-120.01837
+1897.4271
 </td>
 </tr>
 <tr>
@@ -796,7 +780,23 @@ DXY
 EMU
 </td>
 <td style="text-align:right;">
-97.30648
+158.2080
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPU
+</td>
+<td style="text-align:right;">
+153.9675
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DXY
+</td>
+<td style="text-align:right;">
+120.2058
 </td>
 </tr>
 </tbody>
@@ -809,3 +809,5 @@ EMU
 # Conclusion
 
 # Appendix
+
+![](R_project_files/figure-markdown_strict/timeseries_tables-1.png)![](R_project_files/figure-markdown_strict/timeseries_tables-2.png)![](R_project_files/figure-markdown_strict/timeseries_tables-3.png)![](R_project_files/figure-markdown_strict/timeseries_tables-4.png)![](R_project_files/figure-markdown_strict/timeseries_tables-5.png)![](R_project_files/figure-markdown_strict/timeseries_tables-6.png)![](R_project_files/figure-markdown_strict/timeseries_tables-7.png)![](R_project_files/figure-markdown_strict/timeseries_tables-8.png)![](R_project_files/figure-markdown_strict/timeseries_tables-9.png)![](R_project_files/figure-markdown_strict/timeseries_tables-10.png)
