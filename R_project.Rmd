@@ -714,6 +714,8 @@ knitr::kable(kable_output) %>% kable_minimal()
 
 ```
 
+
+**Figure 8**
 ```{r asset comparison, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE}
 asset_comp = read.csv('Data/asset_market_cap.csv') # comparison of market cap of diff asset classes
 
@@ -729,7 +731,10 @@ df_asset %>%
     subtitle = "as of 4/19/2023",
     x = "Asset Name",
     y = "Market Capitalization ($)")
+
 ```
+
+Because S&P500 is the most important variable in predicting the price of both Bitcoin and Ethereum, we wanted to compare the market capitalization of some of the top performing stocks in S&P500 to that of the two cryptocurrencies. The result is visualized in **Figure 8**. Bitcoin's market cap is about the same size as that of Tesla and Meta, while Ethereum is ranked lower than Coca-cola. As one can see, there is a lot more room for growth in terms of market cap for both Bitcoin and Ethereum, which implies that their prices may go higher as more retailers and institutions invest in them in the future.
 
 ```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
