@@ -696,7 +696,7 @@ plot(k_grid, SSE_grid, main="Elbow Plot")
 
 Will use 6 for k, the number of clusters.
 
-```{r kcluster, message=FALSE, echo=FALSE, warning=FALSE, include==FALSE}
+```{r kcluster, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 # Run k-means with 6 clusters and 25 starts
 clu= kmeans(X, centers=6, nstart=25)
 # make an empty list to store kable output
