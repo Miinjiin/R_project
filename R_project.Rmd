@@ -5,6 +5,7 @@ date: "2023-04-05"
 output: 
     pdf_document :
       latex_engine : xelatex
+      fig_caption: yes
 editor_options: 
   markdown: 
     wrap: sentence
@@ -43,10 +44,8 @@ library(scales)
 
 # Abstract
 
-This paper is a study of which factors have a large impact on cryptocurrencies.
-Bitcoin and Ethereum were chosen as representative cryptocurrencies for our research, as these are two of the most popular and widely used with a significant market capitalization and user base.
-This study utilizes a random forest model to analyze the relationship between predictor variables and an outcome variable.
-Variable importance plots are used to identify the most significant predictor variables, and (meaningful conclusions) are drawn from the analysis.
+The volatility of cryptocurrency price has both attracted and repelled myriads of investors around the world. However, year after year, we see more people investing in this volatile asset whether it is due to the opportunity to make life-changing money or the the curiosity towards the disruptive blockchain technology behind it. In this project, we first build the best predictive models to predict future prices of Bitcoin and Ethereum, the two largest cryptocurrencies in terms of market capitalization. We find that random forest model is the best predictor. Next, we compare and contrast the factors that contribute the most to the price prediction between the two assets, analyzed via variable importance and partial dependence plots. For both assets, S&P500 and 5-year inflation expectation are the biggest features contributing to their prices. Where they differ is the third most important variable, which are gold price and oil price for Bitcoin and Ehtereum, respectively. Utilizing these results, investors can make smart investment choices based on macroeconomic and market performance.
+
 
 # Introduction
 
@@ -59,12 +58,12 @@ It grew more than tenfold to `$61,283` per Bitcoin in exactly one year, and hit 
 Therefore, investors have taken interest in predicting the short-term Bitcoin price.
 → (too many have pp's)
 
-```{r price,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE}
+```{r price,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE, fig.cap="\\label{fig:figs}"}
 # made from bitcoin_ether_price chunk with ggplot
 knitr::include_graphics("Plots/price_compare.png")
 ```
 
-```{r vol,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE}
+```{r vol,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE, fig.cap="\\label{fig:figs}"}
 # made from bitcoin_ether_volume below with ggplot
 knitr::include_graphics("Plots/vol_compare.png")
 ```
@@ -104,7 +103,7 @@ Lastly, we added Credit Default Swap (CDS), which basically is a financial deriv
 As this indicator measures dwindling of centralized financial markets, we thought it would be interesting to see its relationship with the price action of cryptocurrencies, a decentralized asset class.
 This data was separately collected from Investing.com.
 
-```{r sum_stat,message=FALSE, echo=FALSE, out.width="50%",out.height="50%",warning=FALSE}
+```{r sum_stat,message=FALSE, echo=FALSE, out.width="50%",out.height="50%",warning=FALSE, fig.cap="\\label{fig:figs}"}
 # made from bitcoin_ether_volume below with ggplot
 knitr::include_graphics("Plots/Sumstat.png")
 ```
@@ -113,6 +112,7 @@ knitr::include_graphics("Plots/Sumstat.png")
 
 In predicting Bitcoin and Ethereum price, we compare three main models: Classification and Regression Trees (CART), Random Forest and Gradient Boosting.
 To briefly recap what we learned in class, tree is a simple predictive model that is widely used in machine learning.
+
 **CART**, also called "recursive partitioning", is a basic tree-fitting algorithm.
 Basically, we grow the tree recursively as to make deviance as small as possible.
 When we reach our minimum size or complexity stopping points, we will stop growing and prune back to make candidate trees.
@@ -377,7 +377,7 @@ rmse_bitcoin_CART=rmse(bitcoin_CART,bitcoin_test)
 
 ### Random Forest
 
-```{r bitcoin_RF, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%",out.height="50%"}
+```{r bitcoin_RF, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%",out.height="50%", fig.cap="\\label{fig:figs}"}
 
 bitcoin_RF=randomForest(Bitcoin ~ . -DATE, data=bitcoin_train,  important=TRUE)
 
@@ -393,7 +393,7 @@ We could check `SP500`,`Inf5y`,`Gold`,`IRX`,`Disease` are top 5 important variab
 Below is the partial dependence plots to isolate the partial effect of specific features on the outcome.
 Partial dependence plot is a method used to analyze the relationship between the target variable (dependent variable) and a specific predictor variable while holding all other predictors constant.
 
-```{r RF_dependence_plot, message=FALSE, echo=FALSE, warning=FALSE}
+```{r RF_dependence_plot, message=FALSE, echo=FALSE, warning=FALSE, fig.cap="\\label{fig:figs}"}
 op <- par(mfrow=c(2, 3))
 partialPlot(bitcoin_RF, bitcoin_test, 'SP500', las=1)
 partialPlot(bitcoin_RF, bitcoin_test, 'Inf5y', las=1)
@@ -464,7 +464,7 @@ rmse_ethereum_CART=rmse(ethereum_CART,ethereum_test)
 
 ### Random Forest
 
-```{r ethereum_RF, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%", out.height="50%"}
+```{r ethereum_RF, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%", out.height="50%", fig.cap="\\label{fig:figs}"}
 
 ethereum_RF=randomForest(Ethereum ~ . -DATE, data=ethereum_train,  important=TRUE)
 
@@ -479,7 +479,7 @@ We could check `SP500`,`Inf5y`,`Oil`,`IRX`,`CDS` are top 5 important variables f
 `SP500` and `Inf5y` seem to have the highest importance in both bitcoin and ethereum, but it is an interesting result that there is a difference that gold has a great influence on bitcoin and oil has a great influence on ethereum.
  Below is the partial dependence plots to isolate the partial effect of specific features on the outcome.
 
-```{r RF_dependence_plot_ether, message=FALSE, echo=FALSE, warning=FALSE}
+```{r RF_dependence_plot_ether, message=FALSE, echo=FALSE, warning=FALSE, fig.cap="\\label{fig:figs}"}
 op_ether <- par(mfrow=c(2, 3))
 partialPlot(ethereum_RF, ethereum_test, 'SP500', las=1)
 partialPlot(ethereum_RF, ethereum_test, 'Inf5y', las=1)
@@ -620,13 +620,14 @@ varImpPlot(ether_RF_post, bg = "skyblue", cex=1, pch=22)
 
 ### Correlation Plots
 
-For a deeper understanding of our paper, we will analyze the relationship with a correlation plot between predictors, which are macroeconomic and market performance factors.
+For a deeper understanding of our paper, we will analyze the relationship with a correlation plot between 
+predictors, which are macroeconomic and market performance factors.
 We know that correlation plot only measures the strength and direction of linear relationships between variables, but see correlation between predictors may provide some insights.
 
 
 Below is the correlation plot for every factors we added, you can check there's some stronger correlations, represented with darker colors.
 
-```{r corr,message=FALSE, echo=FALSE, warning=FALSE, out.width="50%", out.height="50%", fig.align = 'center'}
+```{r corr,message=FALSE, echo=FALSE, warning=FALSE, out.width="50%", out.height="50%", fig.align = 'center', include = FALSE}
 
 cluster_df <- df%>%select(Month, Oil, Gold, IRX, TNX, VIX, OVX, SP500, DXY, CDS, EMU, EPU, Inf5y, Disease)
 cluster_df <- na.omit(cluster_df)
@@ -644,7 +645,7 @@ corrplot::corrplot(cor(X), method='color', addCoef.col=0.4, number.cex = 0.4, tl
 
 We decided to investigate the strong correlations with coefficients above 0.60.
 
-```{r corr_imp,message=FALSE, echo=FALSE, warning=FALSE, out.width="50%", out.height="50%",fig.align = 'center'}
+```{r corr_imp,message=FALSE, echo=FALSE, warning=FALSE, out.width="50%", out.height="50%",fig.align = 'center', include=FALSE}
 
 corr_highest <- function(){
   corr = cor(X)
@@ -680,7 +681,7 @@ Below is Elbow plot.
 Elbow plot used to determine the optimal number of clustering.
 The plot displays within-cluster sum of squares(WSS) as a function of the number of clusters.
 
-```{r cluster, message=FALSE, echo=FALSE, warning=FALSE, out.width="50%", out.height="25%"}
+```{r cluster, message=FALSE, echo=FALSE, warning=FALSE, out.width="50%", out.height="25%", include = FALSE}
 
 # use the code we learned during the class
 k_grid = seq(2, 30, by=1)
@@ -695,7 +696,7 @@ plot(k_grid, SSE_grid, main="Elbow Plot")
 
 Will use 6 for k, the number of clusters.
 
-```{r kcluster, message=FALSE, echo=FALSE, warning=FALSE, including=TRUE}
+```{r kcluster, message=FALSE, echo=FALSE, warning=FALSE, include==FALSE}
 # Run k-means with 6 clusters and 25 starts
 clu= kmeans(X, centers=6, nstart=25)
 # make an empty list to store kable output
@@ -715,8 +716,7 @@ knitr::kable(kable_output) %>% kable_minimal()
 ```
 
 
-**Figure 8**
-```{r asset comparison, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE}
+```{r asset comparison, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE, fig.cap="\\label{fig:figs}"}
 asset_comp = read.csv('Data/asset_market_cap.csv') # comparison of market cap of diff asset classes
 
 df_asset = asset_comp %>%
@@ -734,7 +734,11 @@ df_asset %>%
 
 ```
 
-Because S&P500 is the most important variable in predicting the price of both Bitcoin and Ethereum, we wanted to compare the market capitalization of some of the top performing stocks in S&P500 to that of the two cryptocurrencies. The result is visualized in **Figure 8**. Bitcoin's market cap is about the same size as that of Tesla and Meta, while Ethereum is ranked lower than Coca-cola. As one can see, there is a lot more room for growth in terms of market cap for both Bitcoin and Ethereum, which implies that their prices may go higher as more retailers and institutions invest in them in the future.
+
+
+
+
+Because S&P500 is the most important variable in predicting the price of both Bitcoin and Ethereum, we wanted to compare the market capitalization of some of the top performing stocks in S&P500 to that of the two cryptocurrencies. The result is visualized in Figure \ref{fig:figs}. Bitcoin's market cap is about the same size as that of Tesla and Meta, while Ethereum is ranked lower than Coca-cola. As one can see, there is a lot more room for growth in terms of market cap for both Bitcoin and Ethereum, which implies that their prices may go higher as more retailers and institutions invest in them in the future.
 
 ```{r timeseries_tables, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 
