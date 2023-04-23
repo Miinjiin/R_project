@@ -574,7 +574,7 @@ compare_vol[is.na(compare_vol)]<-0
 ggplot(compare_vol, aes(x = DATE)) + 
   geom_line(aes(y = BTC_vol, color = "BTC_vol")) +
   geom_line(aes(y = ETH_vol, color = "ETH_vol")) +
-  scale_y_continuous(limits = c(5, max(compare_vol$BTC_vol, compare_vol$ETH_vol, na.rm = TRUE) * 1.1)) +
+  scale_y_continuous(limits = c(5, 100000000000)) +
   labs(x = "Date", y = "Volume") +
   theme_economist_white(horizontal=FALSE, gray_bg=FALSE) 
 
