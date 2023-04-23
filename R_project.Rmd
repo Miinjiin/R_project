@@ -466,14 +466,35 @@ ethereum_CART=rpart(Ethereum ~ .-DATE, data=ethereum_train, control=rpart.contro
 rmse_ethereum_CART=rmse(ethereum_CART,ethereum_test)
 ```
 
-### Random Forest
 
-```{r ethereum_RF, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%", out.height="50%", fig.cap="\\label{fig:figs}ETH Random Forest"}
 
+```{r eth_RF, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 ethereum_RF=randomForest(Ethereum ~ . -DATE, data=ethereum_train,  important=TRUE)
 
 # check the rmse
 rmse_RF=rmse(ethereum_RF,ethereum_test)
+```
+
+```{r ethereum_gradient, message=FALSE, echo=FALSE, warning=FALSE}
+# fit a tree for gradient boosted trees
+ethereum_boost= gbm(Ethereum ~ .-DATE ,distribution='gaussian', data=ethereum_train,interaction.depth=4, n.trees=500, shrinkage=.05, cv.folds = 8)
+# check the rmse
+rmse_Boost=rmse(ethereum_boost,ethereum_test)
+
+```
+
+```{r RMSE_table_ether, message=FALSE, echo=FALSE, warning=FALSE}
+first_col_= c("CART","Random Forest","Gradient Boosting")
+second_col_= c(rmse_ethereum_CART,rmse_RF, rmse_Boost)
+df_rmse__ = data.frame(first_col, second_col)
+knitr:: kable(df_rmse__, col.names=c("Model","RMSE"), caption="Model performance with out-of-sample RMSEs (Ethereum)","simple")
+  
+  
+```
+
+### Random Forest
+
+```{r ethereum_varimp, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%", out.height="50%", fig.cap="\\label{fig:figs}ETH Random Forest"}
 
 varImpPlot(ethereum_RF, bg = "skyblue", cex=1, pch=22)
 
@@ -496,22 +517,7 @@ par(op_ether,pin = c(10, 20))
 All variables, except for `IRX`, shows an increasing dependence plot.
 We can interpret `SP500`, `Inf5y`,`Gold`,`Disease` features have a positive effect on predicted outcome, and `IRX` has a negative effect on predicted outcome.
 
-```{r ethereum_gradient, message=FALSE, echo=FALSE, warning=FALSE}
-# fit a tree for gradient boosted trees
-ethereum_boost= gbm(Ethereum ~ .-DATE ,distribution='gaussian', data=ethereum_train,interaction.depth=4, n.trees=500, shrinkage=.05, cv.folds = 8)
-# check the rmse
-rmse_Boost=rmse(ethereum_boost,ethereum_test)
 
-```
-
-```{r RMSE_table_ether, message=FALSE, echo=FALSE, warning=FALSE}
-first_col_= c("CART","Random Forest","Gradient Boosting")
-second_col_= c(rmse_ethereum_CART,rmse_RF, rmse_Boost)
-df_rmse__ = data.frame(first_col, second_col)
-knitr:: kable(df_rmse__, col.names=c("Model","RMSE"), caption="Model performance with out-of-sample RMSEs (Ethereum)","simple")
-  
-  
-```
 
 ```{r bitcoin_ether, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 # select outcomes
