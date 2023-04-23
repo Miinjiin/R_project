@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.21)  22 APR 2023 22:48
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.21)  22 APR 2023 22:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -852,21 +852,20 @@ Underfull \hbox (badness 1845) in paragraph at lines 305--310
 []\TU/lmr/m/n/10 All variables, except for \TU/lmtt/m/n/10 IRX\TU/lmr/m/n/10 , shows an increasing dependence plot. We can interpret \TU/lmtt/m/n/10 SP500\TU/lmr/m/n/10 ,
  []
 
-File: R_project_files/figure-latex/ethereum_RF, -1.pdf Graphic file (type pdf)
-<use R_project_files/figure-latex/ethereum_RF, -1.pdf>
-File: R_project_files/figure-latex/RF_dependence_plot_ether-1.pdf Graphic file (type pdf)
-<use R_project_files/figure-latex/RF_dependence_plot_ether-1.pdf>
 
-Underfull \hbox (badness 1845) in paragraph at lines 346--351
-[]\TU/lmr/m/n/10 All variables, except for \TU/lmtt/m/n/10 IRX\TU/lmr/m/n/10 , shows an increasing dependence plot. We can interpret \TU/lmtt/m/n/10 SP500\TU/lmr/m/n/10 ,
- []
-
-
-Underfull \hbox (badness 5133) in paragraph at lines 354--354
+Underfull \hbox (badness 5133) in paragraph at lines 325--325
 []\TU/lmr/m/n/10 Table 2: Model performance with out-of-sample RMSEs
  []
 
-[5] [6] [7]
+File: R_project_files/figure-latex/ethereum_varimp, -1.pdf Graphic file (type pdf)
+<use R_project_files/figure-latex/ethereum_varimp, -1.pdf>
+File: R_project_files/figure-latex/RF_dependence_plot_ether-1.pdf Graphic file (type pdf)
+<use R_project_files/figure-latex/RF_dependence_plot_ether-1.pdf>
+
+Underfull \hbox (badness 1845) in paragraph at lines 363--368
+[]\TU/lmr/m/n/10 All variables, except for \TU/lmtt/m/n/10 IRX\TU/lmr/m/n/10 , shows an increasing dependence plot. We can interpret \TU/lmtt/m/n/10 SP500\TU/lmr/m/n/10 ,
+ []
+
 File: R_project_files/figure-latex/dividing_2019-1.pdf Graphic file (type pdf)
 <use R_project_files/figure-latex/dividing_2019-1.pdf>
 File: R_project_files/figure-latex/dividing_2019-2.pdf Graphic file (type pdf)
@@ -890,18 +889,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 373--377
 []
  []
 
-[8]
+
+Overfull \vbox (46.8725pt too high) has occurred while \output is active []
+
+[5] [6] [7]
 Overfull \vbox (25.79138pt too high) has occurred while \output is active []
 
-[9] [10]
+[8] [9]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
 (hyperref)                than one, level fixed on input line 385.
 
-[11]
+[10]
 File: R_project_files/figure-latex/asset comparison-1.pdf Graphic file (type pdf)
 <use R_project_files/figure-latex/asset comparison-1.pdf>
-[12] (./R_project.aux)
+[11] (./R_project.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -910,11 +912,11 @@ Package rerunfilecheck Info: File `R_project.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  18613 strings out of 478659
- 343889 string characters out of 5847159
+ 343933 string characters out of 5847159
  1864704 words of memory out of 5000000
  38476 multiletter control sequences out of 15000+600000
  515967 words of font info for 64 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 86i,7n,121p,372b,437s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 86i,7n,121p,372b,334s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on R_project.pdf (12 pages).
+Output written on R_project.pdf (11 pages).
