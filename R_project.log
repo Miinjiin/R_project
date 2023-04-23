@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.21)  22 APR 2023 18:17
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.21)  22 APR 2023 21:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -508,9 +508,6 @@ LaTeX Warning: Label `fig:figs' multiply defined.
 
 LaTeX Warning: Label `fig:figs' multiply defined.
 
-
-LaTeX Warning: Label `fig:figs' multiply defined.
-
 )
 \openout1 = `R_project.aux'.
 
@@ -850,7 +847,7 @@ File: R_project_files/figure-latex/bitcoin_RF, -1.pdf Graphic file (type pdf)
 File: R_project_files/figure-latex/RF_dependence_plot-1.pdf Graphic file (type pdf)
 <use R_project_files/figure-latex/RF_dependence_plot-1.pdf>
 
-Underfull \hbox (badness 1845) in paragraph at lines 291--296
+Underfull \hbox (badness 1845) in paragraph at lines 290--295
 []\TU/lmr/m/n/10 All variables, except for \TU/lmtt/m/n/10 IRX\TU/lmr/m/n/10 , shows an increasing dependence plot. We can interpret \TU/lmtt/m/n/10 SP500\TU/lmr/m/n/10 ,
  []
 
@@ -912,10 +909,10 @@ Package rerunfilecheck Info: File `R_project.out' has not changed.
 (rerunfilecheck)             Checksum: 9342105D17FCD6CACCAF68FE2D286812;1698.
  ) 
 Here is how much of TeX's memory you used:
- 18614 strings out of 478659
- 343859 string characters out of 5847159
+ 18613 strings out of 478659
+ 343845 string characters out of 5847159
  1865704 words of memory out of 5000000
- 38477 multiletter control sequences out of 15000+600000
+ 38476 multiletter control sequences out of 15000+600000
  515967 words of font info for 64 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  86i,7n,121p,372b,435s stack positions out of 10000i,1000n,20000p,200000b,200000s
