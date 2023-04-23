@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.21)  22 APR 2023 23:05
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.21)  22 APR 2023 23:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -508,6 +508,18 @@ LaTeX Warning: Label `fig:figs' multiply defined.
 
 LaTeX Warning: Label `fig:figs' multiply defined.
 
+
+LaTeX Warning: Label `fig:figs' multiply defined.
+
+
+LaTeX Warning: Label `fig:figs' multiply defined.
+
+
+LaTeX Warning: Label `fig:figs' multiply defined.
+
+
+LaTeX Warning: Label `fig:figs' multiply defined.
+
 )
 \openout1 = `R_project.aux'.
 
@@ -866,57 +878,34 @@ Underfull \hbox (badness 1845) in paragraph at lines 363--368
 []\TU/lmr/m/n/10 All variables, except for \TU/lmtt/m/n/10 IRX\TU/lmr/m/n/10 , shows an increasing dependence plot. We can interpret \TU/lmtt/m/n/10 SP500\TU/lmr/m/n/10 ,
  []
 
-File: R_project_files/figure-latex/dividing_2019-1.pdf Graphic file (type pdf)
-<use R_project_files/figure-latex/dividing_2019-1.pdf>
-File: R_project_files/figure-latex/dividing_2019-2.pdf Graphic file (type pdf)
-<use R_project_files/figure-latex/dividing_2019-2.pdf>
-File: R_project_files/figure-latex/dividing_2019-3.pdf Graphic file (type pdf)
-<use R_project_files/figure-latex/dividing_2019-3.pdf>
-File: R_project_files/figure-latex/dividing_2019-4.pdf Graphic file (type pdf)
-<use R_project_files/figure-latex/dividing_2019-4.pdf>
 
-Underfull \hbox (badness 10000) in paragraph at lines 373--377
-[]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 373--377
-[]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 373--377
-[]
- []
-
-
-Overfull \vbox (46.8725pt too high) has occurred while \output is active []
+Overfull \vbox (260.0085pt too high) has occurred while \output is active []
 
 [5] [6] [7]
-Overfull \vbox (25.79138pt too high) has occurred while \output is active []
-
-[8] [9]
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 385.
-
-[10]
+File: R_project_files/figure-latex/btcrf_beforeafter-1.pdf Graphic file (type pdf)
+<use R_project_files/figure-latex/btcrf_beforeafter-1.pdf>
+File: R_project_files/figure-latex/btcrf_beforeafter-2.pdf Graphic file (type pdf)
+<use R_project_files/figure-latex/btcrf_beforeafter-2.pdf>
+File: R_project_files/figure-latex/ethcrf_beforeafter-1.pdf Graphic file (type pdf)
+<use R_project_files/figure-latex/ethcrf_beforeafter-1.pdf>
+File: R_project_files/figure-latex/ethcrf_beforeafter-2.pdf Graphic file (type pdf)
+<use R_project_files/figure-latex/ethcrf_beforeafter-2.pdf>
 File: R_project_files/figure-latex/asset comparison-1.pdf Graphic file (type pdf)
 <use R_project_files/figure-latex/asset comparison-1.pdf>
-[11] (./R_project.aux)
+[8] [9] [10] (./R_project.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `R_project.out' has not changed.
-(rerunfilecheck)             Checksum: 9342105D17FCD6CACCAF68FE2D286812;1698.
+(rerunfilecheck)             Checksum: CE9D99A0D524B340619A35EFD7A053DD;1404.
  ) 
 Here is how much of TeX's memory you used:
- 18613 strings out of 478659
- 343933 string characters out of 5847159
+ 18623 strings out of 478659
+ 344576 string characters out of 5847159
  1864704 words of memory out of 5000000
- 38476 multiletter control sequences out of 15000+600000
+ 38486 multiletter control sequences out of 15000+600000
  515967 words of font info for 64 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 86i,7n,121p,372b,334s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 86i,7n,121p,372b,332s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on R_project.pdf (11 pages).
+Output written on R_project.pdf (10 pages).
