@@ -58,12 +58,12 @@ It grew more than tenfold to `$61,283` per Bitcoin in exactly one year, and hit 
 Therefore, investors have taken interest in predicting the short-term Bitcoin price.
 → (too many have pp's)
 
-```{r price,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE, fig.cap="\\label{fig:figs}"}
+```{r price,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE, fig.cap="\\label{fig:figs}Bitcoin (BTC) and Ethereum (ETH) Price Comparison"}
 # made from bitcoin_ether_price chunk with ggplot
 knitr::include_graphics("Plots/price_compare.png")
 ```
 
-```{r vol,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE, fig.cap="\\label{fig:figs}"}
+```{r vol,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE, fig.cap="\\label{fig:figs}Bitcoin (BTC) and Ethereum (ETH) Volume Comparison"}
 # made from bitcoin_ether_volume below with ggplot
 knitr::include_graphics("Plots/vol_compare.png")
 ```
@@ -103,7 +103,7 @@ Lastly, we added Credit Default Swap (CDS), which basically is a financial deriv
 As this indicator measures dwindling of centralized financial markets, we thought it would be interesting to see its relationship with the price action of cryptocurrencies, a decentralized asset class.
 This data was separately collected from Investing.com.
 
-```{r sum_stat,message=FALSE, echo=FALSE, out.width="50%",out.height="50%",warning=FALSE, fig.cap="\\label{fig:figs}"}
+```{r sum_stat,message=FALSE, echo=FALSE, out.width="50%",out.height="50%",warning=FALSE}
 # made from bitcoin_ether_volume below with ggplot
 knitr::include_graphics("Plots/Sumstat.png")
 ```
@@ -377,7 +377,7 @@ rmse_bitcoin_CART=rmse(bitcoin_CART,bitcoin_test)
 
 ### Random Forest
 
-```{r bitcoin_RF, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%",out.height="50%", fig.cap="\\label{fig:figs}"}
+```{r bitcoin_RF, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%",out.height="50%", fig.cap="\\label{fig:figs}BTC Random Forest"}
 
 bitcoin_RF=randomForest(Bitcoin ~ . -DATE, data=bitcoin_train,  important=TRUE)
 
@@ -393,7 +393,7 @@ We could check `SP500`,`Inf5y`,`Gold`,`IRX`,`Disease` are top 5 important variab
 Below is the partial dependence plots to isolate the partial effect of specific features on the outcome.
 Partial dependence plot is a method used to analyze the relationship between the target variable (dependent variable) and a specific predictor variable while holding all other predictors constant.
 
-```{r RF_dependence_plot, message=FALSE, echo=FALSE, warning=FALSE, fig.cap="\\label{fig:figs}"}
+```{r RF_dependence_plot, message=FALSE, echo=FALSE, warning=FALSE, fig.cap="\\label{fig:figs}BTC Partial Dependence Plots for The Top Five Features"}
 op <- par(mfrow=c(2, 3))
 partialPlot(bitcoin_RF, bitcoin_test, 'SP500', las=1)
 partialPlot(bitcoin_RF, bitcoin_test, 'Inf5y', las=1)
@@ -464,7 +464,7 @@ rmse_ethereum_CART=rmse(ethereum_CART,ethereum_test)
 
 ### Random Forest
 
-```{r ethereum_RF, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%", out.height="50%", fig.cap="\\label{fig:figs}"}
+```{r ethereum_RF, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%", out.height="50%", fig.cap="\\label{fig:figs}ETH Random Forest"}
 
 ethereum_RF=randomForest(Ethereum ~ . -DATE, data=ethereum_train,  important=TRUE)
 
@@ -479,7 +479,7 @@ We could check `SP500`,`Inf5y`,`Oil`,`IRX`,`CDS` are top 5 important variables f
 `SP500` and `Inf5y` seem to have the highest importance in both bitcoin and ethereum, but it is an interesting result that there is a difference that gold has a great influence on bitcoin and oil has a great influence on ethereum.
  Below is the partial dependence plots to isolate the partial effect of specific features on the outcome.
 
-```{r RF_dependence_plot_ether, message=FALSE, echo=FALSE, warning=FALSE, fig.cap="\\label{fig:figs}"}
+```{r RF_dependence_plot_ether, message=FALSE, echo=FALSE, warning=FALSE, fig.cap="\\label{fig:figs}ETH Partial Dependence Plots for The Top Five Features"}
 op_ether <- par(mfrow=c(2, 3))
 partialPlot(ethereum_RF, ethereum_test, 'SP500', las=1)
 partialPlot(ethereum_RF, ethereum_test, 'Inf5y', las=1)
@@ -542,7 +542,7 @@ ggplot(compare, aes(x = DATE)) +
   geom_line(aes(y = Bitcoin, color = "Bitcoin")) +
   geom_line(aes(y = sec$fwd(Ethereum), color = "Ethereum")) +
   scale_y_continuous(sec.axis = sec_axis(~sec$rev(.), name = "Ethereum"))+
-  labs(title = "Bitcoin (BTC) and Ethereum (ETH) Price Comparison", x = "Date", y = "Price") +
+  labs(x = "Date", y = "Price") +
   theme_economist_white(horizontal=FALSE, gray_bg=FALSE)
 
 
@@ -565,7 +565,7 @@ ggplot(compare_vol, aes(x = DATE)) +
   geom_line(aes(y = BTC_vol, color = "BTC_vol")) +
   geom_line(aes(y = ETH_vol, color = "ETH_vol")) +
   scale_y_continuous(limits = c(5, max(compare_vol$BTC_vol, compare_vol$ETH_vol, na.rm = TRUE) * 1.1)) +
-  labs(title = "Bitcoin (BTC) and Ethereum (ETH) Volume Comparison", x = "Date", y = "Volume") +
+  labs(x = "Date", y = "Volume") +
   theme_economist_white(horizontal=FALSE, gray_bg=FALSE) 
 
 ggsave("Plots/vol_compare.png", width = 10, height = 5, dpi = 300)
@@ -716,7 +716,7 @@ knitr::kable(kable_output) %>% kable_minimal()
 ```
 
 
-```{r asset comparison, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE, fig.cap="\\label{fig:figs}"}
+```{r asset comparison, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE, fig.cap="\\label{fig:figs}Market Cap Comparison Between BTC/ETH and Top Performing Stocks in S&P500"}
 asset_comp = read.csv('Data/asset_market_cap.csv') # comparison of market cap of diff asset classes
 
 df_asset = asset_comp %>%
