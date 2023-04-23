@@ -44,7 +44,7 @@ library(scales)
 
 # Abstract
 
-The volatility of cryptocurrency price has both attracted and repelled myriads of investors around the world. However, year after year, we see more people investing in this volatile asset whether it is due to the opportunity to make life-changing money or the the curiosity towards the disruptive blockchain technology behind it. In this project, we first build the best predictive models to predict future prices of Bitcoin and Ethereum, the two largest cryptocurrencies in terms of market capitalization. We find that random forest model is the best predictor. Next, we compare and contrast the factors that contribute the most to the price prediction between the two assets, analyzed via variable importance and partial dependence plots. For both assets, S&P500 and 5-year inflation expectation are the biggest features contributing to their prices. Where they differ is the third most important variable, which are gold price and oil price for Bitcoin and Ehtereum, respectively. Utilizing these results, investors can make smart investment choices based on macroeconomic and market performance.
+Due to the wild volatility of cryptocurrency, many investors and experts have tried to make accurate price prediction for the asset class. Likewise in this project, we attempt to build the best price predictive model for Bitcoin and Ethereum and identify the most crucial variables that contribute to their prices. Among CART, random forests and Gradient boosting, we find that random forest model is the best price predictor for both assets. Next, we compare and contrast the most important features, analyzed via variable importance plots and partial dependence plots. For both assets, S&P500 and 5-year inflation expectation are the biggest features contributing to their prices. Where they differ is the third most important variable, which is gold price for Bitcoin and oil price for Ethereum, respectively. Utilizing these results, investors can make smart investment choices based on macroeconomic and market performance.
 
 
 # Introduction
@@ -375,15 +375,35 @@ bitcoin_CART=rpart(Bitcoin ~ .-DATE, data=bitcoin_train, control=rpart.control(c
 rmse_bitcoin_CART=rmse(bitcoin_CART,bitcoin_test)
 ```
 
-### Random Forest
-
-```{r bitcoin_RF, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%",out.height="50%", fig.cap="\\label{fig:figs}BTC Random Forest"}
-
+```{r bitcoin_RF, message=FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 bitcoin_RF=randomForest(Bitcoin ~ . -DATE, data=bitcoin_train,  important=TRUE)
 
 # check the rmse
 rmse_RF=rmse(bitcoin_RF,bitcoin_test)
+```
 
+```{r bitcoin_gradient, message=FALSE, echo=FALSE, warning=FALSE}
+# fit a tree for gradient boosted trees
+bitcoin_boost= gbm(Bitcoin ~ .-DATE ,distribution='gaussian', data=bitcoin_train,interaction.depth=4, n.trees=500, shrinkage=.05, cv.folds = 8)
+# check the rmse
+rmse_Boost=rmse(bitcoin_boost,bitcoin_test)
+
+```
+
+```{r RMSE_table, message=FALSE, echo=FALSE, warning=FALSE}
+first_col= c("CART","Random Forest","Gradient Boosting")
+second_col= c(rmse_bitcoin_CART,rmse_RF, rmse_Boost)
+df_rmse_ = data.frame(first_col, second_col)
+knitr:: kable(df_rmse_, col.names=c("Model","RMSE"), caption="Model performance with out-of-sample RMSEs (Bitcoin)", "simple")
+
+```
+
+### Random Forest
+
+
+
+
+```{r bitcoin_varimp, , message=FALSE, echo=FALSE, warning=FALSE, out.width="75%",out.height="50%", fig.cap="\\label{fig:figs}BTC Random Forest"}
 varImpPlot(bitcoin_RF, bg = "skyblue", cex=1, pch=22)
 
 ```
@@ -405,22 +425,6 @@ par(op, pin = c(10, 20))
 
 All variables, except for `IRX`, shows an increasing dependence plot.
 We can interpret `SP500`, `Inf5y`,`Gold`,`Disease` features have a positive effect on predicted outcome, and `IRX` has a negative effect on predicted outcome.
-
-```{r bitcoin_gradient, message=FALSE, echo=FALSE, warning=FALSE}
-# fit a tree for gradient boosted trees
-bitcoin_boost= gbm(Bitcoin ~ .-DATE ,distribution='gaussian', data=bitcoin_train,interaction.depth=4, n.trees=500, shrinkage=.05, cv.folds = 8)
-# check the rmse
-rmse_Boost=rmse(bitcoin_boost,bitcoin_test)
-
-```
-
-```{r RMSE_table, message=FALSE, echo=FALSE, warning=FALSE}
-first_col= c("CART","Random Forest","Gradient Boosting")
-second_col= c(rmse_bitcoin_CART,rmse_RF, rmse_Boost)
-df_rmse_ = data.frame(first_col, second_col)
-knitr:: kable(df_rmse_, col.names=c("Model","RMSE"), caption="Model performance with out-of-sample RMSEs (Bitcoin)", "simple")
-
-```
 
 
 
