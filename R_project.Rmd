@@ -333,12 +333,12 @@ ggsave("Plots/vol_compare.png", width = 10, height = 5, dpi = 300)
 
 ```
 
-```{r price,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE, fig.cap="\\label{fig1}Bitcoin (BTC) and Ethereum (ETH) Price Comparison"}
+```{r price,message=FALSE, echo=FALSE,fig.align='center', out.width="65%",out.height="50%", warning=FALSE, fig.cap="\\label{fig1}Bitcoin (BTC) and Ethereum (ETH) Price Comparison"}
 # made from bitcoin_ether_price chunk with ggplot
 knitr::include_graphics("Plots/price_compare.png")
 ```
 
-```{r vol,message=FALSE, echo=FALSE, out.width="75%",out.height="50%", warning=FALSE, fig.cap="\\label{fig2}Bitcoin (BTC) and Ethereum (ETH) Volume Comparison"}
+```{r vol,message=FALSE, echo=FALSE, fig.align='center', out.width="65%",out.height="50%", warning=FALSE, fig.cap="\\label{fig2}Bitcoin (BTC) and Ethereum (ETH) Volume Comparison"}
 # made from bitcoin_ether_volume below with ggplot
 knitr::include_graphics("Plots/vol_compare.png")
 ```
@@ -565,7 +565,7 @@ From Figure 5, we find that `SP500`,`Inf5y`,`Oil`,`IRX`,`CDS` are the five most 
 
 Figure 6 is the partial dependence plots to isolate the partial effect of specific features on the outcome.
 
-```{r RF_dependence_plot_ether, message=FALSE, echo=FALSE, warning=FALSE, fig.cap="\\label{fig6}ETH Partial Dependence Plots for The Top Five Features"}
+```{r RF_dependence_plot_ether, message=FALSE, echo=FALSE, warning=FALSE, fig.align='center', fig.cap="\\label{fig6}ETH Partial Dependence Plots for The Top Five Features"}
 op_ether <- par(mfrow=c(2, 3))
 partialPlot(ethereum_RF, ethereum_test, 'SP500', las=1)
 partialPlot(ethereum_RF, ethereum_test, 'Inf5y', las=1)
@@ -597,9 +597,30 @@ To sum up, our model and the findings in this report can help both crypto enthus
 
 # Appendix
 
-## Pre-Covid and Post-Covid Comparison
+Because S&P500 is the most important variable in predicting the price of both Bitcoin and Ethereum, we wanted to compare the market capitalization of some of the top performing stocks in S&P500 to that of the two cryptocurrencies. The result is visualized in Figure 9. Bitcoin's market cap is about the same size as that of Tesla and Meta, while Ethereum is ranked lower than Coca-cola. As one can see, there is a lot more room for growth in terms of market cap for both Bitcoin and Ethereum, which implies that their prices may go higher as more retailers and institutions invest in them in the future.
 
-```{r dividing_2019, message=FALSE, echo=FALSE, warning=FALSE, including=TRUE}
+
+```{r asset comparison making, message=FALSE, echo=FALSE, warning=FALSE, out.width="50%", out.height="45%", fig.align='center', fig.cap="\\label{fig9}Market Cap Comparison Between BTC ETH and Top Performing Stocks in SP500"}
+
+asset_comp = read.csv('Data/asset_market_cap.csv') # comparison of market cap of diff asset classes
+
+df_asset = asset_comp %>%
+  as.data.frame()
+
+df_asset %>%
+  ggplot(aes(x=reorder(Name, Market_Cap), y=Market_Cap, fill=Name)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Market Cap Comparison",
+    subtitle = "as of 4/19/2023",
+    x = "Asset Name",
+    y = "Market Capitalization ($)")
+
+```
+
+
+```{r dividing_2019, message=FALSE, echo=FALSE, warning=FALSE, including=FALSE}
 div_coin_pre <- subset (bitcoin, DATE <= '2019-01-01')
 div_coin_post <- subset(bitcoin, DATE >= '2019-01-01')
 
@@ -628,45 +649,23 @@ div_ether_post_test = testing(div_ether_post_split)
 ether_RF_pre=randomForest(Ethereum ~ . -DATE, data=div_ether_post_train,  important=TRUE)
 ether_RF_post=randomForest(Ethereum ~ . -DATE, data=div_ether_post_train,  important=TRUE)
 ```
-```{r btcrf_beforeafter, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE, out.width="80%", out.height="25%", fig.cap="\\label{fig7}BTC Variance Importance Plot Pre vs Post-Covid"}
+
+
+```{r btcrf_beforeafter, message=FALSE, echo=FALSE, warning=FALSE, fig.align='center', out.width="40%", out.height="25%", fig.cap="\\label{fig7}BTC Variance Importance Plot Pre vs Post-Covid"}
 op1 <- par(mfrow=c(1, 2))
 varImpPlot(bit_RF_pre, bg = "skyblue", cex=1, pch=22)
 varImpPlot(bit_RF_post, bg = "skyblue", cex=1, pch=22)
-par(op1, pin = c(10, 20))
+par(op1, pin = c(100, 100))
 ```
-```{r ethcrf_beforeafter, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE, out.width="80%", out.height="25%",, fig.cap="\\label{fig8}ETH Variance Importance Plot Pre vs Post-Covid"}
+```{r ethcrf_beforeafter, message=FALSE, echo=FALSE, warning=FALSE, fig.align='center',out.width="40%", out.height="25%",  fig.cap="\\label{fig8}ETH Variance Importance Plot Pre vs Post-Covid"}
 op2 <- par(mfrow=c(1, 2))
 varImpPlot(ether_RF_pre, bg = "skyblue", cex=1, pch=22)
 varImpPlot(ether_RF_post, bg = "skyblue", cex=1, pch=22)
-par(op2, pin = c(10, 20))
+par(op2, pin = c(100, 100))
 ```
 
 
 
-
-```{r asset comparison, message=FALSE, echo=FALSE, warning=FALSE, include=TRUE, fig.cap="\\label{fig9}Market Cap Comparison Between BTC/ETH and Top Performing Stocks in S&P500"}
-asset_comp = read.csv('Data/asset_market_cap.csv') # comparison of market cap of diff asset classes
-
-df_asset = asset_comp %>%
-  as.data.frame()
-
-df_asset %>%
-  ggplot(aes(x=reorder(Name, Market_Cap), y=Market_Cap, fill=Name)) +
-  geom_col() +
-  coord_flip() +
-  labs(
-    title = "Market Cap Comparison",
-    subtitle = "as of 4/19/2023",
-    x = "Asset Name",
-    y = "Market Capitalization ($)")
-```
-
-
-
-
-## Market Cap Comparison between BTC/ETH and Stocks
-
-Because S&P500 is the most important variable in predicting the price of both Bitcoin and Ethereum, we wanted to compare the market capitalization of some of the top performing stocks in S&P500 to that of the two cryptocurrencies. The result is visualized in Figure 9. Bitcoin's market cap is about the same size as that of Tesla and Meta, while Ethereum is ranked lower than Coca-cola. As one can see, there is a lot more room for growth in terms of market cap for both Bitcoin and Ethereum, which implies that their prices may go higher as more retailers and institutions invest in them in the future.
 
 
 
